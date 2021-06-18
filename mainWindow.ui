@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>640</width>
+    <height>480</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Aplikasi Steganografi dan Enkripsi pada Gambar</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QPushButton" name="btnSteganografiEnkripsi">
+    <property name="geometry">
+     <rect>
+      <x>230</x>
+      <y>80</y>
+      <width>181</width>
+      <height>91</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Enkripsi dan Steganografi</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btnExtractDecrypt">
+    <property name="geometry">
+     <rect>
+      <x>230</x>
+      <y>200</y>
+      <width>181</width>
+      <height>91</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Extract dan Dekripsi</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btnCompare">
+    <property name="geometry">
+     <rect>
+      <x>230</x>
+      <y>320</y>
+      <width>181</width>
+      <height>91</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Perbandingan</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

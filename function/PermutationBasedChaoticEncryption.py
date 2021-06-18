@@ -1,6 +1,5 @@
-import HenonMapGenerator as hmg
-import numpy as np
-import copy
+import function.HenonMapGenerator as hmg
+from function.CommonFunction import np, deepCopy
 
 def encryption(message_image, x = 0.1, y = 0.1):
     image_size = message_image.size
@@ -22,21 +21,19 @@ def encryption(message_image, x = 0.1, y = 0.1):
         
         mid_arr = hmg.binary_to_7_byte(binary_y)
 
-        RK.append(mid_arr[3])
-        GK.append(mid_arr[4])
-        BK.append(mid_arr[5])
+        RK.append(mid_arr[2])
+        GK.append(mid_arr[3])
+        BK.append(mid_arr[4])
 
     original_image = np.reshape(message_image, image_size)
     
     for i in range(image_size):
-        temp_pixel = copy.deepcopy(original_image[i])
-        original_image[i] = copy.deepcopy(original_image[XS[i]])
+        temp_pixel = deepCopy(original_image[i])
+        original_image[i] = deepCopy(original_image[XS[i]])
         original_image[XS[i]] = temp_pixel
 
-    new_image = np.zeros(image_size, dtype = np.uint8)
+    new_image = np.zeros(image_size, dtype = 'float32')
     for i in range(image_size):
-        new_image[i][0] = original_image[i][0] ^ RK[i]
-        new_image[i][1] = original_image[i][1] ^ GK[i]
-        new_image[i][2] = original_image[i][2] ^ BK[i]
+        new_image[i] = int(original_image[i]) ^ ((int(GK[i]) + int(RK[i]) + int(BK[i]))//3)
 
     return np.reshape(new_image, (message_image.shape))

@@ -1,5 +1,5 @@
-import function.HenonMapGenerator as hmg
-from function.CommonFunction import np, deepCopy
+from .HenonMapGenerator import HenonMapGenerator as hmg
+from .CommonFunction import np, deepCopy
 
 def encryption(message_image, x = 0.1, y = 0.1):
     image_size = message_image.size

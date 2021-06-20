@@ -1,5 +1,5 @@
 from scipy.fftpack import dct, idct
-from function.CommonFunction import np
+from .CommonFunction import np
 
 # implement 2D DCT
 def dct2(a):

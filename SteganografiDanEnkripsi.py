@@ -103,6 +103,11 @@ class Ui_EnkripsiSteganografi(object):
     def encryptAndStegano(self):
         resultFile = processEncryptionAndStegano(self.citraSampulPath.text(), self.citraPesanPath.text(), self.doubleSpinBoxX0.value(), self.doubleSpinBoxY0.value())
         print(resultFile)
+        pix = QtWidgets.QtPixmap(resultFile)
+        item = QtWidgets.QGraphicsPixmapItem(pix)
+        scene = QtWidgets.QGraphicsScence(self)
+        scene.addItem(item)
+        self.graphicsView.setScene()
 
 
 if __name__ == "__main__":

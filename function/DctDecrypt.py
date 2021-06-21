@@ -1,6 +1,6 @@
 from .CommonFunction import cv2, bgr2gray, deepCopy, convertImageToSubBlock, saveImageAsJpeg
 from .DiscreteCosineTransform import createDctSubBlock, createDcCoefficientMatrix
-from .PermutationBasedChaoticDecryption import decryption
+from .PermutationBasedChaoticEncryption import decryption
 
 def recoverEncryptionMessageFromDcCoefficientMatrix(dccStego, dccCover, alpha = 1):
     return (dccStego - (dccCover * alpha) * 255)

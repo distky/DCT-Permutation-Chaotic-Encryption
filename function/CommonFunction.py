@@ -24,8 +24,13 @@ def convertSubBlockToImage(subBlock, shape):
 
 def saveImageAsTiff(image, filename = 'result'):
     filename = filename + ".tiff"
-    imageio.imwrite(filename, image)
 
+    imageRgb = np.zeros((image.shape[0], image.shape[1], 3), dtype='uint8')
+    imageRgb[...,0] = copy.deepcopy(image)
+    imageRgb[...,1] = copy.deepcopy(image)
+    imageRgb[...,2] = copy.deepcopy(image)
+
+    imageio.imwrite(filename, imageRgb)
     return filename
 
 def saveImageAsJpeg(image, filename = 'result'):
@@ -35,3 +40,15 @@ def saveImageAsJpeg(image, filename = 'result'):
 
 def deepCopy(obj):
     return copy.deepcopy(obj)
+
+def saveDcMatrixAndFloatingPoint(npArray, dcMatrix):
+    intNpArray = deepCopy(npArray).astype('uint8')
+
+    objectArr = np.ndarray(2, dtype=object)
+    objectArr[0] = dcMatrix
+    objectArr[1] = npArray - intNpArray
+
+    np.save('dcmatrix.npy', objectArr)
+
+def loadDcMatrixAndFloatingPoint(npyFile):
+    return np.load(npyFile, allow_pickle=True)

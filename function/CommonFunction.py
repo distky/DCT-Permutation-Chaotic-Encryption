@@ -1,6 +1,5 @@
 import numpy as np
 import cv2
-import imageio
 import copy
 
 def resizeImage(image, shape = (512,512)):
@@ -24,13 +23,7 @@ def convertSubBlockToImage(subBlock, shape):
 
 def saveImageAsTiff(image, filename = 'result'):
     filename = filename + ".tiff"
-
-    imageRgb = np.zeros((image.shape[0], image.shape[1], 3), dtype='uint8')
-    imageRgb[...,0] = copy.deepcopy(image)
-    imageRgb[...,1] = copy.deepcopy(image)
-    imageRgb[...,2] = copy.deepcopy(image)
-
-    imageio.imwrite(filename, imageRgb)
+    cv2.imwrite(filename, image)
     return filename
 
 def saveImageAsJpeg(image, filename = 'result'):

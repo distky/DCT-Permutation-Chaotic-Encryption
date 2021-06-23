@@ -1,4 +1,4 @@
-from .CommonFunction import cv2, imageio, deepCopy, bgr2gray, convertSubBlockToImage, convertImageToSubBlock, loadDcMatrixAndFloatingPoint, saveImageAsTiff, saveImageAsJpeg, saveDcMatrixAndFloatingPoint, loadDcMatrixAndFloatingPoint
+from .CommonFunction import cv2, deepCopy, bgr2gray, convertSubBlockToImage, convertImageToSubBlock, loadDcMatrixAndFloatingPoint, saveImageAsTiff, saveImageAsJpeg, saveDcMatrixAndFloatingPoint, loadDcMatrixAndFloatingPoint
 from .DiscreteCosineTransform import createDctSubBlock, createDcCoefficientMatrix, restoreDcCoefficientMatrixThenIdct
 from .PermutationBasedChaoticEncryption import encryption, decryption
 
@@ -6,8 +6,8 @@ def embedEncryptionMessageToDcCoefficientMatrix(cipherImage, dccMatrix, alpha = 
     return dccMatrix + (cipherImage/255 * alpha)
 
 def processEncryptionAndStegano(coverImgPath, messageImgPath, x0, y0):
-    coverImage = bgr2gray(cv2.imread(coverImgPath)).astype('float32')
-    messageImage = bgr2gray(cv2.imread(messageImgPath)).astype('float32')
+    coverImage = bgr2gray(cv2.imread(coverImgPath))
+    messageImage = bgr2gray(cv2.imread(messageImgPath))
 
     cipherImage = encryption(deepCopy(messageImage), x0, y0)
 
@@ -31,7 +31,7 @@ def recoverEncryptionMessageFromDcCoefficientMatrix(dccStego, dccCover, alpha = 
     return (dccStego - (dccCover * alpha)) * 255
 
 def processExtractAndDecrypt(steganoImgPath, dcMatrixPath, x0, y0):
-    steganoImage = bgr2gray(imageio.imread(steganoImgPath))
+    steganoImage = bgr2gray(cv2.imread(steganoImgPath))
 
     dcMatrixAndFloatingPoint = loadDcMatrixAndFloatingPoint(dcMatrixPath)
 

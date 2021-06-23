@@ -23,17 +23,14 @@ def convertSubBlockToImage(subBlock, shape):
     return images
 
 def saveImageAsTiff(image, filename = 'result'):
-    imageRgb = np.zeros((image.shape[0], image.shape[1], 3), dtype='float32')
-    imageRgb[...,0] = image
-    imageRgb[...,1] = image
-    imageRgb[...,2] = image
-
-    imageio.imwrite(filename + ".tiff", imageRgb)
+    filename = filename + ".tiff"
+    imageio.imwrite(filename, image)
 
     return filename
 
 def saveImageAsJpeg(image, filename = 'result'):
-    cv2.imwrite(filename + ".jpeg", image)
+    filename = filename + ".jpeg"
+    cv2.imwrite(filename, image)
     return filename
 
 def deepCopy(obj):

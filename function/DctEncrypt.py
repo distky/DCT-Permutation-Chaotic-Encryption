@@ -1,3 +1,4 @@
+import numpy as np
 from .CommonFunction import cv2, deepCopy, bgr2gray, convertSubBlockToImage, convertImageToSubBlock, saveImageAsTiff, saveImageAsJpeg
 from .DiscreteCosineTransform import createDctSubBlock, createDcCoefficientMatrix, restoreDcCoefficientMatrixThenIdct
 from .PermutationBasedChaoticEncryption import encryption, decryption
@@ -23,7 +24,20 @@ def processEncryptionAndStegano(coverImgPath, messageImgPath, x0, y0):
 
     embeddedImage = convertSubBlockToImage(deepCopy(idctSubBlock), 16)
 
-    return saveImageAsTiff(embeddedImage)
+    floatingPoint = extractFloatingPoint(embeddedImage)
+    
+    objectArr = np.ndarray(2, dtype=object)
+    objectArr[0] = dcCoefficientMatrix
+    objectArr[1] = floatingPoint
+
+    np.save('dcmatrix.npy', objectArr)
+
+    return saveImageAsTiff(embeddedImage.astype('uint8'))
+
+def extractFloatingPoint(npArray):
+    intNpArray = deepCopy(npArray).astype('uint8')
+
+    return abs(npArray - intNpArray)
 
 def recoverEncryptionMessageFromDcCoefficientMatrix(dccStego, dccCover, alpha = 1):
     return (dccStego - (dccCover * alpha) * 255)

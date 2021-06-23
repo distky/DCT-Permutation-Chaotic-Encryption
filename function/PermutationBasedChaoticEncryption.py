@@ -1,10 +1,10 @@
-from .HenonMapGenerator import HenonMapGenerator as hmg
+from .HenonMapGenerator import decimal_to_binary, binary_to_7_byte, create_henon_map, binary_to_decimal
 from .CommonFunction import np, deepCopy
 
 def encryption(message_image, x = 0.1, y = 0.1):
     image_size = message_image.size
 
-    henon_map = hmg.create_henon_map(x, y, size = image_size)
+    henon_map = create_henon_map(x, y, size = image_size)
 
     X = henon_map[0]
     Y = henon_map[1]
@@ -17,9 +17,9 @@ def encryption(message_image, x = 0.1, y = 0.1):
 
     for i in range(len(Y)):
         XS.append(X[i] % image_size)
-        binary_y = hmg.decimal_to_binary(Y[i])
+        binary_y = decimal_to_binary(Y[i])
         
-        mid_arr = hmg.binary_to_7_byte(binary_y)
+        mid_arr = binary_to_7_byte(binary_y)
 
         RK.append(mid_arr[2])
         GK.append(mid_arr[3])
@@ -41,7 +41,7 @@ def encryption(message_image, x = 0.1, y = 0.1):
 def decryption(encrypted_image, x = 0.1, y = 0.1):
     image_size = encrypted_image.size
 
-    henon_map = hmg.create_henon_map(x, y, size = image_size)
+    henon_map = create_henon_map(x, y, size = image_size)
 
     X = henon_map[0]
     Y = henon_map[1]
@@ -54,9 +54,9 @@ def decryption(encrypted_image, x = 0.1, y = 0.1):
 
     for i in range(len(Y)):
         XS.append(X[i] % image_size)
-        binary_y = hmg.decimalToBinary(Y[i])
+        binary_y = decimal_to_binary(Y[i])
         
-        mid_arr = hmg.convertBinaryTo7Bytes(binary_y)
+        mid_arr = binary_to_7_byte(binary_y)
 
         RK.append(mid_arr[2])
         GK.append(mid_arr[3])

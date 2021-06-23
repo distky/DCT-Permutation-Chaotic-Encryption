@@ -95,19 +95,18 @@ class Ui_EnkripsiSteganografi(object):
     def openDialog(self, lineEdit, dialogName = ""):
         options = QtWidgets.QFileDialog.Options()
         fileName, _ = QtWidgets.QFileDialog.getOpenFileName(EnkripsiSteganografi, dialogName, '',
-                                                  'Images (*.png *.jpeg *.jpg *.bmp *.gif)', options=options)
+                                                  'Images (*.tiff *.jpeg *.jpg *.bmp)', options=options)
         if fileName:
             lineEdit.setText(fileName)
             print(lineEdit.text())
 
     def encryptAndStegano(self):
         resultFile = processEncryptionAndStegano(self.citraSampulPath.text(), self.citraPesanPath.text(), self.doubleSpinBoxX0.value(), self.doubleSpinBoxY0.value())
-        print(resultFile)
-        pix = QtWidgets.QtPixmap(resultFile)
+        pix = QtGui.QPixmap(resultFile)
         item = QtWidgets.QGraphicsPixmapItem(pix)
-        scene = QtWidgets.QGraphicsScence(self)
+        scene = QtWidgets.QGraphicsScene(EnkripsiSteganografi)
         scene.addItem(item)
-        self.graphicsView.setScene()
+        self.graphicsView.setScene(scene)
 
 
 if __name__ == "__main__":

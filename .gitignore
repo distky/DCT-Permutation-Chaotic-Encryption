@@ -1,3 +1,6 @@
 function/__pycache__/*
 *.tiff
 *.npy
+*.jpg
+*.jpeg
+*.bmp

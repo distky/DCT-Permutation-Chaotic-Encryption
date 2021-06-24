@@ -1,6 +1,5 @@
 import numpy as np
 import cv2
-import imageio
 import copy
 
 def resizeImage(image, shape = (512,512)):
@@ -24,8 +23,7 @@ def convertSubBlockToImage(subBlock, shape):
 
 def saveImageAsTiff(image, filename = 'result'):
     filename = filename + ".tiff"
-    imageio.imwrite(filename, image)
-
+    cv2.imwrite(filename, image)
     return filename
 
 def saveImageAsJpeg(image, filename = 'result'):
@@ -35,3 +33,15 @@ def saveImageAsJpeg(image, filename = 'result'):
 
 def deepCopy(obj):
     return copy.deepcopy(obj)
+
+def saveDcMatrixAndFloatingPoint(npArray, dcMatrix):
+    intNpArray = deepCopy(npArray).astype('uint8')
+
+    objectArr = np.ndarray(2, dtype=object)
+    objectArr[0] = dcMatrix
+    objectArr[1] = npArray - intNpArray
+
+    np.save('dcmatrix.npy', objectArr)
+
+def loadDcMatrixAndFloatingPoint(npyFile):
+    return np.load(npyFile, allow_pickle=True)

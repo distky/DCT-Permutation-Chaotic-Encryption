@@ -15,7 +15,7 @@ from function.DctEncrypt import processEncryptionAndStegano
 class Ui_EnkripsiSteganografi(object):
     def setupUi(self, EnkripsiSteganografi):
         EnkripsiSteganografi.setObjectName("EnkripsiSteganografi")
-        EnkripsiSteganografi.resize(642, 499)
+        EnkripsiSteganografi.resize(650, 500)
         self.centralwidget = QtWidgets.QWidget(EnkripsiSteganografi)
         self.centralwidget.setObjectName("centralwidget")
         self.label = QtWidgets.QLabel(self.centralwidget)

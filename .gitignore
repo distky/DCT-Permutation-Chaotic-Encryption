@@ -1,7 +1,7 @@
 function/__pycache__/*
+.vscode/
 *.tiff
 *.npy
 *.jpg
 *.jpeg
 *.bmp
-settings.json

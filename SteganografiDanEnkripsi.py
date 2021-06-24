@@ -98,7 +98,6 @@ class Ui_EnkripsiSteganografi(object):
                                                   'Images (*.tiff *.jpeg *.jpg *.bmp)', options=options)
         if fileName:
             lineEdit.setText(fileName)
-            print(lineEdit.text())
 
     def encryptAndStegano(self):
         resultFile = processEncryptionAndStegano(self.citraSampulPath.text(), self.citraPesanPath.text(), self.doubleSpinBoxX0.value(), self.doubleSpinBoxY0.value())

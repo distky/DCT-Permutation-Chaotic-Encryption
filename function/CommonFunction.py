@@ -1,12 +1,18 @@
 import numpy as np
 import cv2
 import copy
+import imageio
+from math import log10, sqrt
+from PyQt5 import QtWidgets
 
 def resizeImage(image, shape = (512,512)):
    return cv2.resize(image, shape)
 
 def bgr2gray(image):
-    return cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    if len(image.shape) == 2:
+        return image
+    image32 = np.float32(image)
+    return cv2.cvtColor(image32, cv2.COLOR_BGR2GRAY)
 
 def convertImageToSubBlock(coverImage, shape):
     tiles = [coverImage[x:x+shape,y:y+shape] for x in range(0,coverImage.shape[0],shape) for y in range(0,coverImage.shape[1],shape)]
@@ -21,27 +27,36 @@ def convertSubBlockToImage(subBlock, shape):
             count +=1
     return images
 
-def saveImageAsTiff(image, filename = 'result'):
-    filename = filename + ".tiff"
-    cv2.imwrite(filename, image)
-    return filename
+def saveImageAs(image, filename = 'result', fileext = '.jpeg'):
+    imageRgb = np.zeros((image.shape[0], image.shape[1], 3))
+    imageRgb[...,0] = copy.deepcopy(image)
+    imageRgb[...,1] = copy.deepcopy(image)
+    imageRgb[...,2] = copy.deepcopy(image)
 
-def saveImageAsJpeg(image, filename = 'result'):
-    filename = filename + ".jpeg"
-    cv2.imwrite(filename, image)
-    return filename
+    file = filename + fileext
+
+    imageio.imwrite(file, imageRgb)
+    return file
 
 def deepCopy(obj):
     return copy.deepcopy(obj)
 
-def saveDcMatrixAndFloatingPoint(npArray, dcMatrix):
-    intNpArray = deepCopy(npArray).astype('uint8')
+def saveDcMatrix(dcMatrix):
+    np.save('dcmatrix.npy', dcMatrix)
 
-    objectArr = np.ndarray(2, dtype=object)
-    objectArr[0] = dcMatrix
-    objectArr[1] = npArray - intNpArray
-
-    np.save('dcmatrix.npy', objectArr)
-
-def loadDcMatrixAndFloatingPoint(npyFile):
+def loadDcMatrix(npyFile):
     return np.load(npyFile, allow_pickle=True)
+
+def PSNR(img1Path, img2Path):
+    mse = MSE(img1Path, img2Path)
+    if(mse == 0):
+        return 100
+    max_pixel = 255.0
+    psnr = 20 * log10(max_pixel / sqrt(mse))
+    return psnr
+
+def MSE(img1Path, img2Path):
+    img1 = bgr2gray(imageio.imread(img1Path))
+    img2 = bgr2gray(imageio.imread(img2Path))
+
+    return np.mean((img1 - img2) ** 2)

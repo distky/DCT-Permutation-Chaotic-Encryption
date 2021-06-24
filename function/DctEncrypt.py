@@ -1,4 +1,4 @@
-from .CommonFunction import cv2, deepCopy, bgr2gray, convertSubBlockToImage, convertImageToSubBlock, loadDcMatrixAndFloatingPoint, saveImageAsTiff, saveImageAsJpeg, saveDcMatrixAndFloatingPoint, loadDcMatrixAndFloatingPoint
+from .CommonFunction import imageio, deepCopy, bgr2gray, convertSubBlockToImage, convertImageToSubBlock, loadDcMatrix, saveImageAs, saveDcMatrix, loadDcMatrix
 from .DiscreteCosineTransform import createDctSubBlock, createDcCoefficientMatrix, restoreDcCoefficientMatrixThenIdct
 from .PermutationBasedChaoticEncryption import encryption, decryption
 
@@ -6,8 +6,8 @@ def embedEncryptionMessageToDcCoefficientMatrix(cipherImage, dccMatrix, alpha = 
     return dccMatrix + (cipherImage/255 * alpha)
 
 def processEncryptionAndStegano(coverImgPath, messageImgPath, x0, y0):
-    coverImage = bgr2gray(cv2.imread(coverImgPath))
-    messageImage = bgr2gray(cv2.imread(messageImgPath))
+    coverImage = bgr2gray(imageio.imread(coverImgPath))
+    messageImage = bgr2gray(imageio.imread(messageImgPath))
 
     cipherImage = encryption(deepCopy(messageImage), x0, y0)
 
@@ -23,21 +23,17 @@ def processEncryptionAndStegano(coverImgPath, messageImgPath, x0, y0):
 
     embeddedImage = convertSubBlockToImage(deepCopy(idctSubBlock), 16)
     
-    saveDcMatrixAndFloatingPoint(embeddedImage, dcCoefficientMatrix)
+    saveDcMatrix(dcCoefficientMatrix)
 
-    return saveImageAsTiff(embeddedImage.astype('uint8'))
+    return saveImageAs(embeddedImage, 'stegano', '.tiff')
 
 def recoverEncryptionMessageFromDcCoefficientMatrix(dccStego, dccCover, alpha = 1):
     return (dccStego - (dccCover * alpha)) * 255
 
 def processExtractAndDecrypt(steganoImgPath, dcMatrixPath, x0, y0):
-    steganoImage = bgr2gray(cv2.imread(steganoImgPath))
+    steganoImage = bgr2gray(imageio.imread(steganoImgPath))
 
-    dcMatrixAndFloatingPoint = loadDcMatrixAndFloatingPoint(dcMatrixPath)
-
-    dcMatrix = dcMatrixAndFloatingPoint[0]
-
-    steganoImage = steganoImage + dcMatrixAndFloatingPoint[1]
+    dcMatrix = loadDcMatrix(dcMatrixPath)
 
     stegoSubBlock = convertImageToSubBlock(deepCopy(steganoImage), 16)
 
@@ -49,4 +45,4 @@ def processExtractAndDecrypt(steganoImgPath, dcMatrixPath, x0, y0):
 
     decryptedMessage = decryption(deepCopy(encryptedMessage), x0, y0)
 
-    return saveImageAsJpeg(decryptedMessage)
+    return saveImageAs(decryptedMessage.astype('uint8'), 'result', '.jpeg')

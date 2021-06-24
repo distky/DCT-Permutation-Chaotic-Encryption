@@ -95,7 +95,6 @@ class Ui_EkstraksiDekripsi(object):
                                                   fileOptions, options=options)
         if fileName:
             lineEdit.setText(fileName)
-            print(lineEdit.text())
 
     def extractAndDecrypt(self):
         resultFile = processExtractAndDecrypt(self.citraSteganoPath.text(), self.dcMatrixPath.text(), self.doubleSpinBoxX0.value(), self.doubleSpinBoxY0.value())

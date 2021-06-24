@@ -12,6 +12,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from function.DctEncrypt import processEncryptionAndStegano
 
 class Ui_InputSteganografiDanEnkripsi(object):
+    
     def setupUi(self, InputSteganografiDanEnkripsi):
         InputSteganografiDanEnkripsi.setObjectName("InputSteganografiDanEnkripsi")
         InputSteganografiDanEnkripsi.resize(777, 673)
@@ -138,6 +139,9 @@ class Ui_InputSteganografiDanEnkripsi(object):
         scene = QtWidgets.QGraphicsScene(InputSteganografiDanEnkripsi)
         scene.addItem(item)
         self.graphicsView.setScene(scene)
+        self.graphicsView.fitInView(scene.sceneRect(),QtCore.Qt.AspectRatioMode.KeepAspectRatio)
+    
+
 
 
 if __name__ == "__main__":

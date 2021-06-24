@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>InputSteganografiDanEnkripsi</class>
- <widget class="QMainWindow" name="InputSteganografiDanEnkripsi">
+ <class>InputEkstraksiDanDekripsi</class>
+ <widget class="QMainWindow" name="InputEkstraksiDanDekripsi">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,15 +11,15 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Input Steganografi dan Enkripsi</string>
+   <string>Input Ekstraksi dan Dekripsi</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QLabel" name="lblCitraSampul">
+   <widget class="QLabel" name="lblCitraStegano">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>10</x>
       <y>20</y>
-      <width>141</width>
+      <width>171</width>
       <height>41</height>
      </rect>
     </property>
@@ -29,15 +29,15 @@
      </font>
     </property>
     <property name="text">
-     <string>Citra Sampul :</string>
+     <string>Citra Stegano :</string>
     </property>
    </widget>
-   <widget class="QLabel" name="lblCitraPesan">
+   <widget class="QLabel" name="lblDcmatrix">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>10</x>
       <y>80</y>
-      <width>141</width>
+      <width>161</width>
       <height>31</height>
      </rect>
     </property>
@@ -47,10 +47,10 @@
      </font>
     </property>
     <property name="text">
-     <string>Citra Pesan   :</string>
+     <string>DC Matrix      :</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="citraSampulPath">
+   <widget class="QLineEdit" name="citraSteganoPath">
     <property name="geometry">
      <rect>
       <x>170</x>
@@ -60,7 +60,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QLineEdit" name="citraPesanPath">
+   <widget class="QLineEdit" name="dcMatrixPath">
     <property name="geometry">
      <rect>
       <x>170</x>
@@ -70,7 +70,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QPushButton" name="btnCitraSampul">
+   <widget class="QPushButton" name="btnCitraStegano">
     <property name="geometry">
      <rect>
       <x>640</x>
@@ -88,7 +88,7 @@
      <string>Open File</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="btnCitraPesan">
+   <widget class="QPushButton" name="btnDcMatrix">
     <property name="geometry">
      <rect>
       <x>640</x>
@@ -218,7 +218,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QPushButton" name="btnEnkripsiDanStegano">
+   <widget class="QPushButton" name="btnEkstraksiDanDekripsi">
     <property name="geometry">
      <rect>
       <x>260</x>
@@ -233,7 +233,7 @@
      </font>
     </property>
     <property name="text">
-     <string>Steganografi dan Enkripsi</string>
+     <string>Ekstraksi dan Enkripsi</string>
     </property>
    </widget>
    <widget class="QPushButton" name="btnKembali">

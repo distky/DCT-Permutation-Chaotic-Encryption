@@ -24,13 +24,13 @@ class Ui_InputSteganografiDanEnkripsi(object):
         font = QtGui.QFont()
         font.setPointSize(14)
         self.label.setFont(font)
-        self.label.setObjectName("label")
+        self.label.setObjectName("lblCitraSampul")
         self.label_2 = QtWidgets.QLabel(self.centralwidget)
         self.label_2.setGeometry(QtCore.QRect(20, 80, 141, 31))
         font = QtGui.QFont()
         font.setPointSize(14)
         self.label_2.setFont(font)
-        self.label_2.setObjectName("label_2")
+        self.label_2.setObjectName("lblCitraPesan")
         self.citraSampulPath = QtWidgets.QLineEdit(self.centralwidget)
         self.citraSampulPath.setGeometry(QtCore.QRect(170, 30, 451, 31))
         self.citraSampulPath.setObjectName("citraSampulPath")
@@ -56,19 +56,19 @@ class Ui_InputSteganografiDanEnkripsi(object):
         font = QtGui.QFont()
         font.setPointSize(14)
         self.label_3.setFont(font)
-        self.label_3.setObjectName("label_3")
+        self.label_3.setObjectName("lblNilaiKunciX0Y0")
         self.label_4 = QtWidgets.QLabel(self.centralwidget)
         self.label_4.setGeometry(QtCore.QRect(20, 160, 91, 31))
         font = QtGui.QFont()
         font.setPointSize(14)
         self.label_4.setFont(font)
-        self.label_4.setObjectName("label_4")
+        self.label_4.setObjectName("lblNilaiX0")
         self.label_5 = QtWidgets.QLabel(self.centralwidget)
         self.label_5.setGeometry(QtCore.QRect(20, 200, 91, 21))
         font = QtGui.QFont()
         font.setPointSize(14)
         self.label_5.setFont(font)
-        self.label_5.setObjectName("label_5")
+        self.label_5.setObjectName("lblNilaiY0")
         self.doubleSpinBoxX0 = QtWidgets.QDoubleSpinBox(self.centralwidget)
         self.doubleSpinBoxX0.setGeometry(QtCore.QRect(120, 160, 181, 31))
         font = QtGui.QFont()
@@ -133,14 +133,17 @@ class Ui_InputSteganografiDanEnkripsi(object):
             print(lineEdit.text())
 
     def encryptAndStegano(self):
-        resultFile = processEncryptionAndStegano(self.citraSampulPath.text(), self.citraPesanPath.text(), self.doubleSpinBoxX0.value(), self.doubleSpinBoxY0.value())
-        pix = QtGui.QPixmap(resultFile)
-        item = QtWidgets.QGraphicsPixmapItem(pix)
-        scene = QtWidgets.QGraphicsScene(InputSteganografiDanEnkripsi)
-        scene.addItem(item)
-        self.graphicsView.setScene(scene)
-        self.graphicsView.fitInView(scene.sceneRect(),QtCore.Qt.AspectRatioMode.KeepAspectRatio)
-    
+       # CheckError = self.doubleSpinBoxX0.value() = 0
+        #if CheckError:
+            
+            resultFile = processEncryptionAndStegano(self.citraSampulPath.text(), self.citraPesanPath.text(), self.doubleSpinBoxX0.value(), self.doubleSpinBoxY0.value())
+            pix = QtGui.QPixmap(resultFile)
+            item = QtWidgets.QGraphicsPixmapItem(pix)
+            scene = QtWidgets.QGraphicsScene(InputSteganografiDanEnkripsi)
+            scene.addItem(item)
+            self.graphicsView.setScene(scene)
+            self.graphicsView.fitInView(scene.sceneRect(),QtCore.Qt.AspectRatioMode.KeepAspectRatio)
+        
 
 
 

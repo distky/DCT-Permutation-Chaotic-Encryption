@@ -1,4 +1,5 @@
 function/__pycache__/*
+.vscode/
 *.tiff
 *.npy
 *.jpg

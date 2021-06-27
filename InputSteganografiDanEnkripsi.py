@@ -117,6 +117,7 @@ class Ui_InputSteganografiDanEnkripsi(object):
         self.lblNilaiX0.setText(_translate("InputSteganografiDanEnkripsi", "Nilai X0 :"))
 
     def openDialog(self, lineEdit, dialogName = ""):
+        InputSteganografiDanEnkripsi = QtWidgets.QDialog()
         options = QtWidgets.QFileDialog.Options()
         fileName, _ = QtWidgets.QFileDialog.getOpenFileName(InputSteganografiDanEnkripsi, dialogName, ' ',
                                                   'Images (*.tiff *.jpeg *.jpg *.bmp)', options=options)
@@ -127,7 +128,7 @@ class Ui_InputSteganografiDanEnkripsi(object):
     def encryptAndStegano(self):
        # CheckError = self.doubleSpinBoxX0.value() = 0
         #if CheckError:
-            
+            InputSteganografiDanEnkripsi = QtWidgets.QDialog()
             resultFile = processEncryptionAndStegano(self.citraSampulPath.text(), self.citraPesanPath.text(), self.doubleSpinBoxX0.value(), self.doubleSpinBoxY0.value())
             pix = QtGui.QPixmap(resultFile)
             item = QtWidgets.QGraphicsPixmapItem(pix)

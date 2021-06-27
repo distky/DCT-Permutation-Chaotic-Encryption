@@ -131,6 +131,7 @@ class Ui_Perbandingan(object):
         self.btnHitungPSNR.setText(_translate("Perbandingan", "Hitung PSNR"))
 
     def openDialog(self, lineEdit, graphicView, isImage, dialogName = ""):
+        Perbandingan = QtWidgets.QDialog()
         options = QtWidgets.QFileDialog.Options()
 
         fileOptions = 'Images (*.tiff *.jpeg *.jpg *.bmp)' if isImage else 'Numpy Array (*.npy)'
@@ -143,8 +144,10 @@ class Ui_Perbandingan(object):
             item = QtWidgets.QGraphicsPixmapItem(pix)
             scene = QtWidgets.QGraphicsScene(Perbandingan)
             scene.addItem(item)
-            graphicView.setScene(scene)
-            self.graphicsView.fitInView(scene.sceneRect(),QtCore.Qt.AspectRatioMode.KeepAspectRatio)
+            self.graphicsViewCitra1.setScene(scene)
+            self.graphicsViewCitra2.setScene(scene)
+            self.graphicsViewCitra1.fitInView(scene.sceneRect(),QtCore.Qt.AspectRatioMode.KeepAspectRatio)
+            self.graphicsViewCitra2.fitInView(scene.sceneRect(),QtCore.Qt.AspectRatioMode.KeepAspectRatio)
 
     def hitungMSE(self):
         self.txtMSE.setText(str(MSE(self.citra1Path.text(), self.citra2Path.text())))
@@ -157,7 +160,7 @@ class Ui_Perbandingan(object):
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    Perbandingan = QtWidgets.QWidget()
+    Perbandingan = QtWidgets.QDialog()
     ui = Ui_Perbandingan()
     ui.setupUi(Perbandingan)
     Perbandingan.show()

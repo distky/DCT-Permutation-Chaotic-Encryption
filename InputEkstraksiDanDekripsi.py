@@ -119,6 +119,7 @@ class Ui_InputEkstraksiDanDekripsi(object):
         self.btnKembali.setText(_translate("InputEkstraksiDanDekripsi", "Kembali"))
 
     def openDialog(self, lineEdit, isImage, dialogName = ""):
+        InputEkstraksiDanDekripsi = QtWidgets.QWidget()
         options = QtWidgets.QFileDialog.Options()
 
         fileOptions = 'Images (*.tiff *.jpeg *.jpg *.bmp)' if isImage else 'Numpy Array (*.npy)'
@@ -130,6 +131,7 @@ class Ui_InputEkstraksiDanDekripsi(object):
             print(lineEdit.text())
 
     def extractAndDecrypt(self):
+        InputEkstraksiDanDekripsi = QtWidgets.QWidget()
         resultFile = processExtractAndDecrypt(self.citraSteganoPath.text(), self.dcMatrixPath.text(), self.doubleSpinBoxX0.value(), self.doubleSpinBoxY0.value())
         pix = QtGui.QPixmap(resultFile)
         item = QtWidgets.QGraphicsPixmapItem(pix)

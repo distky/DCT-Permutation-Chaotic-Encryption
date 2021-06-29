@@ -50,25 +50,22 @@ class Ui_MainWindow(object):
         self.btnCompare.setText(_translate("MainWindow", "Perbandingan"))
     
     def steganodanenkripsi(self):
-            #appp = QtWidgets.QDialog()
-            window = QtWidgets.QDialog()
-            otherview = Ui_InputSteganografiDanEnkripsi()
-            otherview.setupUi(window)
-            window.exec()
+        window = QtWidgets.QDialog()
+        otherview = Ui_InputSteganografiDanEnkripsi()
+        otherview.setupUi(window)
+        window.exec()
 
     def ekstraksidandekripsi(self):
-            #appp = QtWidgets.QDialog()
-            window = QtWidgets.QDialog()
-            otherview = Ui_InputEkstraksiDanDekripsi()
-            otherview.setupUi(window)
-            window.exec()
+        window = QtWidgets.QDialog()
+        otherview = Ui_InputEkstraksiDanDekripsi()
+        otherview.setupUi(window)
+        window.exec()
 
     def perbandingan(self):
-            #appp = QtWidgets.QDialog()
-            window = QtWidgets.QDialog()
-            otherview = Ui_Perbandingan()
-            otherview.setupUi(window)
-            window.exec()
+        window = QtWidgets.QDialog()
+        otherview = Ui_Perbandingan()
+        otherview.setupUi(window)
+        window.exec()
 
 if __name__ == "__main__":
     import sys

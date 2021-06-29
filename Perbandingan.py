@@ -9,7 +9,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from function.CommonFunction import MSE, PSNR
+from function.CommonFunction import MSE, PSNR, convertImageToPixmap
 
 class Ui_Perbandingan(object):
     def setupUi(self, Perbandingan):
@@ -115,6 +115,7 @@ class Ui_Perbandingan(object):
         self.lblPSNR.raise_()
         self.lblMSE.raise_()
         self.retranslateUi(Perbandingan)
+        self.currentWindow = Perbandingan
         QtCore.QMetaObject.connectSlotsByName(Perbandingan)
 
     def retranslateUi(self, Perbandingan):
@@ -131,23 +132,20 @@ class Ui_Perbandingan(object):
         self.btnHitungPSNR.setText(_translate("Perbandingan", "Hitung PSNR"))
 
     def openDialog(self, lineEdit, graphicView, isImage, dialogName = ""):
-        Perbandingan = QtWidgets.QDialog()
         options = QtWidgets.QFileDialog.Options()
 
         fileOptions = 'Images (*.tiff *.jpeg *.jpg *.bmp)' if isImage else 'Numpy Array (*.npy)'
 
-        fileName, _ = QtWidgets.QFileDialog.getOpenFileName(Perbandingan, dialogName, '',
+        fileName, _ = QtWidgets.QFileDialog.getOpenFileName(self.currentWindow, dialogName, '',
                                                   fileOptions, options=options)
         if fileName:
             lineEdit.setText(fileName)
-            pix = QtGui.QPixmap(fileName)
+            pix = convertImageToPixmap(fileName, isPath = True)
             item = QtWidgets.QGraphicsPixmapItem(pix)
             scene = QtWidgets.QGraphicsScene(Perbandingan)
             scene.addItem(item)
-            self.graphicsViewCitra1.setScene(scene)
-            self.graphicsViewCitra2.setScene(scene)
-            self.graphicsViewCitra1.fitInView(scene.sceneRect(),QtCore.Qt.AspectRatioMode.KeepAspectRatio)
-            self.graphicsViewCitra2.fitInView(scene.sceneRect(),QtCore.Qt.AspectRatioMode.KeepAspectRatio)
+            graphicView.setScene(scene)
+            graphicView.fitInView(scene.sceneRect(),QtCore.Qt.AspectRatioMode.KeepAspectRatio)
 
     def hitungMSE(self):
         self.txtMSE.setText(str(MSE(self.citra1Path.text(), self.citra2Path.text())))

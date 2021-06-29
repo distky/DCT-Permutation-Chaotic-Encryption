@@ -3,7 +3,7 @@ import cv2
 import copy
 import imageio
 from math import log10, sqrt
-from PyQt5 import QtWidgets
+from PIL import Image, ImageQt
 
 def resizeImage(image, shape = (512,512)):
    return cv2.resize(image, shape)
@@ -27,6 +27,15 @@ def convertSubBlockToImage(subBlock, shape):
             count +=1
     return images
 
+def openImageFromPath(path):
+    return imageio.imread(path)
+
+def convertImageToPixmap(img, isPath = False):
+    if isPath:
+        img = bgr2gray(openImageFromPath(img))
+
+    return ImageQt.toqpixmap(Image.fromarray(img.astype('uint8')))
+
 def saveImageAs(image, filename = 'result', fileext = '.jpeg'):
     imageRgb = np.zeros((image.shape[0], image.shape[1], 3))
     imageRgb[...,0] = copy.deepcopy(image)
@@ -36,7 +45,8 @@ def saveImageAs(image, filename = 'result', fileext = '.jpeg'):
     file = filename + fileext
 
     imageio.imwrite(file, imageRgb)
-    return file
+
+    return convertImageToPixmap(image)
 
 def deepCopy(obj):
     return copy.deepcopy(obj)

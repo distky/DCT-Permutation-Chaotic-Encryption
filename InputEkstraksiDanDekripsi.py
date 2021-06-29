@@ -31,9 +31,11 @@ class Ui_InputEkstraksiDanDekripsi(object):
         self.lblDcmatrix.setObjectName("lblDcmatrix")
         self.citraSteganoPath = QtWidgets.QLineEdit(self.centralwidget)
         self.citraSteganoPath.setGeometry(QtCore.QRect(170, 30, 451, 31))
+        self.citraSteganoPath.setEnabled(False)
         self.citraSteganoPath.setObjectName("citraSteganoPath")
         self.dcMatrixPath = QtWidgets.QLineEdit(self.centralwidget)
         self.dcMatrixPath.setGeometry(QtCore.QRect(170, 80, 451, 31))
+        self.dcMatrixPath.setEnabled(False)
         self.dcMatrixPath.setObjectName("dcMatrixPath")
         self.btnCitraStegano = QtWidgets.QPushButton(self.centralwidget)
         self.btnCitraStegano.setGeometry(QtCore.QRect(640, 30, 101, 31))
@@ -103,6 +105,7 @@ class Ui_InputEkstraksiDanDekripsi(object):
         self.btnKembali.setObjectName("btnKembali")
 
         self.retranslateUi(InputEkstraksiDanDekripsi)
+        self.currentWindow = InputEkstraksiDanDekripsi
         QtCore.QMetaObject.connectSlotsByName(InputEkstraksiDanDekripsi)
 
     def retranslateUi(self, InputEkstraksiDanDekripsi):
@@ -119,23 +122,20 @@ class Ui_InputEkstraksiDanDekripsi(object):
         self.btnKembali.setText(_translate("InputEkstraksiDanDekripsi", "Kembali"))
 
     def openDialog(self, lineEdit, isImage, dialogName = ""):
-        InputEkstraksiDanDekripsi = QtWidgets.QWidget()
         options = QtWidgets.QFileDialog.Options()
 
         fileOptions = 'Images (*.tiff *.jpeg *.jpg *.bmp)' if isImage else 'Numpy Array (*.npy)'
 
-        fileName, _ = QtWidgets.QFileDialog.getOpenFileName(InputEkstraksiDanDekripsi, dialogName, '',
+        fileName, _ = QtWidgets.QFileDialog.getOpenFileName(self.currentWindow, dialogName, '',
                                                   fileOptions, options=options)
         if fileName:
             lineEdit.setText(fileName)
             print(lineEdit.text())
 
     def extractAndDecrypt(self):
-        InputEkstraksiDanDekripsi = QtWidgets.QWidget()
-        resultFile = processExtractAndDecrypt(self.citraSteganoPath.text(), self.dcMatrixPath.text(), self.doubleSpinBoxX0.value(), self.doubleSpinBoxY0.value())
-        pix = QtGui.QPixmap(resultFile)
-        item = QtWidgets.QGraphicsPixmapItem(pix)
-        scene = QtWidgets.QGraphicsScene(InputEkstraksiDanDekripsi)
+        resultPixmap = processExtractAndDecrypt(self.citraSteganoPath.text(), self.dcMatrixPath.text(), self.doubleSpinBoxX0.value(), self.doubleSpinBoxY0.value())
+        item = QtWidgets.QGraphicsPixmapItem(resultPixmap)
+        scene = QtWidgets.QGraphicsScene(self.currentWindow)
         scene.addItem(item)
         self.graphicsView.setScene(scene)
         self.graphicsView.fitInView(scene.sceneRect(),QtCore.Qt.AspectRatioMode.KeepAspectRatio)

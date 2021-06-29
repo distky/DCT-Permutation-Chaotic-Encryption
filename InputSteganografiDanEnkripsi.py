@@ -33,9 +33,11 @@ class Ui_InputSteganografiDanEnkripsi(object):
         self.doubleSpinBoxY0.setObjectName("doubleSpinBoxY0")
         self.citraPesanPath = QtWidgets.QLineEdit(InputSteganografiDanEnkripsi)
         self.citraPesanPath.setGeometry(QtCore.QRect(170, 80, 451, 31))
+        self.citraPesanPath.setEnabled(False)
         self.citraPesanPath.setObjectName("citraPesanPath")
         self.citraSampulPath = QtWidgets.QLineEdit(InputSteganografiDanEnkripsi)
         self.citraSampulPath.setGeometry(QtCore.QRect(170, 30, 451, 31))
+        self.citraSampulPath.setEnabled(False)
         self.citraSampulPath.setObjectName("citraSampulPath")
         self.graphicsView = QtWidgets.QGraphicsView(InputSteganografiDanEnkripsi)
         self.graphicsView.setGeometry(QtCore.QRect(0, 290, 771, 311))
@@ -101,6 +103,7 @@ class Ui_InputSteganografiDanEnkripsi(object):
         self.lblNilaiX0.setObjectName("lblNilaiX0")
 
         self.retranslateUi(InputSteganografiDanEnkripsi)
+        self.currentWindow = InputSteganografiDanEnkripsi
         QtCore.QMetaObject.connectSlotsByName(InputSteganografiDanEnkripsi)
 
     def retranslateUi(self, InputSteganografiDanEnkripsi):
@@ -117,25 +120,20 @@ class Ui_InputSteganografiDanEnkripsi(object):
         self.lblNilaiX0.setText(_translate("InputSteganografiDanEnkripsi", "Nilai X0 :"))
 
     def openDialog(self, lineEdit, dialogName = ""):
-        InputSteganografiDanEnkripsi = QtWidgets.QDialog()
         options = QtWidgets.QFileDialog.Options()
-        fileName, _ = QtWidgets.QFileDialog.getOpenFileName(InputSteganografiDanEnkripsi, dialogName, ' ',
+        fileName, _ = QtWidgets.QFileDialog.getOpenFileName(self.currentWindow, dialogName, ' ',
                                                   'Images (*.tiff *.jpeg *.jpg *.bmp)', options=options)
         if fileName:
             lineEdit.setText(fileName)
             print(lineEdit.text())
 
     def encryptAndStegano(self):
-       # CheckError = self.doubleSpinBoxX0.value() = 0
-        #if CheckError:
-            InputSteganografiDanEnkripsi = QtWidgets.QDialog()
-            resultFile = processEncryptionAndStegano(self.citraSampulPath.text(), self.citraPesanPath.text(), self.doubleSpinBoxX0.value(), self.doubleSpinBoxY0.value())
-            pix = QtGui.QPixmap(resultFile)
-            item = QtWidgets.QGraphicsPixmapItem(pix)
-            scene = QtWidgets.QGraphicsScene(InputSteganografiDanEnkripsi)
-            scene.addItem(item)
-            self.graphicsView.setScene(scene)
-            self.graphicsView.fitInView(scene.sceneRect(),QtCore.Qt.AspectRatioMode.KeepAspectRatio)
+        resultPixmap = processEncryptionAndStegano(self.citraSampulPath.text(), self.citraPesanPath.text(), self.doubleSpinBoxX0.value(), self.doubleSpinBoxY0.value())
+        item = QtWidgets.QGraphicsPixmapItem(resultPixmap)
+        scene = QtWidgets.QGraphicsScene(self.currentWindow)
+        scene.addItem(item)
+        self.graphicsView.setScene(scene)
+        self.graphicsView.fitInView(scene.sceneRect(),QtCore.Qt.AspectRatioMode.KeepAspectRatio)
         
 
 

@@ -1,5 +1,6 @@
 from PyQt5 import QtCore
 import sys
+from PyQt5.QtGui import QIcon
 
 from PyQt5.QtWidgets import QApplication, QDialog, QFileDialog, QGraphicsPixmapItem, QGraphicsScene, QMainWindow
 from function.DctEncrypt import processEncryptionAndStegano, processExtractAndDecrypt
@@ -81,6 +82,7 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__(parent)
         self.ui_mainwindow = MainWindowUI.Ui_MainWindow()
         self.ui_mainwindow.setupUi(self)
+        self.setWindowIcon(QIcon('main.ico'))
         
         self.steganografiEnkripsi = InputSteganografiDanEnkripsi(self)
         self.enkripsiDekripsi = InputEkstraksiDanDekripsi(self)

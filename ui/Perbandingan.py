@@ -9,7 +9,6 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from function.CommonFunction import MSE, PSNR, convertImageToPixmap
 
 class Ui_Perbandingan(object):
     def setupUi(self, Perbandingan):
@@ -43,14 +42,12 @@ class Ui_Perbandingan(object):
         font.setPointSize(11)
         self.btnCitra1.setFont(font)
         self.btnCitra1.setObjectName("btnCitra1")
-        self.btnCitra1.clicked.connect(lambda: self.openDialog(self.citra1Path, self.graphicsViewCitra1, True, dialogName='Citra 1'))
         self.btnCitra2 = QtWidgets.QPushButton(self.centralwidget)
         self.btnCitra2.setGeometry(QtCore.QRect(640, 80, 101, 31))
         font = QtGui.QFont()
         font.setPointSize(11)
         self.btnCitra2.setFont(font)
         self.btnCitra2.setObjectName("btnCitra2")
-        self.btnCitra2.clicked.connect(lambda: self.openDialog(self.citra2Path, self.graphicsViewCitra2, True, dialogName='Citra 2'))
         self.graphicsViewCitra1 = QtWidgets.QGraphicsView(self.centralwidget)
         self.graphicsViewCitra1.setGeometry(QtCore.QRect(0, 290, 371, 311))
         self.graphicsViewCitra1.setObjectName("graphicsViewCitra1")
@@ -89,33 +86,13 @@ class Ui_Perbandingan(object):
         font.setPointSize(11)
         self.btnHitungMSE.setFont(font)
         self.btnHitungMSE.setObjectName("btnHitungMSE")
-        self.btnHitungMSE.clicked.connect(self.hitungMSE)
         self.btnHitungPSNR = QtWidgets.QPushButton(self.centralwidget)
         self.btnHitungPSNR.setGeometry(QtCore.QRect(20, 190, 111, 31))
         font = QtGui.QFont()
         font.setPointSize(11)
         self.btnHitungPSNR.setFont(font)
         self.btnHitungPSNR.setObjectName("btnHitungPSNR")
-        self.btnHitungPSNR.clicked.connect(self.hitungPSNR)
-        
-
-        self.btnCitra2.raise_()
-        self.btnCitra1.raise_()
-        self.lblCitra1.raise_()
-        self.citra1Path.raise_()
-        self.graphicsViewCitra1.raise_()
-        self.btnKembali.raise_()
-        self.lblCitra2.raise_()
-        self.citra2Path.raise_()
-        self.graphicsViewCitra2.raise_()
-        self.txtMSE.raise_()
-        self.txtPSNR.raise_()
-        self.btnHitungMSE.raise_()
-        self.btnHitungPSNR.raise_()
-        self.lblPSNR.raise_()
-        self.lblMSE.raise_()
         self.retranslateUi(Perbandingan)
-        self.currentWindow = Perbandingan
         QtCore.QMetaObject.connectSlotsByName(Perbandingan)
 
     def retranslateUi(self, Perbandingan):
@@ -130,30 +107,6 @@ class Ui_Perbandingan(object):
         self.lblPSNR.setText(_translate("Perbandingan", "PSNR"))
         self.btnHitungMSE.setText(_translate("Perbandingan", "Hitung MSE"))
         self.btnHitungPSNR.setText(_translate("Perbandingan", "Hitung PSNR"))
-
-    def openDialog(self, lineEdit, graphicView, isImage, dialogName = ""):
-        options = QtWidgets.QFileDialog.Options()
-
-        fileOptions = 'Images (*.tiff *.jpeg *.jpg *.bmp)' if isImage else 'Numpy Array (*.npy)'
-
-        fileName, _ = QtWidgets.QFileDialog.getOpenFileName(self.currentWindow, dialogName, '',
-                                                  fileOptions, options=options)
-        if fileName:
-            lineEdit.setText(fileName)
-            pix = convertImageToPixmap(fileName, isPath = True)
-            item = QtWidgets.QGraphicsPixmapItem(pix)
-            scene = QtWidgets.QGraphicsScene(Perbandingan)
-            scene.addItem(item)
-            graphicView.setScene(scene)
-            graphicView.fitInView(scene.sceneRect(),QtCore.Qt.AspectRatioMode.KeepAspectRatio)
-
-    def hitungMSE(self):
-        self.txtMSE.setText(str(MSE(self.citra1Path.text(), self.citra2Path.text())))
-    
-    def hitungPSNR(self):
-        self.txtPSNR.setText(str(PSNR(self.citra1Path.text(), self.citra2Path.text())))
-
-
 
 if __name__ == "__main__":
     import sys

@@ -9,19 +9,17 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from function.DctEncrypt import processEncryptionAndStegano
 
 class Ui_InputSteganografiDanEnkripsi(object):
     def setupUi(self, InputSteganografiDanEnkripsi):
         InputSteganografiDanEnkripsi.setObjectName("InputSteganografiDanEnkripsi")
-        InputSteganografiDanEnkripsi.resize(776, 670)
+        InputSteganografiDanEnkripsi.resize(777, 673)
         self.btnCitraSampul = QtWidgets.QPushButton(InputSteganografiDanEnkripsi)
         self.btnCitraSampul.setGeometry(QtCore.QRect(640, 30, 101, 31))
         font = QtGui.QFont()
         font.setPointSize(11)
         self.btnCitraSampul.setFont(font)
         self.btnCitraSampul.setObjectName("btnCitraSampul")
-        self.btnCitraSampul.clicked.connect(lambda: self.openDialog(self.citraSampulPath, dialogName='Citra Sampul'))
         self.doubleSpinBoxY0 = QtWidgets.QDoubleSpinBox(InputSteganografiDanEnkripsi)
         self.doubleSpinBoxY0.setGeometry(QtCore.QRect(120, 200, 181, 31))
         font = QtGui.QFont()
@@ -29,7 +27,7 @@ class Ui_InputSteganografiDanEnkripsi(object):
         self.doubleSpinBoxY0.setFont(font)
         self.doubleSpinBoxY0.setDecimals(8)
         self.doubleSpinBoxY0.setMaximum(1.0)
-        self.doubleSpinBoxY0.setSingleStep(1e-06)
+        self.doubleSpinBoxY0.setSingleStep(1e-08)
         self.doubleSpinBoxY0.setObjectName("doubleSpinBoxY0")
         self.citraPesanPath = QtWidgets.QLineEdit(InputSteganografiDanEnkripsi)
         self.citraPesanPath.setGeometry(QtCore.QRect(170, 80, 451, 31))
@@ -54,14 +52,12 @@ class Ui_InputSteganografiDanEnkripsi(object):
         font.setPointSize(11)
         self.btnEnkripsiDanStegano.setFont(font)
         self.btnEnkripsiDanStegano.setObjectName("btnEnkripsiDanStegano")
-        self.btnEnkripsiDanStegano.clicked.connect(self.encryptAndStegano)
         self.btnCitraPesan = QtWidgets.QPushButton(InputSteganografiDanEnkripsi)
         self.btnCitraPesan.setGeometry(QtCore.QRect(640, 80, 101, 31))
         font = QtGui.QFont()
         font.setPointSize(11)
         self.btnCitraPesan.setFont(font)
         self.btnCitraPesan.setObjectName("btnCitraPesan")
-        self.btnCitraPesan.clicked.connect(lambda: self.openDialog(self.citraPesanPath, dialogName='Citra Pesan'))
         self.lblCitraPesan = QtWidgets.QLabel(InputSteganografiDanEnkripsi)
         self.lblCitraPesan.setGeometry(QtCore.QRect(20, 80, 141, 31))
         font = QtGui.QFont()
@@ -93,7 +89,7 @@ class Ui_InputSteganografiDanEnkripsi(object):
         self.doubleSpinBoxX0.setFont(font)
         self.doubleSpinBoxX0.setDecimals(8)
         self.doubleSpinBoxX0.setMaximum(1.0)
-        self.doubleSpinBoxX0.setSingleStep(1e-06)
+        self.doubleSpinBoxX0.setSingleStep(1e-08)
         self.doubleSpinBoxX0.setObjectName("doubleSpinBoxX0")
         self.lblNilaiX0 = QtWidgets.QLabel(InputSteganografiDanEnkripsi)
         self.lblNilaiX0.setGeometry(QtCore.QRect(20, 160, 91, 31))
@@ -103,7 +99,6 @@ class Ui_InputSteganografiDanEnkripsi(object):
         self.lblNilaiX0.setObjectName("lblNilaiX0")
 
         self.retranslateUi(InputSteganografiDanEnkripsi)
-        self.currentWindow = InputSteganografiDanEnkripsi
         QtCore.QMetaObject.connectSlotsByName(InputSteganografiDanEnkripsi)
 
     def retranslateUi(self, InputSteganografiDanEnkripsi):
@@ -118,25 +113,6 @@ class Ui_InputSteganografiDanEnkripsi(object):
         self.lblCitraSampul.setText(_translate("InputSteganografiDanEnkripsi", "Citra Sampul :"))
         self.btnKembali.setText(_translate("InputSteganografiDanEnkripsi", "Kembali"))
         self.lblNilaiX0.setText(_translate("InputSteganografiDanEnkripsi", "Nilai X0 :"))
-
-    def openDialog(self, lineEdit, dialogName = ""):
-        options = QtWidgets.QFileDialog.Options()
-        fileName, _ = QtWidgets.QFileDialog.getOpenFileName(self.currentWindow, dialogName, ' ',
-                                                  'Images (*.tiff *.jpeg *.jpg *.bmp)', options=options)
-        if fileName:
-            lineEdit.setText(fileName)
-            print(lineEdit.text())
-
-    def encryptAndStegano(self):
-        resultPixmap = processEncryptionAndStegano(self.citraSampulPath.text(), self.citraPesanPath.text(), self.doubleSpinBoxX0.value(), self.doubleSpinBoxY0.value())
-        item = QtWidgets.QGraphicsPixmapItem(resultPixmap)
-        scene = QtWidgets.QGraphicsScene(self.currentWindow)
-        scene.addItem(item)
-        self.graphicsView.setScene(scene)
-        self.graphicsView.fitInView(scene.sceneRect(),QtCore.Qt.AspectRatioMode.KeepAspectRatio)
-        
-
-
 
 if __name__ == "__main__":
     import sys

@@ -9,7 +9,6 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from function.DctEncrypt import processExtractAndDecrypt
 
 class Ui_InputEkstraksiDanDekripsi(object):
     def setupUi(self, InputEkstraksiDanDekripsi):
@@ -43,14 +42,12 @@ class Ui_InputEkstraksiDanDekripsi(object):
         font.setPointSize(11)
         self.btnCitraStegano.setFont(font)
         self.btnCitraStegano.setObjectName("btnCitraStegano")
-        self.btnCitraStegano.clicked.connect(lambda: self.openDialog(self.citraSteganoPath, True, dialogName='Citra Stegano'))
         self.btnDcMatrix = QtWidgets.QPushButton(self.centralwidget)
         self.btnDcMatrix.setGeometry(QtCore.QRect(640, 80, 101, 31))
         font = QtGui.QFont()
         font.setPointSize(11)
         self.btnDcMatrix.setFont(font)
         self.btnDcMatrix.setObjectName("btnDcMatrix")
-        self.btnDcMatrix.clicked.connect(lambda: self.openDialog(self.dcMatrixPath, False, dialogName='DC Matrix'))
         self.lblInputKunciX0Y0 = QtWidgets.QLabel(self.centralwidget)
         self.lblInputKunciX0Y0.setGeometry(QtCore.QRect(20, 125, 251, 31))
         font = QtGui.QFont()
@@ -76,7 +73,7 @@ class Ui_InputEkstraksiDanDekripsi(object):
         self.doubleSpinBoxX0.setFont(font)
         self.doubleSpinBoxX0.setDecimals(8)
         self.doubleSpinBoxX0.setMaximum(1.0)
-        self.doubleSpinBoxX0.setSingleStep(1e-06)
+        self.doubleSpinBoxX0.setSingleStep(1e-08)
         self.doubleSpinBoxX0.setObjectName("doubleSpinBoxX0")
         self.doubleSpinBoxY0 = QtWidgets.QDoubleSpinBox(self.centralwidget)
         self.doubleSpinBoxY0.setGeometry(QtCore.QRect(120, 200, 181, 31))
@@ -85,7 +82,7 @@ class Ui_InputEkstraksiDanDekripsi(object):
         self.doubleSpinBoxY0.setFont(font)
         self.doubleSpinBoxY0.setDecimals(8)
         self.doubleSpinBoxY0.setMaximum(1.0)
-        self.doubleSpinBoxY0.setSingleStep(1e-06)
+        self.doubleSpinBoxY0.setSingleStep(1e-08)
         self.doubleSpinBoxY0.setObjectName("doubleSpinBoxY0")
         self.graphicsView = QtWidgets.QGraphicsView(self.centralwidget)
         self.graphicsView.setGeometry(QtCore.QRect(0, 290, 771, 311))
@@ -96,7 +93,6 @@ class Ui_InputEkstraksiDanDekripsi(object):
         font.setPointSize(11)
         self.btnEkstraksiDanDekripsi.setFont(font)
         self.btnEkstraksiDanDekripsi.setObjectName("btnEkstraksiDanDekripsi")
-        self.btnEkstraksiDanDekripsi.clicked.connect(self.extractAndDecrypt)
         self.btnKembali = QtWidgets.QPushButton(self.centralwidget)
         self.btnKembali.setGeometry(QtCore.QRect(650, 610, 91, 31))
         font = QtGui.QFont()
@@ -105,7 +101,6 @@ class Ui_InputEkstraksiDanDekripsi(object):
         self.btnKembali.setObjectName("btnKembali")
 
         self.retranslateUi(InputEkstraksiDanDekripsi)
-        self.currentWindow = InputEkstraksiDanDekripsi
         QtCore.QMetaObject.connectSlotsByName(InputEkstraksiDanDekripsi)
 
     def retranslateUi(self, InputEkstraksiDanDekripsi):
@@ -121,30 +116,10 @@ class Ui_InputEkstraksiDanDekripsi(object):
         self.btnEkstraksiDanDekripsi.setText(_translate("InputEkstraksiDanDekripsi", "Ekstraksi dan Enkripsi"))
         self.btnKembali.setText(_translate("InputEkstraksiDanDekripsi", "Kembali"))
 
-    def openDialog(self, lineEdit, isImage, dialogName = ""):
-        options = QtWidgets.QFileDialog.Options()
-
-        fileOptions = 'Images (*.tiff *.jpeg *.jpg *.bmp)' if isImage else 'Numpy Array (*.npy)'
-
-        fileName, _ = QtWidgets.QFileDialog.getOpenFileName(self.currentWindow, dialogName, '',
-                                                  fileOptions, options=options)
-        if fileName:
-            lineEdit.setText(fileName)
-            print(lineEdit.text())
-
-    def extractAndDecrypt(self):
-        resultPixmap = processExtractAndDecrypt(self.citraSteganoPath.text(), self.dcMatrixPath.text(), self.doubleSpinBoxX0.value(), self.doubleSpinBoxY0.value())
-        item = QtWidgets.QGraphicsPixmapItem(resultPixmap)
-        scene = QtWidgets.QGraphicsScene(self.currentWindow)
-        scene.addItem(item)
-        self.graphicsView.setScene(scene)
-        self.graphicsView.fitInView(scene.sceneRect(),QtCore.Qt.AspectRatioMode.KeepAspectRatio)
-
-
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    InputEkstraksiDanDekripsi = QtWidgets.QWidget()
+    InputEkstraksiDanDekripsi = QtWidgets.QDialog()
     ui = Ui_InputEkstraksiDanDekripsi()
     ui.setupUi(InputEkstraksiDanDekripsi)
     InputEkstraksiDanDekripsi.show()

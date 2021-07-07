@@ -13,7 +13,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Perbandingan(object):
     def setupUi(self, Perbandingan):
         Perbandingan.setObjectName("Perbandingan")
-        Perbandingan.resize(777, 673)
+        Perbandingan.setFixedSize(777, 673)
         self.centralwidget = QtWidgets.QWidget(Perbandingan)
         self.centralwidget.setObjectName("centralwidget")
         self.lblCitra1 = QtWidgets.QLabel(self.centralwidget)

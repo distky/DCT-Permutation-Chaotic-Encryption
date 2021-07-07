@@ -13,7 +13,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_InputEkstraksiDanDekripsi(object):
     def setupUi(self, InputEkstraksiDanDekripsi):
         InputEkstraksiDanDekripsi.setObjectName("InputEkstraksiDanDekripsi")
-        InputEkstraksiDanDekripsi.resize(777, 673)
+        InputEkstraksiDanDekripsi.setFixedSize(777, 673)
         self.centralwidget = QtWidgets.QWidget(InputEkstraksiDanDekripsi)
         self.centralwidget.setObjectName("centralwidget")
         self.lblCitraStegano = QtWidgets.QLabel(self.centralwidget)

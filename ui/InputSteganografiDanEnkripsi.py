@@ -13,7 +13,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_InputSteganografiDanEnkripsi(object):
     def setupUi(self, InputSteganografiDanEnkripsi):
         InputSteganografiDanEnkripsi.setObjectName("InputSteganografiDanEnkripsi")
-        InputSteganografiDanEnkripsi.resize(777, 673)
+        InputSteganografiDanEnkripsi.setFixedSize(777, 673)
         self.btnCitraSampul = QtWidgets.QPushButton(InputSteganografiDanEnkripsi)
         self.btnCitraSampul.setGeometry(QtCore.QRect(640, 30, 101, 31))
         font = QtGui.QFont()

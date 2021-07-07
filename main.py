@@ -26,11 +26,7 @@ class InputSteganografiDanEnkripsi(QDialog):
     
     def on_btnEnkripsiDanStegano_click(self):
         resultPixmap = processEncryptionAndStegano(self.ui_steganoenkripsi.citraSampulPath.text(), self.ui_steganoenkripsi.citraPesanPath.text(), self.ui_steganoenkripsi.doubleSpinBoxX0.value(), self.ui_steganoenkripsi.doubleSpinBoxY0.value())
-        item = QGraphicsPixmapItem(resultPixmap)
-        scene = QGraphicsScene(self)
-        scene.addItem(item)
-        self.ui_steganoenkripsi.graphicsView.setScene(scene)
-        self.ui_steganoenkripsi.graphicsView.fitInView(scene.sceneRect(),QtCore.Qt.AspectRatioMode.KeepAspectRatio)
+        addImageToGraphicView(self, resultPixmap, self.ui_steganoenkripsi.graphicsView)
 
 class InputEkstraksiDanDekripsi(QDialog):
     def __init__(self, parent=None):
@@ -52,11 +48,7 @@ class InputEkstraksiDanDekripsi(QDialog):
 
     def on_btnEkstraksiDanDekripsi_click(self):
         resultPixmap = processExtractAndDecrypt(self.ui_ekstraksidekripsi.citraSteganoPath.text(), self.ui_ekstraksidekripsi.dcMatrixPath.text(), self.ui_ekstraksidekripsi.doubleSpinBoxX0.value(), self.ui_ekstraksidekripsi.doubleSpinBoxY0.value())
-        item = QGraphicsPixmapItem(resultPixmap)
-        scene = QGraphicsScene(self)
-        scene.addItem(item)
-        self.ui_ekstraksidekripsi.graphicsView.setScene(scene)
-        self.ui_ekstraksidekripsi.graphicsView.fitInView(scene.sceneRect(),QtCore.Qt.AspectRatioMode.KeepAspectRatio)
+        addImageToGraphicView(self, resultPixmap, self.ui_ekstraksidekripsi.graphicsView)
 
 class Perbandingan(QDialog):
     def __init__(self, parent=None):
@@ -108,17 +100,21 @@ def openDialog(window, lineEdit, graphicView = None, isImage = True, dialogName 
         lineEdit.setText(fileName)
         if graphicView != None:
             pix = convertImageToPixmap(fileName, isPath = True)
-            item = QGraphicsPixmapItem(pix)
-            scene = QGraphicsScene(window)
-            scene.addItem(item)
-            graphicView.setScene(scene)
-            graphicView.fitInView(scene.sceneRect(),QtCore.Qt.AspectRatioMode.KeepAspectRatio)
+            addImageToGraphicView(window, pix, graphicView)
+            
 
 def showWindow(window, parentWindow):
     window.hide()
     if(hasattr(window, 'reset')):
         window.reset()
     parentWindow.show()
+
+def addImageToGraphicView(window, pix, graphicView):
+    item = QGraphicsPixmapItem(pix)
+    scene = QGraphicsScene(window)
+    scene.addItem(item)
+    graphicView.setScene(scene)
+    graphicView.fitInView(scene.sceneRect(),QtCore.Qt.AspectRatioMode.KeepAspectRatio)
  
 def main():
     app = QApplication(sys.argv)

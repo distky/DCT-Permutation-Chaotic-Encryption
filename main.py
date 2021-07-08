@@ -2,16 +2,18 @@ from PyQt5 import QtCore
 import sys
 from PyQt5.QtGui import QIcon
 
-from PyQt5.QtWidgets import QApplication, QDialog, QFileDialog, QGraphicsPixmapItem, QGraphicsScene, QMainWindow
+from PyQt5.QtWidgets import QApplication, QDesktopWidget, QDialog, QFileDialog, QGraphicsPixmapItem, QGraphicsScene, QMainWindow, QWidget
 from function.DctEncrypt import processEncryptionAndStegano, processExtractAndDecrypt
 from function.CommonFunction import MSE, PSNR, convertImageToPixmap
 from ui import MainWindow as MainWindowUI, InputEkstraksiDanDekripsi as InputEkstraksiDanDekripsiUI, InputSteganografiDanEnkripsi as InputSteganografiDanEnkripsiUI, Perbandingan as PerbandinganUI
 
-class InputSteganografiDanEnkripsi(QDialog):
+class InputSteganografiDanEnkripsi(QWidget):
     def __init__(self, parent=None):
-        super(InputSteganografiDanEnkripsi, self).__init__(parent)
+        super(InputSteganografiDanEnkripsi, self).__init__()
         self.ui_steganoenkripsi = InputSteganografiDanEnkripsiUI.Ui_InputSteganografiDanEnkripsi()
         self.ui_steganoenkripsi.setupUi(self)
+        self.setWindowIcon(parent.windowIcon())
+        center_window(self)
         
         self.ui_steganoenkripsi.btnCitraSampul.clicked.connect(lambda: openDialog(self, self.ui_steganoenkripsi.citraSampulPath, isImage=True, dialogName='Citra Sampul'))
         self.ui_steganoenkripsi.btnCitraPesan.clicked.connect(lambda: openDialog(self, self.ui_steganoenkripsi.citraPesanPath, isImage=True, dialogName='Citra Pesan'))
@@ -29,11 +31,13 @@ class InputSteganografiDanEnkripsi(QDialog):
         resultPixmap = processEncryptionAndStegano(self.ui_steganoenkripsi.citraSampulPath.text(), self.ui_steganoenkripsi.citraPesanPath.text(), self.ui_steganoenkripsi.doubleSpinBoxX0.value(), self.ui_steganoenkripsi.doubleSpinBoxY0.value())
         addImageToGraphicView(self, resultPixmap, self.ui_steganoenkripsi.graphicsView)
 
-class InputEkstraksiDanDekripsi(QDialog):
+class InputEkstraksiDanDekripsi(QWidget):
     def __init__(self, parent=None):
-        super(InputEkstraksiDanDekripsi, self).__init__(parent)
+        super(InputEkstraksiDanDekripsi, self).__init__()
         self.ui_ekstraksidekripsi = InputEkstraksiDanDekripsiUI.Ui_InputEkstraksiDanDekripsi()
         self.ui_ekstraksidekripsi.setupUi(self)
+        self.setWindowIcon(parent.windowIcon())
+        center_window(self)
     
         self.ui_ekstraksidekripsi.btnCitraStegano.clicked.connect(lambda: openDialog(self, self.ui_ekstraksidekripsi.citraSteganoPath, isImage=True, dialogName='Citra Stegano'))
         self.ui_ekstraksidekripsi.btnDcMatrix.clicked.connect(lambda: openDialog(self, self.ui_ekstraksidekripsi.dcMatrixPath, isImage=False, dialogName='DC Matrix'))
@@ -51,11 +55,13 @@ class InputEkstraksiDanDekripsi(QDialog):
         resultPixmap = processExtractAndDecrypt(self.ui_ekstraksidekripsi.citraSteganoPath.text(), self.ui_ekstraksidekripsi.dcMatrixPath.text(), self.ui_ekstraksidekripsi.doubleSpinBoxX0.value(), self.ui_ekstraksidekripsi.doubleSpinBoxY0.value())
         addImageToGraphicView(self, resultPixmap, self.ui_ekstraksidekripsi.graphicsView)
 
-class Perbandingan(QDialog):
+class Perbandingan(QWidget):
     def __init__(self, parent=None):
-        super(Perbandingan, self).__init__(parent)
+        super(Perbandingan, self).__init__()
         self.ui_perbandingan = PerbandinganUI.Ui_Perbandingan()
         self.ui_perbandingan.setupUi(self)
+        self.setWindowIcon(parent.windowIcon())
+        center_window(self)
     
         self.ui_perbandingan.btnCitra1.clicked.connect(lambda: openDialog(self, self.ui_perbandingan.citra1Path, graphicView=self.ui_perbandingan.graphicsViewCitra1, isImage=True, dialogName='Citra 1'))
         self.ui_perbandingan.btnCitra2.clicked.connect(lambda: openDialog(self, self.ui_perbandingan.citra2Path, graphicView=self.ui_perbandingan.graphicsViewCitra2, isImage=True, dialogName='Citra 2'))
@@ -83,7 +89,8 @@ class MainWindow(QMainWindow):
         self.ui_mainwindow = MainWindowUI.Ui_MainWindow()
         self.ui_mainwindow.setupUi(self)
         self.setWindowIcon(QIcon('main.ico'))
-        
+        center_window(self)
+
         self.steganografiEnkripsi = InputSteganografiDanEnkripsi(self)
         self.enkripsiDekripsi = InputEkstraksiDanDekripsi(self)
         self.perbandingan = Perbandingan(self)
@@ -105,11 +112,11 @@ def openDialog(window, lineEdit, graphicView = None, isImage = True, dialogName 
             addImageToGraphicView(window, pix, graphicView)
             
 
-def showWindow(window, parentWindow):
+def showWindow(window, targetWindow):
     window.hide()
     if(hasattr(window, 'reset')):
         window.reset()
-    parentWindow.show()
+    targetWindow.show()
 
 def addImageToGraphicView(window, pix, graphicView):
     item = QGraphicsPixmapItem(pix)
@@ -117,6 +124,12 @@ def addImageToGraphicView(window, pix, graphicView):
     scene.addItem(item)
     graphicView.setScene(scene)
     graphicView.fitInView(scene.sceneRect(),QtCore.Qt.AspectRatioMode.KeepAspectRatio)
+
+def center_window(window):
+   qtRectangle = window.frameGeometry()
+   centerPoint = QDesktopWidget().availableGeometry().center()
+   qtRectangle.moveCenter(centerPoint)
+   window.move(qtRectangle.topLeft())
  
 def main():
     app = QApplication(sys.argv)

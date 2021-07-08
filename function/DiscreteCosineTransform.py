@@ -13,13 +13,13 @@ def createDctSubBlock(subBlock):
         dctSB.append(dct2(subBlock[i]))
     return dctSB
 
-def createDcCoefficientMatrix(dctSubBlock):
+def createDcCoefficientMatrix(dctSubBlock, shape):
     dcCoefficientMatrix = np.zeros(len(dctSubBlock), dtype='float32')
 
     for i in range(len(dctSubBlock)):
         dcCoefficientMatrix[i] = (dctSubBlock[i])[0][0]
 
-    return np.reshape(dcCoefficientMatrix, (32,32))
+    return np.reshape(dcCoefficientMatrix, shape)
 
 def restoreDcCoefficientMatrixThenIdct(embeddedMatrix, dctSubBlock):
     embeddedList = embeddedMatrix.reshape(-1)

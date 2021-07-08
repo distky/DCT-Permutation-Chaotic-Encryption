@@ -14,16 +14,16 @@ def bgr2gray(image):
     image32 = np.float32(image)
     return cv2.cvtColor(image32, cv2.COLOR_BGR2GRAY)
 
-def convertImageToSubBlock(coverImage, shape):
-    tiles = [coverImage[x:x+shape,y:y+shape] for x in range(0,coverImage.shape[0],shape) for y in range(0,coverImage.shape[1],shape)]
+def convertImageToSubBlock(coverImage, subBlockPixel):
+    tiles = [coverImage[x:x+subBlockPixel,y:y+subBlockPixel] for x in range(0,coverImage.shape[0],subBlockPixel) for y in range(0,coverImage.shape[1],subBlockPixel)]
     return tiles
 
-def convertSubBlockToImage(subBlock, shape):
-    images = np.zeros((512,512), dtype='float32')
+def convertSubBlockToImage(subBlock, imageShape, subBlockPixel):
+    images = np.zeros(imageShape, dtype='float32')
     count = 0
-    for i in range(0,images.shape[0], shape):
-        for j in range(0, images.shape[1], shape):
-            images[i:i+shape, j:j+shape] = subBlock[count]
+    for i in range(0,images.shape[0], subBlockPixel):
+        for j in range(0, images.shape[1], subBlockPixel):
+            images[i:i+subBlockPixel, j:j+subBlockPixel] = subBlock[count]
             count +=1
     return images
 

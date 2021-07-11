@@ -15,8 +15,8 @@ class InputSteganografiDanEnkripsi(QWidget):
         self.setWindowIcon(parent.windowIcon())
         center_window(self)
         
-        self.ui_steganoenkripsi.btnCitraSampul.clicked.connect(lambda: openDialog(self, self.ui_steganoenkripsi.citraSampulPath, isImage=True, dialogName='Citra Sampul'))
-        self.ui_steganoenkripsi.btnCitraPesan.clicked.connect(lambda: openDialog(self, self.ui_steganoenkripsi.citraPesanPath, isImage=True, dialogName='Citra Pesan'))
+        self.ui_steganoenkripsi.btnCitraSampul.clicked.connect(lambda: openFileDialog(self, self.ui_steganoenkripsi.citraSampulPath, isImage=True, dialogName='Citra Sampul'))
+        self.ui_steganoenkripsi.btnCitraPesan.clicked.connect(lambda: openFileDialog(self, self.ui_steganoenkripsi.citraPesanPath, isImage=True, dialogName='Citra Pesan'))
         self.ui_steganoenkripsi.btnEnkripsiDanStegano.clicked.connect(self.on_btnEnkripsiDanStegano_click)
         self.ui_steganoenkripsi.btnKembali.clicked.connect(lambda: showWindow(self, parent))
     
@@ -28,7 +28,7 @@ class InputSteganografiDanEnkripsi(QWidget):
         self.ui_steganoenkripsi.graphicsView.setScene(None)
     
     def on_btnEnkripsiDanStegano_click(self):
-        resultPixmap = processEncryptionAndStegano(self.ui_steganoenkripsi.citraSampulPath.text(), self.ui_steganoenkripsi.citraPesanPath.text(), self.ui_steganoenkripsi.doubleSpinBoxX0.value(), self.ui_steganoenkripsi.doubleSpinBoxY0.value())
+        resultPixmap = processEncryptionAndStegano(self.ui_steganoenkripsi.citraSampulPath.text(), self.ui_steganoenkripsi.citraPesanPath.text(), self.ui_steganoenkripsi.doubleSpinBoxX0.value(), self.ui_steganoenkripsi.doubleSpinBoxY0.value(), lambda: saveFileDialog(self, 'Images (*.tiff)'))
         addImageToGraphicView(self, resultPixmap, self.ui_steganoenkripsi.graphicsView)
 
 class InputEkstraksiDanDekripsi(QWidget):
@@ -39,8 +39,8 @@ class InputEkstraksiDanDekripsi(QWidget):
         self.setWindowIcon(parent.windowIcon())
         center_window(self)
     
-        self.ui_ekstraksidekripsi.btnCitraStegano.clicked.connect(lambda: openDialog(self, self.ui_ekstraksidekripsi.citraSteganoPath, isImage=True, dialogName='Citra Stegano'))
-        self.ui_ekstraksidekripsi.btnDcMatrix.clicked.connect(lambda: openDialog(self, self.ui_ekstraksidekripsi.dcMatrixPath, isImage=False, dialogName='DC Matrix'))
+        self.ui_ekstraksidekripsi.btnCitraStegano.clicked.connect(lambda: openFileDialog(self, self.ui_ekstraksidekripsi.citraSteganoPath, isImage=True, dialogName='Citra Stegano', imageOptions='Images (*.tiff)')) 
+        self.ui_ekstraksidekripsi.btnDcMatrix.clicked.connect(lambda: openFileDialog(self, self.ui_ekstraksidekripsi.dcMatrixPath, isImage=False, dialogName='DC Matrix'))
         self.ui_ekstraksidekripsi.btnEkstraksiDanDekripsi.clicked.connect(self.on_btnEkstraksiDanDekripsi_click)
         self.ui_ekstraksidekripsi.btnKembali.clicked.connect(lambda: showWindow(self, parent))
 
@@ -52,7 +52,7 @@ class InputEkstraksiDanDekripsi(QWidget):
         self.ui_ekstraksidekripsi.graphicsView.setScene(None)
 
     def on_btnEkstraksiDanDekripsi_click(self):
-        resultPixmap = processExtractAndDecrypt(self.ui_ekstraksidekripsi.citraSteganoPath.text(), self.ui_ekstraksidekripsi.dcMatrixPath.text(), self.ui_ekstraksidekripsi.doubleSpinBoxX0.value(), self.ui_ekstraksidekripsi.doubleSpinBoxY0.value())
+        resultPixmap = processExtractAndDecrypt(self.ui_ekstraksidekripsi.citraSteganoPath.text(), self.ui_ekstraksidekripsi.dcMatrixPath.text(), self.ui_ekstraksidekripsi.doubleSpinBoxX0.value(), self.ui_ekstraksidekripsi.doubleSpinBoxY0.value(), lambda: saveFileDialog(self, 'JPEG (*.jpeg)'))
         addImageToGraphicView(self, resultPixmap, self.ui_ekstraksidekripsi.graphicsView)
 
 class Perbandingan(QWidget):
@@ -63,8 +63,8 @@ class Perbandingan(QWidget):
         self.setWindowIcon(parent.windowIcon())
         center_window(self)
     
-        self.ui_perbandingan.btnCitra1.clicked.connect(lambda: openDialog(self, self.ui_perbandingan.citra1Path, graphicView=self.ui_perbandingan.graphicsViewCitra1, isImage=True, dialogName='Citra 1'))
-        self.ui_perbandingan.btnCitra2.clicked.connect(lambda: openDialog(self, self.ui_perbandingan.citra2Path, graphicView=self.ui_perbandingan.graphicsViewCitra2, isImage=True, dialogName='Citra 2'))
+        self.ui_perbandingan.btnCitra1.clicked.connect(lambda: openFileDialog(self, self.ui_perbandingan.citra1Path, graphicView=self.ui_perbandingan.graphicsViewCitra1, isImage=True, dialogName='Citra 1'))
+        self.ui_perbandingan.btnCitra2.clicked.connect(lambda: openFileDialog(self, self.ui_perbandingan.citra2Path, graphicView=self.ui_perbandingan.graphicsViewCitra2, isImage=True, dialogName='Citra 2'))
         self.ui_perbandingan.btnHitungMSE.clicked.connect(self.on_btnHitungMSE_click)
         self.ui_perbandingan.btnHitungPSNR.clicked.connect(self.on_btnHitungPSNR_click)
         self.ui_perbandingan.btnKembali.clicked.connect(lambda: showWindow(self, parent))
@@ -99,10 +99,10 @@ class MainWindow(QMainWindow):
         self.ui_mainwindow.btnExtractDecrypt.clicked.connect(lambda: showWindow(self, self.enkripsiDekripsi))
         self.ui_mainwindow.btnCompare.clicked.connect(lambda: showWindow(self, self.perbandingan))
 
-def openDialog(window, lineEdit, graphicView = None, isImage = True, dialogName = ""):
+def openFileDialog(window, lineEdit, graphicView = None, isImage = True, dialogName = "", imageOptions = 'Images (*.tiff *.jpeg *.jpg *.bmp)'):
     options = QFileDialog.Options()
 
-    fileOptions = 'Images (*.tiff *.jpeg *.jpg *.bmp)' if isImage else 'Numpy Array (*.npy)'
+    fileOptions = imageOptions if isImage else 'Numpy Array (*.npy)'
 
     fileName, _ = QFileDialog.getOpenFileName(window, dialogName, '', fileOptions, options=options)
     if fileName:
@@ -110,6 +110,14 @@ def openDialog(window, lineEdit, graphicView = None, isImage = True, dialogName 
         if graphicView != None:
             pix = convertImageToPixmap(fileName, isPath = True)
             addImageToGraphicView(window, pix, graphicView)
+
+def saveFileDialog(window, fileOptions):
+    options = QFileDialog.Options()
+    filename, _ = QFileDialog.getSaveFileName(window, "Enter filename", '', fileOptions, options=options)
+
+    if _ == '':
+        raise ValueError('Save file cancalled')
+    return filename
             
 
 def showWindow(window, targetWindow):

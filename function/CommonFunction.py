@@ -36,13 +36,13 @@ def convertImageToPixmap(img, isPath = False):
 
     return ImageQt.toqpixmap(Image.fromarray(img.astype('uint8')))
 
-def saveImageAs(image, filename = 'result', fileext = '.jpeg'):
+def saveImageAs(image, filename = 'result'):
     imageRgb = np.zeros((image.shape[0], image.shape[1], 3))
     imageRgb[...,0] = copy.deepcopy(image)
     imageRgb[...,1] = copy.deepcopy(image)
     imageRgb[...,2] = copy.deepcopy(image)
 
-    file = filename + fileext
+    file = filename
 
     imageio.imwrite(file, imageRgb)
 
@@ -51,8 +51,8 @@ def saveImageAs(image, filename = 'result', fileext = '.jpeg'):
 def deepCopy(obj):
     return copy.deepcopy(obj)
 
-def saveDcMatrix(dcMatrix):
-    np.save('dcmatrix.npy', dcMatrix)
+def saveDcMatrix(dcMatrix, filename):
+    np.save(filename + '.npy', dcMatrix)
 
 def loadDcMatrix(npyFile):
     return np.load(npyFile, allow_pickle=True)

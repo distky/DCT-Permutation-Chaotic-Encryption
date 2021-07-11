@@ -29,14 +29,16 @@ def create_henon_map(xo, yo, a = 1.4, b = 0.3, size = 64):
     y = yo
     result = [[],[]]
     for i in range(size+100):
-        x_n = y + 1 - a* x**2
+        x_n = y + 1 - a*x**2
         y_n = b * x
+
+        x_n = x_n % 10 if x_n > 0 else x_n % -10
+        y_n = y_n % 10 if y_n > 0 else y_n % -10
 
         x = x_n
         y = y_n
 
         if(i < 100): continue
-
         e_n = int(abs(x_n * math.pow(10,15)))
         f_n = int(abs(y_n * math.pow(10,15)))
 

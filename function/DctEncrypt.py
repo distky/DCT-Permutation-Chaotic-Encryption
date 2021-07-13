@@ -1,13 +1,12 @@
-import sys
-from numpy import e
-from .CommonFunction import imageio, deepCopy, bgr2gray, convertSubBlockToImage, convertImageToSubBlock, loadDcMatrix, saveImageAs, saveDcMatrix, loadDcMatrix
+from PyQt5.QtWidgets import QMessageBox
+from .CommonFunction import imageio, deepCopy, bgr2gray, convertSubBlockToImage, convertImageToSubBlock, loadDcMatrix, saveImageAs, saveDcMatrix, loadDcMatrix, fullStackTrace, VALIDATION_ERROR, ACTION_CANCELLED
 from .DiscreteCosineTransform import createDctSubBlock, createDcCoefficientMatrix, restoreDcCoefficientMatrixThenIdct
 from .PermutationBasedChaoticEncryption import encryption, decryption
 
 def embedEncryptionMessageToDcCoefficientMatrix(cipherImage, dccMatrix, alpha = 1):
     return dccMatrix + (cipherImage/255 * alpha)
 
-def processEncryptionAndStegano(coverImgPath, messageImgPath, x0, y0, saveFileDialog):
+def processEncryptionAndStegano(coverImgPath, messageImgPath, x0, y0, saveFileDialog, showMessageBox):
     try:
         coverImage = bgr2gray(imageio.imread(coverImgPath))
         messageImage = bgr2gray(imageio.imread(messageImgPath))
@@ -34,14 +33,16 @@ def processEncryptionAndStegano(coverImgPath, messageImgPath, x0, y0, saveFileDi
         saveDcMatrix(dcCoefficientMatrix, fileName)
     
         return saveImageAs(embeddedImage, fileName)
-    except:
-        print(sys.exc_info())
+    except Exception as e:
+        s = getattr(e, 'message', str(e))
+        if s != ACTION_CANCELLED:
+            showMessageBox(QMessageBox.Icon.Critical, 'Error', fullStackTrace())
         return None
 
 def recoverEncryptionMessageFromDcCoefficientMatrix(dccStego, dccCover, alpha = 1):
     return (dccStego - (dccCover * alpha)) * 255
 
-def processExtractAndDecrypt(steganoImgPath, dcMatrixPath, x0, y0, saveFileDialog):
+def processExtractAndDecrypt(steganoImgPath, dcMatrixPath, x0, y0, saveFileDialog, showMessageBox):
     try:
         steganoImage = bgr2gray(imageio.imread(steganoImgPath))
 
@@ -61,6 +62,8 @@ def processExtractAndDecrypt(steganoImgPath, dcMatrixPath, x0, y0, saveFileDialo
         fileName = saveFileDialog()
 
         return saveImageAs(decryptedMessage.astype('uint8'), fileName)
-    except:
-        print(sys.exc_info())
+    except Exception as e:
+        s = getattr(e, 'message', str(e))
+        if s != ACTION_CANCELLED:
+            showMessageBox(QMessageBox.Icon.Critical, 'Error', fullStackTrace())
         return None

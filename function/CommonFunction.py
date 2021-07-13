@@ -5,6 +5,9 @@ import imageio
 from math import log10, sqrt
 from PIL import Image, ImageQt
 
+VALIDATION_ERROR = "VALIDATION_ERROR"
+ACTION_CANCELLED = "ACTION_CANCELLED"
+
 def resizeImage(image, shape = (512,512)):
    return cv2.resize(image, shape)
 
@@ -70,3 +73,17 @@ def MSE(img1Path, img2Path):
     img2 = bgr2gray(imageio.imread(img2Path))
 
     return np.mean((img1 - img2) ** 2)
+
+def fullStackTrace():
+    import traceback, sys
+    exc = sys.exc_info()[0]
+    if exc is not None:
+        f = sys.exc_info()[-1].tb_frame.f_back
+        stack = traceback.extract_stack(f)
+    else:
+        stack = traceback.extract_stack()[:-1]
+    trc = 'Traceback (most recent call last):\n'
+    stackstr = trc + ''.join(traceback.format_list(stack))
+    if exc is not None:
+        stackstr += '  ' + traceback.format_exc().lstrip(trc)
+    return stackstr

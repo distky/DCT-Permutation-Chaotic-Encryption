@@ -2,7 +2,7 @@ import numpy as np
 import cv2
 import copy
 import imageio
-from math import log10, sqrt
+import math
 from PIL import Image, ImageQt
 
 VALIDATION_ERROR = "VALIDATION_ERROR"
@@ -65,7 +65,7 @@ def PSNR(img1Path, img2Path):
     if(mse == 0):
         return 100
     max_pixel = 255.0
-    psnr = 20 * log10(max_pixel / sqrt(mse))
+    psnr = 20 * math.log10(max_pixel / math.sqrt(mse))
     return psnr
 
 def MSE(img1Path, img2Path):

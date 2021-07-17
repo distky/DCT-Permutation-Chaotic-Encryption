@@ -36,7 +36,7 @@ def processEncryptionAndStegano(coverImgPath, messageImgPath, x0, y0, saveFileDi
     except Exception as e:
         s = getattr(e, 'message', str(e))
         if s != ACTION_CANCELLED:
-            showMessageBox(QMessageBox.Icon.Critical, 'Error', fullStackTrace())
+            showMessageBox('Error', fullStackTrace(), QMessageBox.Icon.Critical)
         return None
 
 def recoverEncryptionMessageFromDcCoefficientMatrix(dccStego, dccCover, alpha = 1):
@@ -65,5 +65,5 @@ def processExtractAndDecrypt(steganoImgPath, dcMatrixPath, x0, y0, saveFileDialo
     except Exception as e:
         s = getattr(e, 'message', str(e))
         if s != ACTION_CANCELLED:
-            showMessageBox(QMessageBox.Icon.Critical, 'Error', fullStackTrace())
+            showMessageBox('Error', fullStackTrace(), QMessageBox.Icon.Critical)
         return None

@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_InputEkstraksiDanDekripsi(object):
     def setupUi(self, InputEkstraksiDanDekripsi):
         InputEkstraksiDanDekripsi.setObjectName("InputEkstraksiDanDekripsi")
-        InputEkstraksiDanDekripsi.resize(767, 706)
+        InputEkstraksiDanDekripsi.setFixedSize(767, 706)
         self.lblNilaiX0 = QtWidgets.QLabel(InputEkstraksiDanDekripsi)
         self.lblNilaiX0.setGeometry(QtCore.QRect(20, 160, 91, 31))
         font = QtGui.QFont()
@@ -99,7 +99,7 @@ class Ui_InputEkstraksiDanDekripsi(object):
         self.graphicsView.setGeometry(QtCore.QRect(10, 290, 321, 311))
         self.graphicsView.setObjectName("graphicsView")
         self.lblCitraSteganoview = QtWidgets.QLabel(InputEkstraksiDanDekripsi)
-        self.lblCitraSteganoview.setGeometry(QtCore.QRect(550, 600, 141, 31))
+        self.lblCitraSteganoview.setGeometry(QtCore.QRect(100, 600, 141, 31))
         font = QtGui.QFont()
         font.setPointSize(12)
         self.lblCitraSteganoview.setFont(font)
@@ -108,7 +108,7 @@ class Ui_InputEkstraksiDanDekripsi(object):
         self.graphicsView_2.setGeometry(QtCore.QRect(440, 290, 321, 311))
         self.graphicsView_2.setObjectName("graphicsView_2")
         self.lblCitraExtract = QtWidgets.QLabel(InputEkstraksiDanDekripsi)
-        self.lblCitraExtract.setGeometry(QtCore.QRect(50, 600, 251, 31))
+        self.lblCitraExtract.setGeometry(QtCore.QRect(490, 600, 251, 31))
         font = QtGui.QFont()
         font.setPointSize(12)
         self.lblCitraExtract.setFont(font)

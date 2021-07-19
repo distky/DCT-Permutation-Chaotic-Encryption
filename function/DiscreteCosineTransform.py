@@ -44,7 +44,7 @@ def inverseDiscreteCosineTransform(image):
 def createDctSubBlock(subBlock):
     dctSB = list()
     for i in range(len(subBlock)):
-        dctSB.append(discreteCosineTransform(subBlock[i]))
+        dctSB.append(dct2(subBlock[i]))
     return dctSB
 
 def createDcCoefficientMatrix(dctSubBlock, shape):
@@ -60,5 +60,5 @@ def restoreDcCoefficientMatrixThenIdct(embeddedMatrix, dctSubBlock):
     idctSB = list()
     for i in range(len(embeddedList)):
         dctSubBlock[i][0][0] = embeddedList[i]
-        idctSB.append(inverseDiscreteCosineTransform(dctSubBlock[i]))
+        idctSB.append(idct2(dctSubBlock[i]))
     return idctSB

@@ -14,8 +14,8 @@ class InputSteganografiDanEnkripsi(QWidget):
         self.setWindowIcon(parent.windowIcon())
         centerWindow(self)
         
-        self.ui_steganoenkripsi.btnCitraSampul.clicked.connect(lambda: openFileDialog(self, self.ui_steganoenkripsi.citraSampulPath, isImage=True, dialogName='Citra Sampul'))
-        self.ui_steganoenkripsi.btnCitraPesan.clicked.connect(lambda: openFileDialog(self, self.ui_steganoenkripsi.citraPesanPath, isImage=True, dialogName='Citra Pesan'))
+        self.ui_steganoenkripsi.btnCitraSampul.clicked.connect(lambda: openFileDialog(self, self.ui_steganoenkripsi.citraSampulPath, isImage=True, dialogName='Citra Sampul', graphicView=self.ui_steganoenkripsi.citraSampulView))
+        self.ui_steganoenkripsi.btnCitraPesan.clicked.connect(lambda: openFileDialog(self, self.ui_steganoenkripsi.citraPesanPath, isImage=True, dialogName='Citra Pesan', graphicView=self.ui_steganoenkripsi.citraPesanView))
         self.ui_steganoenkripsi.btnEnkripsiDanStegano.clicked.connect(self.on_btnEnkripsiDanStegano_click)
         self.ui_steganoenkripsi.btnKembali.clicked.connect(lambda: showWindow(self, parent))
     
@@ -24,11 +24,13 @@ class InputSteganografiDanEnkripsi(QWidget):
         self.ui_steganoenkripsi.citraSampulPath.setText(None)
         self.ui_steganoenkripsi.doubleSpinBoxX0.setValue(0)
         self.ui_steganoenkripsi.doubleSpinBoxY0.setValue(0)
-        self.ui_steganoenkripsi.graphicsView.setScene(None)
+        self.ui_steganoenkripsi.citraSampulView.setScene(None)
+        self.ui_steganoenkripsi.citraPesanView.setScene(None)
+        self.ui_steganoenkripsi.citraSteganoView.setScene(None)
     
     def on_btnEnkripsiDanStegano_click(self):
         resultPixmap = processEncryptionAndStegano(self.ui_steganoenkripsi.citraSampulPath.text(), self.ui_steganoenkripsi.citraPesanPath.text(), self.ui_steganoenkripsi.doubleSpinBoxX0.value(), self.ui_steganoenkripsi.doubleSpinBoxY0.value(), lambda: saveFileDialog(self, 'Images (*.tiff)'), showMessageBox)
-        addImageToGraphicView(self, resultPixmap, self.ui_steganoenkripsi.graphicsView)
+        addImageToGraphicView(self, resultPixmap, self.ui_steganoenkripsi.citraSteganoView)
 
 class InputEkstraksiDanDekripsi(QWidget):
     def __init__(self, parent=None):
@@ -38,7 +40,7 @@ class InputEkstraksiDanDekripsi(QWidget):
         self.setWindowIcon(parent.windowIcon())
         centerWindow(self)
     
-        self.ui_ekstraksidekripsi.btnCitraStegano.clicked.connect(lambda: openFileDialog(self, self.ui_ekstraksidekripsi.citraSteganoPath, isImage=True, dialogName='Citra Stegano', imageOptions='True Image File (*.tiff)')) 
+        self.ui_ekstraksidekripsi.btnCitraStegano.clicked.connect(lambda: openFileDialog(self, self.ui_ekstraksidekripsi.citraSteganoPath, isImage=True, dialogName='Citra Stegano', imageOptions='True Image File (*.tiff)', graphicView=self.ui_ekstraksidekripsi.citraSteganoView)) 
         self.ui_ekstraksidekripsi.btnDcMatrix.clicked.connect(lambda: openFileDialog(self, self.ui_ekstraksidekripsi.dcMatrixPath, isImage=False, dialogName='DC Matrix'))
         self.ui_ekstraksidekripsi.btnEkstraksiDanDekripsi.clicked.connect(self.on_btnEkstraksiDanDekripsi_click)
         self.ui_ekstraksidekripsi.btnKembali.clicked.connect(lambda: showWindow(self, parent))
@@ -48,11 +50,12 @@ class InputEkstraksiDanDekripsi(QWidget):
         self.ui_ekstraksidekripsi.dcMatrixPath.setText(None)
         self.ui_ekstraksidekripsi.doubleSpinBoxX0.setValue(0)
         self.ui_ekstraksidekripsi.doubleSpinBoxY0.setValue(0)
-        self.ui_ekstraksidekripsi.graphicsView.setScene(None)
+        self.ui_ekstraksidekripsi.citraSteganoView.setScene(None)
+        self.ui_ekstraksidekripsi.citraHasilView.setScene(None)
 
     def on_btnEkstraksiDanDekripsi_click(self):
         resultPixmap = processExtractAndDecrypt(self.ui_ekstraksidekripsi.citraSteganoPath.text(), self.ui_ekstraksidekripsi.dcMatrixPath.text(), self.ui_ekstraksidekripsi.doubleSpinBoxX0.value(), self.ui_ekstraksidekripsi.doubleSpinBoxY0.value(), lambda: saveFileDialog(self, 'JPEG (*.jpeg)'), showMessageBox)
-        addImageToGraphicView(self, resultPixmap, self.ui_ekstraksidekripsi.graphicsView)
+        addImageToGraphicView(self, resultPixmap, self.ui_ekstraksidekripsi.citraHasilView)
 
 class Perbandingan(QWidget):
     def __init__(self, parent=None):

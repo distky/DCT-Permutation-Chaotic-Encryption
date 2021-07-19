@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>777</width>
-    <height>665</height>
+    <width>771</width>
+    <height>703</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -26,9 +26,9 @@
   <widget class="QGraphicsView" name="graphicsView">
    <property name="geometry">
     <rect>
-     <x>0</x>
+     <x>260</x>
      <y>290</y>
-     <width>771</width>
+     <width>251</width>
      <height>311</height>
     </rect>
    </property>
@@ -36,7 +36,7 @@
   <widget class="QPushButton" name="btnEnkripsiDanStegano">
    <property name="geometry">
     <rect>
-     <x>260</x>
+     <x>270</x>
      <y>250</y>
      <width>221</width>
      <height>31</height>
@@ -220,8 +220,8 @@
   <widget class="QPushButton" name="btnKembali">
    <property name="geometry">
     <rect>
-     <x>650</x>
-     <y>610</y>
+     <x>640</x>
+     <y>650</y>
      <width>91</width>
      <height>31</height>
     </rect>
@@ -251,6 +251,80 @@
    </property>
    <property name="text">
     <string>Nilai Y0 :</string>
+   </property>
+  </widget>
+  <widget class="QGraphicsView" name="graphicsView_2">
+   <property name="geometry">
+    <rect>
+     <x>520</x>
+     <y>290</y>
+     <width>241</width>
+     <height>311</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QGraphicsView" name="graphicsView_3">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>290</y>
+     <width>241</width>
+     <height>311</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lblCitraSampulView">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>600</y>
+     <width>121</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Citra Sampul</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lblCitraPesanView">
+   <property name="geometry">
+    <rect>
+     <x>600</x>
+     <y>600</y>
+     <width>101</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Citra Pesan</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lblCitraStego">
+   <property name="geometry">
+    <rect>
+     <x>330</x>
+     <y>600</y>
+     <width>121</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Citra Stegano</string>
    </property>
   </widget>
  </widget>

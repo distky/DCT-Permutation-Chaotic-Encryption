@@ -40,14 +40,9 @@ def convertImageToPixmap(img, isPath = False):
     return ImageQt.toqpixmap(Image.fromarray(img.astype('uint8')))
 
 def saveImageAs(image, filename = 'result'):
-    imageRgb = np.zeros((image.shape[0], image.shape[1], 3))
-    imageRgb[...,0] = copy.deepcopy(image)
-    imageRgb[...,1] = copy.deepcopy(image)
-    imageRgb[...,2] = copy.deepcopy(image)
-
     file = filename
 
-    imageio.imwrite(file, imageRgb)
+    imageio.imwrite(file, image)
 
     return convertImageToPixmap(image)
 

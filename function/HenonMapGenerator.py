@@ -13,7 +13,7 @@ def binary_to_decimal(bit_arr):
     return decimal
 
 def binary_to_7_byte(binary):
-    bin_arr = list(binary);
+    bin_arr = list(binary)
     result = []
     binary_arr = []
     for i in range(len(bin_arr)):

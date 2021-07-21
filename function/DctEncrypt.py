@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QMessageBox
-from .CommonFunction import imageio, deepCopy, bgr2gray, convertSubBlockToImage, convertImageToSubBlock, loadDcMatrix, saveImageAs, saveDcMatrix, loadDcMatrix, fullStackTrace, VALIDATION_ERROR, ACTION_CANCELLED
+from .CommonFunction import imageio, bgr2gray, convertSubBlockToImage, convertImageToSubBlock, loadDcMatrix, saveImageAs, saveDcMatrix, loadDcMatrix, fullStackTrace, VALIDATION_ERROR, ACTION_CANCELLED, validCriteria, validate
 from .DiscreteCosineTransform import createDctSubBlock, createDcCoefficientMatrix, restoreDcCoefficientMatrixThenIdct
 from .PermutationBasedChaoticEncryption import encryption, decryption
 
@@ -8,25 +8,24 @@ def embedEncryptionMessageToDcCoefficientMatrix(cipherImage, dccMatrix, alpha = 
 
 def processEncryptionAndStegano(coverImgPath, messageImgPath, x0, y0, saveFileDialog, showMessageBox):
     try:
-        coverImage = bgr2gray(imageio.imread(coverImgPath))
-        messageImage = bgr2gray(imageio.imread(messageImgPath))
+        coverImage, messageImage = validate(coverImgPath, messageImgPath)
 
         coverImageShape = coverImage.shape
         messageImageShape = messageImage.shape
 
-        cipherImage = encryption(deepCopy(messageImage), x0, y0)
+        cipherImage = encryption(messageImage, x0, y0)
 
-        subBlock = convertImageToSubBlock(deepCopy(coverImage), (coverImageShape[0]//messageImageShape[0]))
+        subBlock = convertImageToSubBlock(coverImage, (coverImageShape[0]//messageImageShape[0]))
 
-        dctSubBlock = createDctSubBlock(deepCopy(subBlock))
+        dctSubBlock = createDctSubBlock(subBlock)
 
-        dcCoefficientMatrix = createDcCoefficientMatrix(deepCopy(dctSubBlock), messageImageShape)
+        dcCoefficientMatrix = createDcCoefficientMatrix(dctSubBlock, messageImageShape)
 
-        embeddedMatrix = embedEncryptionMessageToDcCoefficientMatrix(deepCopy(cipherImage), deepCopy(dcCoefficientMatrix))
+        embeddedMatrix = embedEncryptionMessageToDcCoefficientMatrix(cipherImage, dcCoefficientMatrix)
 
-        idctSubBlock = restoreDcCoefficientMatrixThenIdct(deepCopy(embeddedMatrix), deepCopy(dctSubBlock))
+        idctSubBlock = restoreDcCoefficientMatrixThenIdct(embeddedMatrix, dctSubBlock)
 
-        embeddedImage = convertSubBlockToImage(deepCopy(idctSubBlock), coverImageShape,  (coverImageShape[0]//messageImageShape[0]))
+        embeddedImage = convertSubBlockToImage(idctSubBlock, coverImageShape,  (coverImageShape[0]//messageImageShape[0]))
         
         fileName = saveFileDialog()
 
@@ -35,8 +34,11 @@ def processEncryptionAndStegano(coverImgPath, messageImgPath, x0, y0, saveFileDi
         return saveImageAs(embeddedImage, fileName)
     except Exception as e:
         s = getattr(e, 'message', str(e))
-        if s != ACTION_CANCELLED:
+        if s == VALIDATION_ERROR:
+            showMessageBox('Warning', validCriteria(), QMessageBox.Icon.Warning)
+        elif s != ACTION_CANCELLED:
             showMessageBox('Error', fullStackTrace(), QMessageBox.Icon.Critical)
+        
         return None
 
 def recoverEncryptionMessageFromDcCoefficientMatrix(dccStego, dccCover, alpha = 1):
@@ -44,26 +46,27 @@ def recoverEncryptionMessageFromDcCoefficientMatrix(dccStego, dccCover, alpha = 
 
 def processExtractAndDecrypt(steganoImgPath, dcMatrixPath, x0, y0, saveFileDialog, showMessageBox):
     try:
-        steganoImage = bgr2gray(imageio.imread(steganoImgPath))
+        steganoImage, dcMatrix = validate(steganoImgPath, dcMatrixPath)
 
-        dcMatrix = loadDcMatrix(dcMatrixPath)
         dctMatrixShape = dcMatrix.shape
 
-        stegoSubBlock = convertImageToSubBlock(deepCopy(steganoImage), 16)
+        stegoSubBlock = convertImageToSubBlock(steganoImage, 16)
 
-        dctStegoSubBlock = createDctSubBlock(deepCopy(stegoSubBlock))
+        dctStegoSubBlock = createDctSubBlock(stegoSubBlock)
 
-        stegoDcCoefficient = createDcCoefficientMatrix(deepCopy(dctStegoSubBlock), dctMatrixShape)
+        stegoDcCoefficient = createDcCoefficientMatrix(dctStegoSubBlock, dctMatrixShape)
 
-        encryptedMessage = recoverEncryptionMessageFromDcCoefficientMatrix(deepCopy(stegoDcCoefficient), deepCopy(dcMatrix))
+        encryptedMessage = recoverEncryptionMessageFromDcCoefficientMatrix(stegoDcCoefficient, dcMatrix)
 
-        decryptedMessage = decryption(deepCopy(encryptedMessage), x0, y0)
+        decryptedMessage = decryption(encryptedMessage, x0, y0)
 
         fileName = saveFileDialog()
 
         return saveImageAs(decryptedMessage.astype('uint8'), fileName)
     except Exception as e:
         s = getattr(e, 'message', str(e))
-        if s != ACTION_CANCELLED:
+        if s == VALIDATION_ERROR:
+            showMessageBox('Warning', validCriteria(), QMessageBox.Icon.Warning)
+        elif s != ACTION_CANCELLED:
             showMessageBox('Error', fullStackTrace(), QMessageBox.Icon.Critical)
         return None

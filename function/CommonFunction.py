@@ -14,8 +14,7 @@ def resizeImage(image, shape = (512,512)):
 def bgr2gray(image):
     if len(image.shape) == 2:
         return image
-    image32 = np.float32(image)
-    return cv2.cvtColor(image32, cv2.COLOR_BGR2GRAY)
+    return cv2.cvtColor(image.astype('float32'), cv2.COLOR_BGR2GRAY)
 
 def convertImageToSubBlock(coverImage, subBlockPixel):
     tiles = [coverImage[x:x+subBlockPixel,y:y+subBlockPixel] for x in range(0,coverImage.shape[0],subBlockPixel) for y in range(0,coverImage.shape[1],subBlockPixel)]
@@ -40,9 +39,7 @@ def convertImageToPixmap(img, isPath = False):
     return ImageQt.toqpixmap(Image.fromarray(img.astype('uint8')))
 
 def saveImageAs(image, filename = 'result'):
-    file = filename
-
-    imageio.imwrite(file, image)
+    imageio.imwrite(filename, image)
 
     return convertImageToPixmap(image)
 
@@ -82,3 +79,34 @@ def fullStackTrace():
     if exc is not None:
         stackstr += '  ' + traceback.format_exc().lstrip(trc)
     return stackstr
+
+def validCriteria():
+    return 'Periksa kembali apakah gambar telah diinput dan memenuhi kriteria:\n1. Pastikan path file pertama dan kedua valid\n2.Pastikan ukuran pesan merupakan kelipatan dari 8 dan memiliki width dan height yang sama\n3. Pastikan ukuran citra sampul merupakan 16 kali dari ukuran citra pesan\n4. Pastikan ukuran citra pesan NxN dimana N lebih besar sama dengan 32 dan N lebih kecil sama dengan 64'
+
+def validate(filePath1, filePath2):
+    if filePath1 == '' or filePath2 == '':
+        raise IOError(VALIDATION_ERROR)
+
+    file1 = bgr2gray(imageio.imread(filePath1))
+
+    height, width = file1.shape
+    
+    filePath2Split = filePath2.split('.')
+
+    if filePath2Split != 'npy':
+        file2 = bgr2gray(imageio.imread(filePath2))
+    else:
+        file2 = loadDcMatrix(filePath2)
+
+    height2, width2 = file2.shape
+
+    if height2 != width2:
+        raise IOError(VALIDATION_ERROR)
+    elif height2 * 16 != height or width2 * 16 != width:
+        raise IOError(VALIDATION_ERROR)
+    elif height2 % 8 != 0:
+        raise IOError(VALIDATION_ERROR)
+    elif height2 < 32 and height2 > 64:
+        raise IOError(VALIDATION_ERROR)
+    
+    return file1, file2

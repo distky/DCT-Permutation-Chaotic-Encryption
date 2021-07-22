@@ -30,7 +30,7 @@ def convertSubBlockToImage(subBlock, imageShape, subBlockPixel):
     return images
 
 def openImageFromPath(path):
-    return imageio.imread(path)
+    return cv2.imread(path, cv2.IMREAD_ANYDEPTH)
 
 def convertImageToPixmap(img, isPath = False):
     if isPath:
@@ -39,7 +39,7 @@ def convertImageToPixmap(img, isPath = False):
     return ImageQt.toqpixmap(Image.fromarray(img.astype('uint8')))
 
 def saveImageAs(image, filename = 'result'):
-    imageio.imwrite(filename, image)
+    cv2.imwrite(filename, image)
 
     return convertImageToPixmap(image)
 
@@ -61,10 +61,11 @@ def PSNR(img1Path, img2Path):
     return psnr
 
 def MSE(img1Path, img2Path):
-    img1 = bgr2gray(imageio.imread(img1Path))
-    img2 = bgr2gray(imageio.imread(img2Path))
+    return np.mean((bgr2gray(openImageFromPath(img1Path)) - bgr2gray(openImageFromPath(img2Path))) ** 2)
 
-    return np.mean((img1 - img2) ** 2)
+def NCC(img1Path, img2Path):
+    result = cv2.matchTemplate(bgr2gray(openImageFromPath(img1Path)), bgr2gray(openImageFromPath(img2Path)), cv2.TM_CCOEFF_NORMED)
+    return result[0][0]
 
 def fullStackTrace():
     import traceback, sys
@@ -93,7 +94,7 @@ def validate(filePath1, filePath2):
     
     filePath2Split = filePath2.split('.')
 
-    if filePath2Split != 'npy':
+    if filePath2Split[-1] != 'npy':
         file2 = bgr2gray(imageio.imread(filePath2))
     else:
         file2 = loadDcMatrix(filePath2)

@@ -24,7 +24,7 @@ def binary_to_7_byte(binary):
             binary_arr.append(bin_arr[i])
     return result
 
-def create_henon_map(xo, yo, a = 1.4, b = 0.3, size = 64):
+def create_henon_map(xo, yo, a = 1.4, b = 0.3, size = 0):
     x = xo
     y = yo
     result = [[],[]]

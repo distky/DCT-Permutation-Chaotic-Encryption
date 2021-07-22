@@ -4,7 +4,7 @@ from .DiscreteCosineTransform import createDctSubBlock, createDcCoefficientMatri
 from .PermutationBasedChaoticEncryption import encryption, decryption
 
 def embedEncryptionMessageToDcCoefficientMatrix(cipherImage, dccMatrix, alpha = 1):
-    return dccMatrix + (cipherImage/255 * alpha)
+    return dccMatrix + (cipherImage / alpha)
 
 def processEncryptionAndStegano(coverImgPath, messageImgPath, x0, y0, saveFileDialog, showMessageBox):
     try:
@@ -21,7 +21,7 @@ def processEncryptionAndStegano(coverImgPath, messageImgPath, x0, y0, saveFileDi
 
         dcCoefficientMatrix = createDcCoefficientMatrix(dctSubBlock, messageImageShape)
 
-        embeddedMatrix = embedEncryptionMessageToDcCoefficientMatrix(cipherImage, dcCoefficientMatrix)
+        embeddedMatrix = embedEncryptionMessageToDcCoefficientMatrix(cipherImage, dcCoefficientMatrix, 255)
 
         idctSubBlock = restoreDcCoefficientMatrixThenIdct(embeddedMatrix, dctSubBlock)
 
@@ -42,7 +42,7 @@ def processEncryptionAndStegano(coverImgPath, messageImgPath, x0, y0, saveFileDi
         return None
 
 def recoverEncryptionMessageFromDcCoefficientMatrix(dccStego, dccCover, alpha = 1):
-    return (dccStego - (dccCover * alpha)) * 255
+    return (dccStego - dccCover) * alpha
 
 def processExtractAndDecrypt(steganoImgPath, dcMatrixPath, x0, y0, saveFileDialog, showMessageBox):
     try:
@@ -56,7 +56,7 @@ def processExtractAndDecrypt(steganoImgPath, dcMatrixPath, x0, y0, saveFileDialo
 
         stegoDcCoefficient = createDcCoefficientMatrix(dctStegoSubBlock, dctMatrixShape)
 
-        encryptedMessage = recoverEncryptionMessageFromDcCoefficientMatrix(stegoDcCoefficient, dcMatrix)
+        encryptedMessage = recoverEncryptionMessageFromDcCoefficientMatrix(stegoDcCoefficient, dcMatrix, 255)
 
         decryptedMessage = decryption(encryptedMessage, x0, y0)
 

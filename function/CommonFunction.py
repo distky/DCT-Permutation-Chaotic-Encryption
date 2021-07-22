@@ -30,7 +30,7 @@ def convertSubBlockToImage(subBlock, imageShape, subBlockPixel):
     return images
 
 def openImageFromPath(path):
-    return cv2.imread(path, cv2.IMREAD_ANYDEPTH)
+    return imageio.imread(path)
 
 def convertImageToPixmap(img, isPath = False):
     if isPath:
@@ -39,9 +39,7 @@ def convertImageToPixmap(img, isPath = False):
     return ImageQt.toqpixmap(Image.fromarray(img.astype('uint8')))
 
 def saveImageAs(image, filename = 'result'):
-    cv2.imwrite(filename, image)
-
-    return convertImageToPixmap(image)
+    imageio.imwrite(filename, image)
 
 def deepCopy(obj):
     return copy.deepcopy(obj)
@@ -64,7 +62,9 @@ def MSE(img1Path, img2Path):
     return np.mean((bgr2gray(openImageFromPath(img1Path)) - bgr2gray(openImageFromPath(img2Path))) ** 2)
 
 def NCC(img1Path, img2Path):
-    result = cv2.matchTemplate(bgr2gray(openImageFromPath(img1Path)), bgr2gray(openImageFromPath(img2Path)), cv2.TM_CCOEFF_NORMED)
+    img1 = bgr2gray(openImageFromPath(img1Path))
+    img2 = bgr2gray(openImageFromPath(img2Path))
+    result = cv2.matchTemplate(img1.astype('uint8'), img2.astype('uint8'), cv2.TM_CCOEFF_NORMED)
     return result[0][0]
 
 def fullStackTrace():

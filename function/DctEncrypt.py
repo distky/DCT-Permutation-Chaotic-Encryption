@@ -1,7 +1,8 @@
 from PyQt5.QtWidgets import QMessageBox
-from .CommonFunction import imageio, bgr2gray, convertSubBlockToImage, convertImageToSubBlock, loadDcMatrix, saveImageAs, saveDcMatrix, loadDcMatrix, fullStackTrace, VALIDATION_ERROR, ACTION_CANCELLED, validCriteria, validate
+from .CommonFunction import convertImageToPixmap, imageio, bgr2gray, convertSubBlockToImage, convertImageToSubBlock, loadDcMatrix, saveImageAs, saveDcMatrix, loadDcMatrix, fullStackTrace, VALIDATION_ERROR, ACTION_CANCELLED, validCriteria, validate
 from .DiscreteCosineTransform import createDctSubBlock, createDcCoefficientMatrix, restoreDcCoefficientMatrixThenIdct
 from .PermutationBasedChaoticEncryption import encryption, decryption
+import pandas as pd
 
 def embedEncryptionMessageToDcCoefficientMatrix(cipherImage, dccMatrix, alpha = 1):
     return dccMatrix + (cipherImage / alpha)
@@ -12,6 +13,9 @@ def processEncryptionAndStegano(coverImgPath, messageImgPath, x0, y0, saveFileDi
 
         coverImageShape = coverImage.shape
         messageImageShape = messageImage.shape
+
+        df = pd.DataFrame(messageImage)
+        df.to_csv('file_messageImage.csv',index=False)
 
         cipherImage = encryption(messageImage, x0, y0)
 
@@ -31,7 +35,9 @@ def processEncryptionAndStegano(coverImgPath, messageImgPath, x0, y0, saveFileDi
 
         saveDcMatrix(dcCoefficientMatrix, fileName)
     
-        return saveImageAs(embeddedImage, fileName)
+        saveImageAs(embeddedImage, fileName)
+
+        return convertImageToPixmap(embeddedImage)
     except Exception as e:
         s = getattr(e, 'message', str(e))
         if s == VALIDATION_ERROR:
@@ -60,9 +66,14 @@ def processExtractAndDecrypt(steganoImgPath, dcMatrixPath, x0, y0, saveFileDialo
 
         decryptedMessage = decryption(encryptedMessage, x0, y0)
 
+        df = pd.DataFrame(decryptedMessage)
+        df.to_csv('file_decryptedMessage.csv',index=False)
+
         fileName = saveFileDialog()
 
-        return saveImageAs(decryptedMessage.astype('uint8'), fileName)
+        saveImageAs(decryptedMessage.astype('uint8'), fileName)
+
+        return convertImageToPixmap(decryptedMessage.astype('uint8'))
     except Exception as e:
         s = getattr(e, 'message', str(e))
         if s == VALIDATION_ERROR:

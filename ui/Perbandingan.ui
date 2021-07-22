@@ -19,7 +19,7 @@
      <x>400</x>
      <y>290</y>
      <width>371</width>
-     <height>311</height>
+     <height>291</height>
     </rect>
    </property>
   </widget>
@@ -100,8 +100,8 @@
   <widget class="QPushButton" name="btnKembali">
    <property name="geometry">
     <rect>
-     <x>650</x>
-     <y>610</y>
+     <x>660</x>
+     <y>630</y>
      <width>91</width>
      <height>31</height>
     </rect>
@@ -115,7 +115,7 @@
     <string>Kembali</string>
    </property>
   </widget>
-  <widget class="QLabel" name="lblDcmatrix">
+  <widget class="QLabel" name="lblCitra2">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -218,10 +218,10 @@
   <widget class="QGraphicsView" name="graphicsViewCitra1">
    <property name="geometry">
     <rect>
-     <x>0</x>
+     <x>10</x>
      <y>290</y>
      <width>371</width>
-     <height>311</height>
+     <height>291</height>
     </rect>
    </property>
   </widget>
@@ -233,6 +233,88 @@
      <width>141</width>
      <height>31</height>
     </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btnHitungNCC">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>230</y>
+     <width>111</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>11</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Hitung NCC</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lblNCC">
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>230</y>
+     <width>71</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>14</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>NCC</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="txtNCC">
+   <property name="geometry">
+    <rect>
+     <x>220</x>
+     <y>230</y>
+     <width>141</width>
+     <height>31</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lblCitra1View">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>580</y>
+     <width>71</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>14</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Citra 1</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lblCitra2View">
+   <property name="geometry">
+    <rect>
+     <x>570</x>
+     <y>580</y>
+     <width>71</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>14</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Citra 2</string>
    </property>
   </widget>
  </widget>

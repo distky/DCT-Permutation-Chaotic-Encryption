@@ -42,18 +42,10 @@ def inverseDiscreteCosineTransform(image):
     return dctArr
 
 def createDctSubBlock(subBlock):
-    dctSB = list()
-    for i in range(len(subBlock)):
-        dctSB.append(dct2(subBlock[i]))
-    return dctSB
+    return [dct2(subBlock[i]) for i in range(len(subBlock))]
 
 def createDcCoefficientMatrix(dctSubBlock, shape):
-    dcCoefficientMatrix = np.zeros(len(dctSubBlock), dtype='float32')
-
-    for i in range(len(dctSubBlock)):
-        dcCoefficientMatrix[i] = (dctSubBlock[i])[0][0]
-
-    return np.reshape(dcCoefficientMatrix, shape)
+    return np.reshape(np.array([(dctSubBlock[i])[0][0] for i in range(len(dctSubBlock))]), shape)
 
 def restoreDcCoefficientMatrixThenIdct(embeddedMatrix, dctSubBlock):
     embeddedList = embeddedMatrix.reshape(-1)

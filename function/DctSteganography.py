@@ -2,7 +2,7 @@ from .CommonFunction import convertSubBlockToImage, convertImageToSubBlock
 from .DiscreteCosineTransform import createDctSubBlock, createDcCoefficientMatrix, restoreDcCoefficientMatrixThenIdct
 
 def embedEncryptionMessageToDcCoefficientMatrix(cipherImage, dccMatrix, alpha = 1):
-    return dccMatrix + (cipherImage / alpha)
+    return dccMatrix + (cipherImage * alpha)
 
 def steganography(coverImage, cipherImage):
     coverImageShape = coverImage.shape
@@ -14,7 +14,7 @@ def steganography(coverImage, cipherImage):
 
     dcCoefficientMatrix = createDcCoefficientMatrix(dctSubBlock, cipherImageShape)
 
-    embeddedMatrix = embedEncryptionMessageToDcCoefficientMatrix(cipherImage, dcCoefficientMatrix, 255)
+    embeddedMatrix = embedEncryptionMessageToDcCoefficientMatrix(cipherImage, dcCoefficientMatrix, 1/255)
 
     idctSubBlock = restoreDcCoefficientMatrixThenIdct(embeddedMatrix, dctSubBlock)
 

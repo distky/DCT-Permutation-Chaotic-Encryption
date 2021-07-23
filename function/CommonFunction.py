@@ -62,10 +62,7 @@ def MSE(img1Path, img2Path):
     return np.mean((bgr2gray(openImageFromPath(img1Path)) - bgr2gray(openImageFromPath(img2Path))) ** 2)
 
 def NCC(img1Path, img2Path):
-    img1 = bgr2gray(openImageFromPath(img1Path))
-    img2 = bgr2gray(openImageFromPath(img2Path))
-    result = cv2.matchTemplate(img1.astype('uint8'), img2.astype('uint8'), cv2.TM_CCOEFF_NORMED)
-    return result[0][0]
+    return cv2.matchTemplate(bgr2gray(openImageFromPath(img1Path)).astype('float32'), bgr2gray(openImageFromPath(img2Path)).astype('float32'), cv2.TM_CCOEFF_NORMED)[0][0]
 
 def fullStackTrace():
     import traceback, sys

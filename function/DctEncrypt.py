@@ -1,11 +1,11 @@
 from PyQt5.QtWidgets import QMessageBox
-from .CommonFunction import convertImageToPixmap, rounding, saveImageAs, saveDcMatrix, fullStackTrace, VALIDATION_ERROR, ACTION_CANCELLED, validCriteria, validate
+from .CommonFunction import convertImageToPixmap, deepCopy, rounding, saveImageAs, saveDcMatrix, fullStackTrace, VALIDATION_ERROR, ACTION_CANCELLED, validCriteria, validate
 from .PermutationBasedChaoticEncryption import encryption, decryption
 from .DctSteganography import steganography, extraction
 
 def processEncryptionAndStegano(coverImgPath, messageImgPath, x0, y0, saveFileDialog, showMessageBox):
     try:
-        coverImage, messageImage = validate(coverImgPath, messageImgPath)
+        coverImage, messageImage, *_ = validate(coverImgPath, messageImgPath, x0, y0)
 
         cipherImage = encryption(messageImage, x0, y0)
 
@@ -13,11 +13,13 @@ def processEncryptionAndStegano(coverImgPath, messageImgPath, x0, y0, saveFileDi
         
         fileName = saveFileDialog()
 
-        saveDcMatrix(dcCoefficientMatrix, fileName)
-    
-        saveImageAs(embeddedImage, fileName)
+        floatValue = embeddedImage - deepCopy(embeddedImage).astype('uint8')
 
-        return convertImageToPixmap(embeddedImage)
+        saveDcMatrix((dcCoefficientMatrix,floatValue, x0, y0), fileName)
+    
+        saveImageAs(embeddedImage.astype('uint8'), fileName)
+
+        return convertImageToPixmap(embeddedImage.astype('uint8'))
     except Exception as e:
         s = getattr(e, 'message', str(e))
         if s == VALIDATION_ERROR:
@@ -27,11 +29,11 @@ def processEncryptionAndStegano(coverImgPath, messageImgPath, x0, y0, saveFileDi
         
         return None
 
-def processExtractAndDecrypt(steganoImgPath, dcMatrixPath, x0, y0, saveFileDialog, showMessageBox):
+def processExtractAndDecrypt(steganoImgPath, dcMatrixPath, saveFileDialog, showMessageBox):
     try:
-        steganoImage, dcMatrix = validate(steganoImgPath, dcMatrixPath)
+        steganoImage, dcMatrix, floatValue, x0, y0 = validate(steganoImgPath, dcMatrixPath)
 
-        encryptedMessage = rounding(extraction(steganoImage, dcMatrix),0)
+        encryptedMessage = rounding(extraction(steganoImage + floatValue, dcMatrix),0)
 
         decryptedMessage = rounding(decryption(encryptedMessage, x0, y0), 0).astype('uint8')
 

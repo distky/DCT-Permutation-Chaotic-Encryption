@@ -1,7 +1,6 @@
 import numpy as np
 import cv2
 import copy
-import imageio
 import math
 from PIL import Image, ImageQt
 
@@ -33,22 +32,22 @@ def convertSubBlockToImage(subBlock, imageShape, subBlockPixel):
     return images
 
 def openImageFromPath(path):
-    return imageio.imread(path)
+    return cv2.imread(path, cv2.IMREAD_ANYDEPTH)
 
 def convertImageToPixmap(img, isPath = False):
     if isPath:
         img = bgr2gray(openImageFromPath(img))
 
-    return ImageQt.toqpixmap(Image.fromarray(img.astype('uint8')))
+    return ImageQt.toqpixmap(Image.fromarray(rounding(img,0).astype('uint8')))
 
 def saveImageAs(image, filename = 'result'):
-    imageio.imwrite(filename, image)
+    cv2.imwrite(filename, image)
 
 def deepCopy(obj):
     return copy.deepcopy(obj)
 
-def saveDcMatrix(dcMatrix, filename):
-    np.save(filename + '.npy', dcMatrix)
+def saveDcMatrix(numpyObject, filename):
+    np.save(filename + '.npy', np.array(numpyObject, dtype='object'))
 
 def loadDcMatrix(npyFile):
     return np.load(npyFile, allow_pickle=True)
@@ -65,7 +64,12 @@ def MSE(img1Path, img2Path):
     return np.mean((bgr2gray(openImageFromPath(img1Path)) - bgr2gray(openImageFromPath(img2Path))) ** 2)
 
 def NCC(img1Path, img2Path):
-    return cv2.matchTemplate(bgr2gray(openImageFromPath(img1Path)).astype('float32'), bgr2gray(openImageFromPath(img2Path)).astype('float32'), cv2.TM_CCOEFF_NORMED)[0][0]
+    img1 = bgr2gray(openImageFromPath(img1Path)).astype('float32')
+    img2 = bgr2gray(openImageFromPath(img2Path)).astype('float32')
+
+    print(img1)
+    print(img2)
+    return cv2.matchTemplate(img1, img2, cv2.TM_CCOEFF_NORMED)[0][0]
 
 def fullStackTrace():
     import traceback, sys
@@ -84,20 +88,20 @@ def fullStackTrace():
 def validCriteria():
     return 'Periksa kembali apakah gambar telah diinput dan memenuhi kriteria:\n1. Pastikan path file pertama dan kedua valid\n2.Pastikan ukuran pesan merupakan kelipatan dari 8 dan memiliki width dan height yang sama\n3. Pastikan ukuran citra sampul merupakan 16 kali dari ukuran citra pesan\n4. Pastikan ukuran citra pesan NxN dimana N lebih besar sama dengan 32 dan N lebih kecil sama dengan 64'
 
-def validate(filePath1, filePath2):
+def validate(filePath1, filePath2, x0 = 0, y0 = 0, floatValue = None):
     if filePath1 == '' or filePath2 == '':
         raise IOError(VALIDATION_ERROR)
 
-    file1 = bgr2gray(imageio.imread(filePath1))
+    file1 = bgr2gray(openImageFromPath(filePath1))
 
     height, width = file1.shape
     
     filePath2Split = filePath2.split('.')
 
     if filePath2Split[-1] != 'npy':
-        file2 = bgr2gray(imageio.imread(filePath2))
+        file2 = bgr2gray(openImageFromPath(filePath2))
     else:
-        file2 = loadDcMatrix(filePath2)
+        file2, floatValue, x0, y0 = loadDcMatrix(filePath2)
 
     height2, width2 = file2.shape
 
@@ -110,4 +114,9 @@ def validate(filePath1, filePath2):
     elif height2 < 32 and height2 > 64:
         raise IOError(VALIDATION_ERROR)
     
-    return file1, file2
+    if x0 == 0.0:
+        raise IOError(VALIDATION_ERROR)
+    elif y0 == 0.0:
+        raise IOError(VALIDATION_ERROR)
+    
+    return file1, file2, floatValue, x0, y0

@@ -25,7 +25,6 @@ dependencies:
     - gevent==21.1.2
     - gevent-websocket==0.10.1
     - greenlet==1.1.0
-    - imageio==2.9.0
     - numpy==1.21.0
     - opencv-python==4.5.2.54
     - pefile==2021.5.24

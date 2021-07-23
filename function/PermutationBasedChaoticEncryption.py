@@ -32,7 +32,7 @@ def encryption(message_image, x = 0.1, y = 0.1):
         original_image[i] = deepCopy(original_image[XS[i]])
         original_image[XS[i]] = temp_pixel
 
-    new_image = np.zeros(image_size, dtype = 'float32')
+    new_image = np.zeros(image_size)
     for i in range(image_size):
         new_image[i] = int(original_image[i]) ^ ((int(GK[i]) + int(RK[i]) + int(BK[i]))//3)
 
@@ -63,7 +63,7 @@ def decryption(encrypted_image, x = 0.1, y = 0.1):
         BK.append(mid_arr[4])
 
     message_image = np.reshape(encrypted_image, image_size)
-    new_image = np.zeros(image_size, dtype= 'float32')
+    new_image = np.zeros(image_size)
     for i in range(image_size):
         new_image[i] = int(message_image[i]) ^ int(((RK[i]+ GK[i] + BK[i])//3))
     

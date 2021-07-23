@@ -8,7 +8,7 @@ def steganography(coverImage, cipherImage):
     coverImageShape = coverImage.shape
     cipherImageShape = cipherImage.shape
 
-    subBlock = convertImageToSubBlock(coverImage, (coverImageShape[0]//cipherImageShape[0]))
+    subBlock = convertImageToSubBlock(coverImage, 16)
 
     dctSubBlock = createDctSubBlock(subBlock)
 
@@ -18,7 +18,7 @@ def steganography(coverImage, cipherImage):
 
     idctSubBlock = restoreDcCoefficientMatrixThenIdct(embeddedMatrix, dctSubBlock)
 
-    embeddedImage = convertSubBlockToImage(idctSubBlock, coverImageShape,  (coverImageShape[0]//cipherImageShape[0]))
+    embeddedImage = convertSubBlockToImage(idctSubBlock, coverImageShape, 16)
 
     return embeddedImage, dcCoefficientMatrix
 
@@ -26,7 +26,6 @@ def recoverEncryptionMessageFromDcCoefficientMatrix(dccStego, dccCover, alpha = 
     return (dccStego - dccCover) * alpha
 
 def extraction(steganoImage, dcMatrix):
-    
     stegoSubBlock = convertImageToSubBlock(steganoImage, 16)
 
     dctStegoSubBlock = createDctSubBlock(stegoSubBlock)

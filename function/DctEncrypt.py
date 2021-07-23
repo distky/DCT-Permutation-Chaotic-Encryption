@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QMessageBox
-from .CommonFunction import convertImageToPixmap, saveImageAs, saveDcMatrix, fullStackTrace, VALIDATION_ERROR, ACTION_CANCELLED, validCriteria, validate
+from .CommonFunction import convertImageToPixmap, rounding, saveImageAs, saveDcMatrix, fullStackTrace, VALIDATION_ERROR, ACTION_CANCELLED, validCriteria, validate
 from .PermutationBasedChaoticEncryption import encryption, decryption
 from .DctSteganography import steganography, extraction
 
@@ -31,15 +31,15 @@ def processExtractAndDecrypt(steganoImgPath, dcMatrixPath, x0, y0, saveFileDialo
     try:
         steganoImage, dcMatrix = validate(steganoImgPath, dcMatrixPath)
 
-        encryptedMessage = extraction(steganoImage, dcMatrix)
+        encryptedMessage = rounding(extraction(steganoImage, dcMatrix),0)
 
-        decryptedMessage = decryption(encryptedMessage, x0, y0)
+        decryptedMessage = rounding(decryption(encryptedMessage, x0, y0), 0).astype('uint8')
 
         fileName = saveFileDialog()
 
-        saveImageAs(decryptedMessage.astype('uint8'), fileName)
+        saveImageAs(decryptedMessage, fileName)
 
-        return convertImageToPixmap(decryptedMessage.astype('uint8'))
+        return convertImageToPixmap(decryptedMessage)
     except Exception as e:
         s = getattr(e, 'message', str(e))
         if s == VALIDATION_ERROR:

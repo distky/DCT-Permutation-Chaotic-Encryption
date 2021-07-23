@@ -14,14 +14,17 @@ def resizeImage(image, shape = (512,512)):
 def bgr2gray(image):
     if len(image.shape) == 2:
         return image
-    return cv2.cvtColor(image.astype('float32'), cv2.COLOR_BGR2GRAY)
+    return cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+def rounding(npElement, dec):
+    return np.round(npElement, dec)
 
 def convertImageToSubBlock(coverImage, subBlockPixel):
     tiles = [coverImage[x:x+subBlockPixel,y:y+subBlockPixel] for x in range(0,coverImage.shape[0],subBlockPixel) for y in range(0,coverImage.shape[1],subBlockPixel)]
     return tiles
 
 def convertSubBlockToImage(subBlock, imageShape, subBlockPixel):
-    images = np.zeros(imageShape, dtype='float32')
+    images = np.zeros(imageShape)
     count = 0
     for i in range(0,images.shape[0], subBlockPixel):
         for j in range(0, images.shape[1], subBlockPixel):

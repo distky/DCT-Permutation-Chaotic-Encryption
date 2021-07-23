@@ -35,7 +35,7 @@ class InputSteganografiDanEnkripsi(QWidget):
         self.ui_steganoenkripsi.citraSteganoView.setScene(None)
     
     def on_btnEnkripsiDanStegano_click(self):
-        resultPixmap = processEncryptionAndStegano(self.ui_steganoenkripsi.citraSampulPath.text(), self.ui_steganoenkripsi.citraPesanPath.text(), self.ui_steganoenkripsi.doubleSpinBoxX0.value(), self.ui_steganoenkripsi.doubleSpinBoxY0.value(), lambda: saveFileDialog(self, 'JPEG (*jpg;*.jpeg);;TIFF (*.tif;*.tiff);;BMP (*.bmp)'), showMessageBox)
+        resultPixmap = processEncryptionAndStegano(self.ui_steganoenkripsi.citraSampulPath.text(), self.ui_steganoenkripsi.citraPesanPath.text(), self.ui_steganoenkripsi.doubleSpinBoxX0.value(), self.ui_steganoenkripsi.doubleSpinBoxY0.value(), lambda: saveFileDialog(self, 'BMP (*.bmp);;TIFF (*.tif;*.tiff)'), showMessageBox)
         addImageToGraphicView(self, resultPixmap, self.ui_steganoenkripsi.citraSteganoView)
 
 class InputEkstraksiDanDekripsi(QWidget):

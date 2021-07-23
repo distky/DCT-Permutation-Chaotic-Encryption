@@ -1,35 +1,15 @@
 from PyQt5.QtWidgets import QMessageBox
-from .CommonFunction import convertImageToPixmap, imageio, bgr2gray, convertSubBlockToImage, convertImageToSubBlock, loadDcMatrix, saveImageAs, saveDcMatrix, loadDcMatrix, fullStackTrace, VALIDATION_ERROR, ACTION_CANCELLED, validCriteria, validate
-from .DiscreteCosineTransform import createDctSubBlock, createDcCoefficientMatrix, restoreDcCoefficientMatrixThenIdct
+from .CommonFunction import convertImageToPixmap, saveImageAs, saveDcMatrix, fullStackTrace, VALIDATION_ERROR, ACTION_CANCELLED, validCriteria, validate
 from .PermutationBasedChaoticEncryption import encryption, decryption
-import pandas as pd
-
-def embedEncryptionMessageToDcCoefficientMatrix(cipherImage, dccMatrix, alpha = 1):
-    return dccMatrix + (cipherImage / alpha)
+from .DctSteganography import steganography, extraction
 
 def processEncryptionAndStegano(coverImgPath, messageImgPath, x0, y0, saveFileDialog, showMessageBox):
     try:
         coverImage, messageImage = validate(coverImgPath, messageImgPath)
 
-        coverImageShape = coverImage.shape
-        messageImageShape = messageImage.shape
-
-        df = pd.DataFrame(messageImage)
-        df.to_csv('file_messageImage.csv',index=False)
-
         cipherImage = encryption(messageImage, x0, y0)
 
-        subBlock = convertImageToSubBlock(coverImage, (coverImageShape[0]//messageImageShape[0]))
-
-        dctSubBlock = createDctSubBlock(subBlock)
-
-        dcCoefficientMatrix = createDcCoefficientMatrix(dctSubBlock, messageImageShape)
-
-        embeddedMatrix = embedEncryptionMessageToDcCoefficientMatrix(cipherImage, dcCoefficientMatrix, 255)
-
-        idctSubBlock = restoreDcCoefficientMatrixThenIdct(embeddedMatrix, dctSubBlock)
-
-        embeddedImage = convertSubBlockToImage(idctSubBlock, coverImageShape,  (coverImageShape[0]//messageImageShape[0]))
+        embeddedImage, dcCoefficientMatrix = steganography(coverImage, cipherImage)
         
         fileName = saveFileDialog()
 
@@ -47,27 +27,13 @@ def processEncryptionAndStegano(coverImgPath, messageImgPath, x0, y0, saveFileDi
         
         return None
 
-def recoverEncryptionMessageFromDcCoefficientMatrix(dccStego, dccCover, alpha = 1):
-    return (dccStego - dccCover) * alpha
-
 def processExtractAndDecrypt(steganoImgPath, dcMatrixPath, x0, y0, saveFileDialog, showMessageBox):
     try:
         steganoImage, dcMatrix = validate(steganoImgPath, dcMatrixPath)
 
-        dctMatrixShape = dcMatrix.shape
-
-        stegoSubBlock = convertImageToSubBlock(steganoImage, 16)
-
-        dctStegoSubBlock = createDctSubBlock(stegoSubBlock)
-
-        stegoDcCoefficient = createDcCoefficientMatrix(dctStegoSubBlock, dctMatrixShape)
-
-        encryptedMessage = recoverEncryptionMessageFromDcCoefficientMatrix(stegoDcCoefficient, dcMatrix, 255)
+        encryptedMessage = extraction(steganoImage, dcMatrix)
 
         decryptedMessage = decryption(encryptedMessage, x0, y0)
-
-        df = pd.DataFrame(decryptedMessage)
-        df.to_csv('file_decryptedMessage.csv',index=False)
 
         fileName = saveFileDialog()
 

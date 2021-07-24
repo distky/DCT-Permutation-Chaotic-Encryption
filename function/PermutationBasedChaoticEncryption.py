@@ -1,4 +1,4 @@
-from .HenonMapGenerator import decimal_to_binary, binary_to_7_byte, create_henon_map, binary_to_decimal
+from .HenonMapGenerator import decimal_to_binary, binary_to_7_byte, create_henon_map
 from .CommonFunction import np, deepCopy
 
 def encryption(message_image, x = 0.1, y = 0.1):

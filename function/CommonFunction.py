@@ -37,6 +37,8 @@ def openImageFromPath(path):
 def convertImageToPixmap(img, isPath = False):
     if isPath:
         img = bgr2gray(openImageFromPath(img))
+    elif img is None:
+        return None
 
     return ImageQt.toqpixmap(Image.fromarray(rounding(img,0).astype('uint8')))
 
@@ -64,11 +66,14 @@ def MSE(img1Path, img2Path):
     return np.mean((bgr2gray(openImageFromPath(img1Path)) - bgr2gray(openImageFromPath(img2Path))) ** 2)
 
 def NCC(img1Path, img2Path):
+    psnr = PSNR(img1Path, img2Path)
+
+    if(psnr == 100):
+        return 1.0
+
     img1 = bgr2gray(openImageFromPath(img1Path)).astype('float32')
     img2 = bgr2gray(openImageFromPath(img2Path)).astype('float32')
 
-    print(img1)
-    print(img2)
     return cv2.matchTemplate(img1, img2, cv2.TM_CCOEFF_NORMED)[0][0]
 
 def fullStackTrace():
@@ -85,10 +90,13 @@ def fullStackTrace():
         stackstr += '  ' + traceback.format_exc().lstrip(trc)
     return stackstr
 
-def validCriteria():
-    return 'Periksa kembali apakah gambar telah diinput dan memenuhi kriteria:\n1. Pastikan path file pertama dan kedua valid\n2.Pastikan ukuran pesan merupakan kelipatan dari 8 dan memiliki width dan height yang sama\n3. Pastikan ukuran citra sampul merupakan 16 kali dari ukuran citra pesan\n4. Pastikan ukuran citra pesan NxN dimana N lebih besar sama dengan 32 dan N lebih kecil sama dengan 64'
+def validCriteria(isCompare):
+    if isCompare:
+        return 'Periksa kembali apakah input telah memenuhi kriteria berikut ini:\n1. Pastikan path file pertama dan kedua valid\n2. Pastikan ukuran gambar yang dibandingkan sesuai'
+    else:
+        return 'Periksa kembali apakah input telah memenuhi kriteria berikut ini:\n1. Pastikan path file pertama dan kedua valid\n2. Pastikan ukuran citra pesan NxN dimana N lebih besar sama dengan 32 dan N lebih kecil sama dengan 64 dan N merupakan kelipatan dari 8\n3. Pastikan ukuran citra sampul merupakan 16 kali dari ukuran citra pesan\n4. Pastikan nilai kunci X0 dan Y0 lebih besar dari 0'
 
-def validate(filePath1, filePath2, x0 = 0, y0 = 0):
+def validate(filePath1, filePath2, x0 = 0, y0 = 0, isCompare = False):
     if filePath1 == '' or filePath2 == '':
         raise IOError(VALIDATION_ERROR)
 
@@ -105,18 +113,24 @@ def validate(filePath1, filePath2, x0 = 0, y0 = 0):
 
     height2, width2 = file2.shape
 
-    if height2 != width2:
-        raise IOError(VALIDATION_ERROR)
-    elif height2 * 16 != height or width2 * 16 != width:
-        raise IOError(VALIDATION_ERROR)
-    elif height2 % 8 != 0:
-        raise IOError(VALIDATION_ERROR)
-    elif height2 < 32 and height2 > 64:
-        raise IOError(VALIDATION_ERROR)
-    
-    if x0 == 0.0:
-        raise IOError(VALIDATION_ERROR)
-    elif y0 == 0.0:
-        raise IOError(VALIDATION_ERROR)
+    if isCompare:
+        if height != height2:
+            raise IOError(VALIDATION_ERROR)
+        elif width != width2:
+            raise IOError(VALIDATION_ERROR)
+    else:
+        if height2 != width2:
+            raise IOError(VALIDATION_ERROR)
+        elif height2 * 16 != height or width2 * 16 != width:
+            raise IOError(VALIDATION_ERROR)
+        elif height2 % 8 != 0:
+            raise IOError(VALIDATION_ERROR)
+        elif height2 < 32 and height2 > 64:
+            raise IOError(VALIDATION_ERROR)
+        
+        if x0 == 0.0:
+            raise IOError(VALIDATION_ERROR)
+        elif y0 == 0.0:
+            raise IOError(VALIDATION_ERROR)
     
     return file1, file2, x0, y0

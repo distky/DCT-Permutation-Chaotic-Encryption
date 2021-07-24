@@ -64,11 +64,14 @@ def MSE(img1Path, img2Path):
     return np.mean((bgr2gray(openImageFromPath(img1Path)) - bgr2gray(openImageFromPath(img2Path))) ** 2)
 
 def NCC(img1Path, img2Path):
+    psnr = PSNR(img1Path, img2Path)
+
+    if(psnr == 100):
+        return 1.0
+
     img1 = bgr2gray(openImageFromPath(img1Path)).astype('float32')
     img2 = bgr2gray(openImageFromPath(img2Path)).astype('float32')
 
-    print(img1)
-    print(img2)
     return cv2.matchTemplate(img1, img2, cv2.TM_CCOEFF_NORMED)[0][0]
 
 def fullStackTrace():

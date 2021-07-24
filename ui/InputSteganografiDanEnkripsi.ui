@@ -23,7 +23,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QGraphicsView" name="graphicsView">
+  <widget class="QGraphicsView" name="citraPesanView">
    <property name="geometry">
     <rect>
      <x>260</x>
@@ -156,13 +156,13 @@
     </font>
    </property>
    <property name="decimals">
-    <number>8</number>
+    <number>5</number>
    </property>
    <property name="maximum">
     <double>1.000000000000000</double>
    </property>
    <property name="singleStep">
-    <double>0.000001000000000</double>
+    <double>0.000010000000000</double>
    </property>
   </widget>
   <widget class="QDoubleSpinBox" name="doubleSpinBoxX0">
@@ -180,13 +180,13 @@
     </font>
    </property>
    <property name="decimals">
-    <number>8</number>
+    <number>5</number>
    </property>
    <property name="maximum">
     <double>1.000000000000000</double>
    </property>
    <property name="singleStep">
-    <double>0.000001000000000</double>
+    <double>0.000010000000000</double>
    </property>
   </widget>
   <widget class="QLineEdit" name="citraSampulPath">
@@ -253,7 +253,7 @@
     <string>Nilai Y0 :</string>
    </property>
   </widget>
-  <widget class="QGraphicsView" name="graphicsView_2">
+  <widget class="QGraphicsView" name="citraSteganoView">
    <property name="geometry">
     <rect>
      <x>520</x>
@@ -263,7 +263,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QGraphicsView" name="graphicsView_3">
+  <widget class="QGraphicsView" name="citraSampulView">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -294,7 +294,7 @@
   <widget class="QLabel" name="lblCitraPesanView">
    <property name="geometry">
     <rect>
-     <x>600</x>
+     <x>330</x>
      <y>600</y>
      <width>101</width>
      <height>31</height>
@@ -312,7 +312,7 @@
   <widget class="QLabel" name="lblCitraStego">
    <property name="geometry">
     <rect>
-     <x>330</x>
+     <x>590</x>
      <y>600</y>
      <width>121</width>
      <height>31</height>
@@ -325,6 +325,24 @@
    </property>
    <property name="text">
     <string>Citra Stegano</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btnsavex0y0">
+   <property name="geometry">
+    <rect>
+     <x>340</x>
+     <y>160</y>
+     <width>221</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>11</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Save X0 dan Y0</string>
    </property>
   </widget>
  </widget>

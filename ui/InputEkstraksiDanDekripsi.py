@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_InputEkstraksiDanDekripsi(object):
     def setupUi(self, InputEkstraksiDanDekripsi):
         InputEkstraksiDanDekripsi.setObjectName("InputEkstraksiDanDekripsi")
-        InputEkstraksiDanDekripsi.setFixedSize(767, 706)
+        InputEkstraksiDanDekripsi.resize(767, 706)
         self.lblNilaiX0 = QtWidgets.QLabel(InputEkstraksiDanDekripsi)
         self.lblNilaiX0.setGeometry(QtCore.QRect(20, 160, 91, 31))
         font = QtGui.QFont()
@@ -45,8 +45,10 @@ class Ui_InputEkstraksiDanDekripsi(object):
         font.setPointSize(14)
         self.doubleSpinBoxX0.setFont(font)
         self.doubleSpinBoxX0.setDecimals(5)
+        self.doubleSpinBoxX0.setMinimum(0.0)
         self.doubleSpinBoxX0.setMaximum(1.0)
         self.doubleSpinBoxX0.setSingleStep(1e-05)
+        self.doubleSpinBoxX0.setProperty("value", 0.0)
         self.doubleSpinBoxX0.setObjectName("doubleSpinBoxX0")
         self.doubleSpinBoxY0 = QtWidgets.QDoubleSpinBox(InputEkstraksiDanDekripsi)
         self.doubleSpinBoxY0.setGeometry(QtCore.QRect(120, 200, 181, 31))
@@ -113,6 +115,12 @@ class Ui_InputEkstraksiDanDekripsi(object):
         font.setPointSize(12)
         self.lblCitraExtract.setFont(font)
         self.lblCitraExtract.setObjectName("lblCitraExtract")
+        self.btnopenx0y0 = QtWidgets.QPushButton(InputEkstraksiDanDekripsi)
+        self.btnopenx0y0.setGeometry(QtCore.QRect(330, 160, 221, 31))
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.btnopenx0y0.setFont(font)
+        self.btnopenx0y0.setObjectName("btnopenx0y0")
 
         self.retranslateUi(InputEkstraksiDanDekripsi)
         QtCore.QMetaObject.connectSlotsByName(InputEkstraksiDanDekripsi)
@@ -131,6 +139,7 @@ class Ui_InputEkstraksiDanDekripsi(object):
         self.btnEkstraksiDanDekripsi.setText(_translate("InputEkstraksiDanDekripsi", "Ekstraksi dan Dekripsi"))
         self.lblCitraSteganoview.setText(_translate("InputEkstraksiDanDekripsi", "Citra Stegano"))
         self.lblCitraExtract.setText(_translate("InputEkstraksiDanDekripsi", "Citra Extraksi dan Dekripsi"))
+        self.btnopenx0y0.setText(_translate("InputEkstraksiDanDekripsi", "Open File X0 dan Y0"))
 
 if __name__ == "__main__":
     import sys

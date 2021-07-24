@@ -88,7 +88,7 @@ def fullStackTrace():
 def validCriteria():
     return 'Periksa kembali apakah gambar telah diinput dan memenuhi kriteria:\n1. Pastikan path file pertama dan kedua valid\n2.Pastikan ukuran pesan merupakan kelipatan dari 8 dan memiliki width dan height yang sama\n3. Pastikan ukuran citra sampul merupakan 16 kali dari ukuran citra pesan\n4. Pastikan ukuran citra pesan NxN dimana N lebih besar sama dengan 32 dan N lebih kecil sama dengan 64'
 
-def validate(filePath1, filePath2, x0 = 0, y0 = 0, floatValue = None):
+def validate(filePath1, filePath2, x0 = 0, y0 = 0):
     if filePath1 == '' or filePath2 == '':
         raise IOError(VALIDATION_ERROR)
 
@@ -101,7 +101,7 @@ def validate(filePath1, filePath2, x0 = 0, y0 = 0, floatValue = None):
     if filePath2Split[-1] != 'npy':
         file2 = bgr2gray(openImageFromPath(filePath2))
     else:
-        file2, floatValue, x0, y0 = loadDcMatrix(filePath2)
+        file2, x0, y0 = loadDcMatrix(filePath2)
 
     height2, width2 = file2.shape
 
@@ -119,4 +119,4 @@ def validate(filePath1, filePath2, x0 = 0, y0 = 0, floatValue = None):
     elif y0 == 0.0:
         raise IOError(VALIDATION_ERROR)
     
-    return file1, file2, floatValue, x0, y0
+    return file1, file2, x0, y0

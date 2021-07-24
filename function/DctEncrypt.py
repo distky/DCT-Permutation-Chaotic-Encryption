@@ -13,11 +13,9 @@ def processEncryptionAndStegano(coverImgPath, messageImgPath, x0, y0, saveFileDi
         
         fileName = saveFileDialog()
 
-        floatValue = embeddedImage - deepCopy(embeddedImage).astype('uint8')
-
-        saveDcMatrix((dcCoefficientMatrix,floatValue, x0, y0), fileName)
+        saveDcMatrix((dcCoefficientMatrix, x0, y0), fileName)
     
-        saveImageAs(embeddedImage.astype('uint8'), fileName)
+        saveImageAs(embeddedImage, fileName)
 
         return convertImageToPixmap(embeddedImage.astype('uint8'))
     except Exception as e:
@@ -31,9 +29,9 @@ def processEncryptionAndStegano(coverImgPath, messageImgPath, x0, y0, saveFileDi
 
 def processExtractAndDecrypt(steganoImgPath, dcMatrixPath, saveFileDialog, showMessageBox):
     try:
-        steganoImage, dcMatrix, floatValue, x0, y0 = validate(steganoImgPath, dcMatrixPath)
+        steganoImage, dcMatrix, x0, y0 = validate(steganoImgPath, dcMatrixPath)
 
-        encryptedMessage = rounding(extraction(steganoImage + floatValue, dcMatrix),0)
+        encryptedMessage = rounding(extraction(steganoImage, dcMatrix),0)
 
         decryptedMessage = rounding(decryption(encryptedMessage, x0, y0), 0).astype('uint8')
 

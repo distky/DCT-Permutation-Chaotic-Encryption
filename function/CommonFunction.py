@@ -49,7 +49,7 @@ def deepCopy(obj):
     return copy.deepcopy(obj)
 
 def saveDcMatrix(numpyObject, filename):
-    np.save(filename + '.npy', np.array(numpyObject, dtype='object'))
+    np.save(filename + '.npy', numpyObject)
 
 def loadDcMatrix(npyFile):
     return np.load(npyFile, allow_pickle=True)
@@ -109,7 +109,7 @@ def validate(filePath1, filePath2, x0 = 0, y0 = 0, isCompare = False):
     if filePath2Split[-1] != 'npy':
         file2 = bgr2gray(openImageFromPath(filePath2))
     else:
-        file2, x0, y0 = loadDcMatrix(filePath2)
+        file2 = loadDcMatrix(filePath2)
 
     height2, width2 = file2.shape
 

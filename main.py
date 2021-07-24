@@ -3,7 +3,7 @@ from PyQt5 import QtCore
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QDesktopWidget, QFileDialog, QGraphicsPixmapItem, QGraphicsScene, QGridLayout, QLabel, QMainWindow, QMessageBox, QScrollArea, QWidget
 from ui import MainWindow as MainWindowUI, InputEkstraksiDanDekripsi as InputEkstraksiDanDekripsiUI, InputSteganografiDanEnkripsi as InputSteganografiDanEnkripsiUI, Perbandingan as PerbandinganUI
-from controller.MainController import processEncryptionAndStegano, processExtractAndDecrypt, processMSE, processPSNR, processNCC, processSaveResult
+from controller.MainController import processEncryptionAndStegano, processExtractAndDecrypt, processLoadKey, processMSE, processPSNR, processNCC, processSaveKey, processSaveResult
 from function.CommonFunction import VALIDATION_ERROR, convertImageToPixmap, ACTION_CANCELLED, fullStackTrace, validCriteria
 
 class InputSteganografiDanEnkripsi(QWidget):
@@ -22,9 +22,12 @@ class InputSteganografiDanEnkripsi(QWidget):
         })
         self.ui_steganoenkripsi.btnEnkripsiDanStegano.clicked.connect(self.on_btnEnkripsiDanStegano_click)
         self.ui_steganoenkripsi.btnKembali.clicked.connect(lambda: showWindow(self, parent))
+        self.ui_steganoenkripsi.btnsavex0y0.clicked.connect(self.on_btnsavex0y0_click)
+        self.reset()
     
     def resetResult(self):
         self.ui_steganoenkripsi.citraSteganoView.setScene(None)
+        self.ui_steganoenkripsi.btnsavex0y0.setEnabled(False)
 
     def reset(self):
         self.ui_steganoenkripsi.citraPesanPath.setText(None)
@@ -39,7 +42,17 @@ class InputSteganografiDanEnkripsi(QWidget):
         try:
             embeddedImage, dcCoefficientMatrix, x0, y0 = processEncryptionAndStegano(self.ui_steganoenkripsi.citraSampulPath.text(), self.ui_steganoenkripsi.citraPesanPath.text(), self.ui_steganoenkripsi.doubleSpinBoxX0.value(), self.ui_steganoenkripsi.doubleSpinBoxY0.value())
             addImageToGraphicView(self, convertImageToPixmap(embeddedImage), self.ui_steganoenkripsi.citraSteganoView)
-            processSaveResult(embeddedImage, lambda: saveFileDialog(self, 'TIFF (*.tif;*.tiff)'), dcMatrix=dcCoefficientMatrix, x0=x0, y0=y0)
+            processSaveResult(embeddedImage, lambda: saveFileDialog(self, 'TIFF (*.tif;*.tiff)'), dcMatrix=dcCoefficientMatrix)
+            self.x0 = x0
+            self.y0 = y0
+            self.ui_steganoenkripsi.btnsavex0y0.setEnabled(True)
+        except Exception as e:
+            handleException(e, showMessageBox)
+
+    def on_btnsavex0y0_click(self):
+        try:
+            processSaveKey(self.x0, self.y0, lambda: saveFileDialog(self, 'Text (*.txt)'))
+            showMessageBox('Berhasil', 'File berhasil disimpan', window=self)
         except Exception as e:
             handleException(e, showMessageBox)
 
@@ -52,13 +65,14 @@ class InputEkstraksiDanDekripsi(QWidget):
         centerWindow(self)
     
         self.ui_ekstraksidekripsi.btnCitraStegano.clicked.connect(lambda: {
-            openFileDialog(self, self.ui_ekstraksidekripsi.citraSteganoPath, isImage=True, dialogName='Citra Stegano', imageOptions='TIFF (*.tif;*.tiff)', graphicView=self.ui_ekstraksidekripsi.citraSteganoView, resetResult=lambda:self.resetResult())
+            openFileDialog(self, self.ui_ekstraksidekripsi.citraSteganoPath, isImage=True, dialogName='Citra Stegano', fileOptions='TIFF (*.tif;*.tiff)', graphicView=self.ui_ekstraksidekripsi.citraSteganoView, resetResult=lambda:self.resetResult())
         })
         self.ui_ekstraksidekripsi.btnDcMatrix.clicked.connect(lambda: {
             openFileDialog(self, self.ui_ekstraksidekripsi.dcMatrixPath, isImage=False, dialogName='DC Matrix', resetResult=lambda:self.resetResult())
         })
         self.ui_ekstraksidekripsi.btnEkstraksiDanDekripsi.clicked.connect(self.on_btnEkstraksiDanDekripsi_click)
         self.ui_ekstraksidekripsi.btnKembali.clicked.connect(lambda: showWindow(self, parent))
+        self.ui_ekstraksidekripsi.btnopenx0y0.clicked.connect(self.on_btnopenx0y0_click)
     
     def resetResult(self):
         self.ui_ekstraksidekripsi.citraHasilView.setScene(None)
@@ -74,11 +88,19 @@ class InputEkstraksiDanDekripsi(QWidget):
     def on_btnEkstraksiDanDekripsi_click(self):
         self.ui_ekstraksidekripsi.citraHasilView.setScene(None)
         try:
-            decryptedImage = processExtractAndDecrypt(self.ui_ekstraksidekripsi.citraSteganoPath.text(), self.ui_ekstraksidekripsi.dcMatrixPath.text())
+            decryptedImage = processExtractAndDecrypt(self.ui_ekstraksidekripsi.citraSteganoPath.text(), self.ui_ekstraksidekripsi.dcMatrixPath.text(), self.ui_ekstraksidekripsi.doubleSpinBoxX0.value(), self.ui_ekstraksidekripsi.doubleSpinBoxY0.value())
             addImageToGraphicView(self, convertImageToPixmap(decryptedImage), self.ui_ekstraksidekripsi.citraHasilView)
             processSaveResult(decryptedImage, lambda:saveFileDialog(self, 'BMP (*.bmp);;TIFF (*.tif;*.tiff)'))
         except Exception as e:
             handleException(e, showMessageBox)
+    
+    def on_btnopenx0y0_click(self):
+        try:
+            x0, y0 = processLoadKey(openFileDialog(self, fileOptions='Text (*.txt)'))
+            self.ui_ekstraksidekripsi.doubleSpinBoxX0.setValue(x0)
+            self.ui_ekstraksidekripsi.doubleSpinBoxY0.setValue(y0)
+        except:
+            showMessageBox('Info', 'Invalid key text', window=self)
 
 class Perbandingan(QWidget):
     def __init__(self, parent=None):
@@ -144,6 +166,7 @@ class ScrollMessageBox(QMessageBox):
         scrll.setMinimumSize (400,200)
         grd.addWidget(scrll,0,1)
         self.setText(None)
+        self.setWindowIcon(QIcon('main.ico'))
         self.exec_()
 
 class MainWindow(QMainWindow):
@@ -162,18 +185,20 @@ class MainWindow(QMainWindow):
         self.ui_mainwindow.btnExtractDecrypt.clicked.connect(lambda: showWindow(self, self.enkripsiDekripsi))
         self.ui_mainwindow.btnCompare.clicked.connect(lambda: showWindow(self, self.perbandingan))
 
-def openFileDialog(window, lineEdit, graphicView=None, isImage=True, dialogName="Dialog", imageOptions='Images (*tif *.tiff *.jpg *.jpeg *.bmp)', resetResult=None):
+def openFileDialog(window, lineEdit=None, graphicView=None, isImage=True, dialogName="Dialog", fileOptions='Images (*tif *.tiff *.jpg *.jpeg *.bmp)', resetResult=None):
     options = QFileDialog.Options()
 
-    fileOptions = imageOptions if isImage else 'Numpy Array (*.npy)'
+    fileOptions = fileOptions if isImage else 'Numpy Array (*.npy)'
 
     fileName, _ = QFileDialog.getOpenFileName(window, dialogName, '', fileOptions, options=options)
     if fileName:
-        lineEdit.setText(fileName)
-        if graphicView != None:
+        if lineEdit:
+            lineEdit.setText(fileName)
+        if graphicView:
             pix = convertImageToPixmap(fileName, isPath = True)
             addImageToGraphicView(window, pix, graphicView)
             resetResult()
+    return fileName
 
 def saveFileDialog(window, fileOptions):
     options = QFileDialog.Options()
@@ -202,8 +227,11 @@ def centerWindow(window):
     qtRectangle.moveCenter(centerPoint)
     window.move(qtRectangle.topLeft())
 
-def showMessageBox(title, message, type = QMessageBox.Information):
-    ScrollMessageBox(type, title, message)
+def showMessageBox(title, message, type = QMessageBox.Information, window = None):
+    if type == QMessageBox.Information and window:
+        QMessageBox.information(window, title, message)
+    else:
+        ScrollMessageBox(type, title, message)
 
 def handleException(e, showMessageBox, isCompare=False):
     s = getattr(e, 'message', str(e))

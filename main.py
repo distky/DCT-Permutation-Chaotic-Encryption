@@ -3,7 +3,7 @@ from PyQt5 import QtCore
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QDesktopWidget, QFileDialog, QGraphicsPixmapItem, QGraphicsScene, QGridLayout, QLabel, QMainWindow, QMessageBox, QScrollArea, QWidget
 from ui import MainWindow as MainWindowUI, InputEkstraksiDanDekripsi as InputEkstraksiDanDekripsiUI, InputSteganografiDanEnkripsi as InputSteganografiDanEnkripsiUI, Perbandingan as PerbandinganUI
-from function.MainController import processEncryptionAndStegano, processExtractAndDecrypt, processMSE, processPSNR, processNCC, processSaveResult
+from controller.MainController import processEncryptionAndStegano, processExtractAndDecrypt, processMSE, processPSNR, processNCC, processSaveResult
 from function.CommonFunction import VALIDATION_ERROR, convertImageToPixmap, ACTION_CANCELLED, fullStackTrace, validCriteria
 
 class InputSteganografiDanEnkripsi(QWidget):
@@ -37,7 +37,7 @@ class InputSteganografiDanEnkripsi(QWidget):
     
     def on_btnEnkripsiDanStegano_click(self):
         try:
-            embeddedImage, dcCoefficientMatrix, x0, y0 = processEncryptionAndStegano(self.ui_steganoenkripsi.citraSampulPath.text(), self.ui_steganoenkripsi.citraPesanPath.text(), self.ui_steganoenkripsi.doubleSpinBoxX0.value(), self.ui_steganoenkripsi.doubleSpinBoxY0.value(), showMessageBox)
+            embeddedImage, dcCoefficientMatrix, x0, y0 = processEncryptionAndStegano(self.ui_steganoenkripsi.citraSampulPath.text(), self.ui_steganoenkripsi.citraPesanPath.text(), self.ui_steganoenkripsi.doubleSpinBoxX0.value(), self.ui_steganoenkripsi.doubleSpinBoxY0.value())
             addImageToGraphicView(self, convertImageToPixmap(embeddedImage), self.ui_steganoenkripsi.citraSteganoView)
             processSaveResult(embeddedImage, lambda: saveFileDialog(self, 'TIFF (*.tif;*.tiff)'), dcMatrix=dcCoefficientMatrix, x0=x0, y0=y0)
         except Exception as e:

@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QMessageBox
-from .CommonFunction import MSE, NCC, PSNR, rounding, saveImageAs, saveDcMatrix, fullStackTrace, VALIDATION_ERROR, ACTION_CANCELLED, validCriteria, validate
-from .PermutationBasedChaoticEncryption import encryption, decryption
-from .DctSteganography import steganography, extraction
+from function.CommonFunction import MSE, NCC, PSNR, rounding, saveImageAs, saveDcMatrix, fullStackTrace, VALIDATION_ERROR, ACTION_CANCELLED, validCriteria, validate
+from function.PermutationBasedChaoticEncryption import encryption, decryption
+from function.DctSteganography import steganography, extraction
 
 def processEncryptionAndStegano(coverImgPath, messageImgPath, x0, y0):
     coverImage, messageImage, *_ = validate(coverImgPath, messageImgPath, x0, y0)

@@ -15,19 +15,23 @@ class InputSteganografiDanEnkripsi(QWidget):
         centerWindow(self)
         
         self.ui_steganoenkripsi.btnCitraSampul.clicked.connect(lambda: {
-            openFileDialog(self, self.ui_steganoenkripsi.citraSampulPath, isImage=True, dialogName='Citra Sampul', graphicView=self.ui_steganoenkripsi.citraSampulView, resetResult=lambda:self.resetResult())
+            openFileDialog(self, self.ui_steganoenkripsi.citraSampulPath, isImage=True, dialogName='Citra Sampul', graphicView=self.ui_steganoenkripsi.citraSampulView, resetResult=self.resetResult)
         })
         self.ui_steganoenkripsi.btnCitraPesan.clicked.connect(lambda: {
-            openFileDialog(self, self.ui_steganoenkripsi.citraPesanPath, isImage=True, dialogName='Citra Pesan', graphicView=self.ui_steganoenkripsi.citraPesanView, resetResult=lambda:self.resetResult())
+            openFileDialog(self, self.ui_steganoenkripsi.citraPesanPath, isImage=True, dialogName='Citra Pesan', graphicView=self.ui_steganoenkripsi.citraPesanView, resetResult=self.resetResult)
         })
         self.ui_steganoenkripsi.btnEnkripsiDanStegano.clicked.connect(self.on_btnEnkripsiDanStegano_click)
         self.ui_steganoenkripsi.btnKembali.clicked.connect(lambda: showWindow(self, parent))
-        self.ui_steganoenkripsi.btnsave.clicked.connect(self.on_btnsavex0y0_click)
+        self.ui_steganoenkripsi.btnsave.clicked.connect(self.on_btnsave_click)
         self.reset()
     
     def resetResult(self):
         self.ui_steganoenkripsi.citraSteganoView.setScene(None)
         self.ui_steganoenkripsi.btnsave.setEnabled(False)
+        self.embeddedImage = None
+        self.dcCoefficientMatrix = None
+        self.x0 = None
+        self.y0 = None
 
     def reset(self):
         self.ui_steganoenkripsi.citraPesanPath.setText(None)
@@ -42,17 +46,17 @@ class InputSteganografiDanEnkripsi(QWidget):
         try:
             embeddedImage, dcCoefficientMatrix, x0, y0 = processEncryptionAndStegano(self.ui_steganoenkripsi.citraSampulPath.text(), self.ui_steganoenkripsi.citraPesanPath.text(), self.ui_steganoenkripsi.doubleSpinBoxX0.value(), self.ui_steganoenkripsi.doubleSpinBoxY0.value())
             addImageToGraphicView(self, convertImageToPixmap(embeddedImage), self.ui_steganoenkripsi.citraSteganoView)
-            processSaveResult(embeddedImage, lambda: saveFileDialog(self, 'TIFF (*.tif;*.tiff)'), dcMatrix=dcCoefficientMatrix)
+            self.embeddedImage = embeddedImage
+            self.dcCoefficientMatrix = dcCoefficientMatrix
             self.x0 = x0
             self.y0 = y0
             self.ui_steganoenkripsi.btnsave.setEnabled(True)
         except Exception as e:
             handleException(e, showMessageBox)
 
-    def on_btnsavex0y0_click(self):
+    def on_btnsave_click(self):
         try:
-            processSaveKey(self.x0, self.y0, lambda: saveFileDialog(self, 'Text (*.txt)'))
-            showMessageBox('Berhasil', 'File berhasil disimpan', window=self)
+            processSaveResult(self.embeddedImage, lambda:saveFileDialog(self, 'TIFF (*.tif;*.tiff)'), lambda:showMessageBox('Berhasil', 'File berhasil disimpan', window=self), x0=self.x0, y0=self.y0, dcMatrix=self.dcCoefficientMatrix)
         except Exception as e:
             handleException(e, showMessageBox)
 
@@ -65,17 +69,21 @@ class InputEkstraksiDanDekripsi(QWidget):
         centerWindow(self)
     
         self.ui_ekstraksidekripsi.btnCitraStegano.clicked.connect(lambda: {
-            openFileDialog(self, self.ui_ekstraksidekripsi.citraSteganoPath, isImage=True, dialogName='Citra Stegano', fileOptions='TIFF (*.tif;*.tiff)', graphicView=self.ui_ekstraksidekripsi.citraSteganoView, resetResult=lambda:self.resetResult())
+            openFileDialog(self, self.ui_ekstraksidekripsi.citraSteganoPath, isImage=True, dialogName='Citra Stegano', fileOptions='TIFF (*.tif;*.tiff)', graphicView=self.ui_ekstraksidekripsi.citraSteganoView, resetResult=self.resetResult)
         })
         self.ui_ekstraksidekripsi.btnDcMatrix.clicked.connect(lambda: {
-            openFileDialog(self, self.ui_ekstraksidekripsi.dcMatrixPath, isImage=False, dialogName='DC Matrix', resetResult=lambda:self.resetResult())
+            openFileDialog(self, self.ui_ekstraksidekripsi.dcMatrixPath, isImage=False, dialogName='DC Matrix', resetResult=self.resetResult)
         })
         self.ui_ekstraksidekripsi.btnEkstraksiDanDekripsi.clicked.connect(self.on_btnEkstraksiDanDekripsi_click)
         self.ui_ekstraksidekripsi.btnKembali.clicked.connect(lambda: showWindow(self, parent))
         self.ui_ekstraksidekripsi.btnopenx0y0.clicked.connect(self.on_btnopenx0y0_click)
+        self.ui_ekstraksidekripsi.btnSave.clicked.connect(self.on_btnSave_click)
+        self.reset()
     
     def resetResult(self):
+        self.decryptedImage = None
         self.ui_ekstraksidekripsi.citraHasilView.setScene(None)
+        self.ui_ekstraksidekripsi.btnSave.setEnabled(False)
 
     def reset(self):
         self.ui_ekstraksidekripsi.citraSteganoPath.setText(None)
@@ -90,17 +98,26 @@ class InputEkstraksiDanDekripsi(QWidget):
         try:
             decryptedImage = processExtractAndDecrypt(self.ui_ekstraksidekripsi.citraSteganoPath.text(), self.ui_ekstraksidekripsi.dcMatrixPath.text(), self.ui_ekstraksidekripsi.doubleSpinBoxX0.value(), self.ui_ekstraksidekripsi.doubleSpinBoxY0.value())
             addImageToGraphicView(self, convertImageToPixmap(decryptedImage), self.ui_ekstraksidekripsi.citraHasilView)
-            processSaveResult(decryptedImage, lambda:saveFileDialog(self, 'BMP (*.bmp);;TIFF (*.tif;*.tiff)'))
+            self.decryptedImage = decryptedImage
+            self.ui_ekstraksidekripsi.btnSave.setEnabled(True)
         except Exception as e:
             handleException(e, showMessageBox)
     
     def on_btnopenx0y0_click(self):
         try:
-            x0, y0 = processLoadKey(openFileDialog(self, fileOptions='Text (*.txt)'))
+            x0, y0 = processLoadKey(openFileDialog(self, fileOptions='Text (*.txt)', resetResult=self.resetResult))
             self.ui_ekstraksidekripsi.doubleSpinBoxX0.setValue(x0)
             self.ui_ekstraksidekripsi.doubleSpinBoxY0.setValue(y0)
-        except:
-            showMessageBox('Info', 'Invalid key text', window=self)
+        except Exception as e:
+            s = getattr(e, 'message', str(e))
+            if s != ACTION_CANCELLED:
+                showMessageBox('Info', 'Invalid key text', window=self)
+    
+    def on_btnSave_click(self):
+        try:
+            processSaveResult(self.decryptedImage, lambda:saveFileDialog(self, 'TIFF (*.tif;*.tiff);;BMP (*.bmp)'), lambda:showMessageBox('Berhasil', 'File berhasil disimpan', window=self))
+        except Exception as e:
+            handleException(e, showMessageBox)
 
 class Perbandingan(QWidget):
     def __init__(self, parent=None):
@@ -197,6 +214,7 @@ def openFileDialog(window, lineEdit=None, graphicView=None, isImage=True, dialog
         if graphicView:
             pix = convertImageToPixmap(fileName, isPath = True)
             addImageToGraphicView(window, pix, graphicView)
+        if resetResult:
             resetResult()
     return fileName
 

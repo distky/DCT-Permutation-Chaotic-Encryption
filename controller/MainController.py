@@ -1,5 +1,4 @@
-from PyQt5.QtWidgets import QMessageBox
-from function.CommonFunction import MSE, NCC, PSNR, rounding, saveImageAs, saveDcMatrix, fullStackTrace, VALIDATION_ERROR, ACTION_CANCELLED, validCriteria, validate
+from function.CommonFunction import ACTION_CANCELLED, MSE, NCC, PSNR, rounding, saveImageAs, saveDcMatrix, validate
 from function.PermutationBasedChaoticEncryption import encryption, decryption
 from function.DctSteganography import steganography, extraction
 import re
@@ -34,17 +33,21 @@ def processNCC(img1Path, img2Path):
     validate(img1Path, img2Path, isCompare=True)
     return NCC(img1Path, img2Path)
 
-def processSaveResult(embeddedImage, saveFileDialog, dcMatrix = None):
+def processSaveResult(image, saveFileDialog, showMessageBox, x0 = None, y0 = None, dcMatrix = []):
     filename = saveFileDialog()
 
-    saveDcMatrix(dcMatrix, filename)
+    saveImageAs(image, filename)
 
-    saveImageAs(embeddedImage, filename)
+    if len(dcMatrix) > 0:
+        saveDcMatrix(dcMatrix, filename)
 
-def processSaveKey(x0, y0, saveFileDialog):
-    filename = saveFileDialog()
+    if x0 and y0:
+        processSaveKey(x0,y0, filename)
+        
+    showMessageBox()
 
-    with open(filename, 'w') as output:
+def processSaveKey(x0, y0, filename):
+    with open(filename + '.txt', 'w') as output:
         output.write('x0=' + str(x0) + ',y0=' + str(y0) + ';')
 
 def processLoadKey(filepath):
@@ -55,11 +58,5 @@ def processLoadKey(filepath):
             result = keyRegex.search(keystring)
             x0, y0 = result.groups()
         return float(x0), float(y0)
-
-
-def handleException(e, showMessageBox):
-    s = getattr(e, 'message', str(e))
-    if s == VALIDATION_ERROR:
-        showMessageBox('Warning', validCriteria(), QMessageBox.Icon.Warning)
-    elif s != ACTION_CANCELLED:
-        showMessageBox('Error', fullStackTrace(), QMessageBox.Icon.Critical)
+    else:
+        raise IOError(ACTION_CANCELLED)

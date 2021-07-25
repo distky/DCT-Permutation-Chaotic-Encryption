@@ -121,6 +121,12 @@ class Ui_InputEkstraksiDanDekripsi(object):
         font.setPointSize(11)
         self.btnopenx0y0.setFont(font)
         self.btnopenx0y0.setObjectName("btnopenx0y0")
+        self.btnSave = QtWidgets.QPushButton(InputEkstraksiDanDekripsi)
+        self.btnSave.setGeometry(QtCore.QRect(520, 650, 121, 31))
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.btnSave.setFont(font)
+        self.btnSave.setObjectName("btnSave")
 
         self.retranslateUi(InputEkstraksiDanDekripsi)
         QtCore.QMetaObject.connectSlotsByName(InputEkstraksiDanDekripsi)
@@ -140,6 +146,7 @@ class Ui_InputEkstraksiDanDekripsi(object):
         self.lblCitraSteganoview.setText(_translate("InputEkstraksiDanDekripsi", "Citra Stegano"))
         self.lblCitraExtract.setText(_translate("InputEkstraksiDanDekripsi", "Citra Extraksi dan Dekripsi"))
         self.btnopenx0y0.setText(_translate("InputEkstraksiDanDekripsi", "Open File X0 dan Y0"))
+        self.btnSave.setText(_translate("InputEkstraksiDanDekripsi", "Save Hasil"))
 
 if __name__ == "__main__":
     import sys

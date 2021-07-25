@@ -327,12 +327,12 @@
     <string>Citra Stegano</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="btnsavex0y0">
+  <widget class="QPushButton" name="btnsave">
    <property name="geometry">
     <rect>
-     <x>340</x>
-     <y>160</y>
-     <width>221</width>
+     <x>490</x>
+     <y>650</y>
+     <width>141</width>
      <height>31</height>
     </rect>
    </property>
@@ -342,7 +342,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Save X0 dan Y0</string>
+    <string>Save Hasil</string>
    </property>
   </widget>
  </widget>

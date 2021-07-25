@@ -22,12 +22,12 @@ class InputSteganografiDanEnkripsi(QWidget):
         })
         self.ui_steganoenkripsi.btnEnkripsiDanStegano.clicked.connect(self.on_btnEnkripsiDanStegano_click)
         self.ui_steganoenkripsi.btnKembali.clicked.connect(lambda: showWindow(self, parent))
-        self.ui_steganoenkripsi.btnsavex0y0.clicked.connect(self.on_btnsavex0y0_click)
+        self.ui_steganoenkripsi.btnsave.clicked.connect(self.on_btnsavex0y0_click)
         self.reset()
     
     def resetResult(self):
         self.ui_steganoenkripsi.citraSteganoView.setScene(None)
-        self.ui_steganoenkripsi.btnsavex0y0.setEnabled(False)
+        self.ui_steganoenkripsi.btnsave.setEnabled(False)
 
     def reset(self):
         self.ui_steganoenkripsi.citraPesanPath.setText(None)
@@ -45,7 +45,7 @@ class InputSteganografiDanEnkripsi(QWidget):
             processSaveResult(embeddedImage, lambda: saveFileDialog(self, 'TIFF (*.tif;*.tiff)'), dcMatrix=dcCoefficientMatrix)
             self.x0 = x0
             self.y0 = y0
-            self.ui_steganoenkripsi.btnsavex0y0.setEnabled(True)
+            self.ui_steganoenkripsi.btnsave.setEnabled(True)
         except Exception as e:
             handleException(e, showMessageBox)
 

@@ -1,26 +1,26 @@
 from .CommonFunction import convertSubBlockToImage, convertImageToSubBlock
 from .DiscreteCosineTransform import createDctSubBlock, createDcCoefficientMatrix, restoreDcCoefficientMatrixThenIdct
 
-def embedEncryptionMessageToDcCoefficientMatrix(cipherImage, dccMatrix, alpha = 1):
-    return dccMatrix + (cipherImage * alpha)
+def embedEncryptionMessageToDcCoefficientMatrix(encryptedImage, dccMatrix, alpha = 1):
+    return dccMatrix + (encryptedImage * alpha)
 
-def steganography(coverImage, cipherImage):
+def steganography(coverImage, encryptedImage):
     coverImageShape = coverImage.shape
-    cipherImageShape = cipherImage.shape
+    encryptedImageShape = encryptedImage.shape
 
     subBlock = convertImageToSubBlock(coverImage, 16)
 
     dctSubBlock = createDctSubBlock(subBlock)
 
-    dcCoefficientMatrix = createDcCoefficientMatrix(dctSubBlock, cipherImageShape)
+    dcCoefficientMatrix = createDcCoefficientMatrix(dctSubBlock, encryptedImageShape)
 
-    embeddedMatrix = embedEncryptionMessageToDcCoefficientMatrix(cipherImage, dcCoefficientMatrix, 1/255)
+    embeddedMatrix = embedEncryptionMessageToDcCoefficientMatrix(encryptedImage, dcCoefficientMatrix, 1/255)
 
     idctSubBlock = restoreDcCoefficientMatrixThenIdct(embeddedMatrix, dctSubBlock)
 
-    embeddedImage = convertSubBlockToImage(idctSubBlock, coverImageShape, 16)
+    steganoImage = convertSubBlockToImage(idctSubBlock, coverImageShape, 16)
 
-    return embeddedImage, dcCoefficientMatrix
+    return steganoImage, dcCoefficientMatrix
 
 def recoverEncryptionMessageFromDcCoefficientMatrix(dccStego, dccCover, alpha = 1):
     return (dccStego - dccCover) * alpha
@@ -30,6 +30,6 @@ def extraction(steganoImage, dcMatrix):
 
     dctStegoSubBlock = createDctSubBlock(stegoSubBlock)
 
-    stegoDcCoefficient = createDcCoefficientMatrix(dctStegoSubBlock, dcMatrix.shape)
+    stegoDcMatrix = createDcCoefficientMatrix(dctStegoSubBlock, dcMatrix.shape)
 
-    return recoverEncryptionMessageFromDcCoefficientMatrix(stegoDcCoefficient, dcMatrix, 255)
+    return recoverEncryptionMessageFromDcCoefficientMatrix(stegoDcMatrix, dcMatrix, 255)

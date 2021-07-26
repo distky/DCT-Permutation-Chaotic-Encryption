@@ -1,13 +1,15 @@
-from .HenonMapGenerator import decimal_to_binary, binary_to_7_byte, create_henon_map
+from .HenonMapGenerator import decimalToBinary, binaryTo7byte, createHenonMap
 from .CommonFunction import np, deepCopy
 
-def encryption(message_image, x = 0.1, y = 0.1):
-    image_size = message_image.size
+def encryption(messageImage, x = 0.1, y = 0.1):
+    imageSize = messageImage.size
 
-    henon_map = create_henon_map(x, y, size = image_size)
+    henonMap = createHenonMap(x, y, size = imageSize)
 
-    X = henon_map[0]
-    Y = henon_map[1]
+    X = henonMap[0]
+    Y = henonMap[1]
+    
+    encryptedImage = np.zeros(imageSize)
 
     RK = []
     GK = []
@@ -16,35 +18,36 @@ def encryption(message_image, x = 0.1, y = 0.1):
     XS = []
 
     for i in range(len(Y)):
-        XS.append(X[i] % image_size)
-        binary_y = decimal_to_binary(Y[i])
+        XS.append(X[i] % imageSize)
+        binaryY = decimalToBinary(Y[i])
         
-        mid_arr = binary_to_7_byte(binary_y)
+        midArr = binaryTo7byte(binaryY)
 
-        RK.append(mid_arr[2])
-        GK.append(mid_arr[3])
-        BK.append(mid_arr[4])
+        RK.append(midArr[2])
+        GK.append(midArr[3])
+        BK.append(midArr[4])
 
-    original_image = np.reshape(message_image, image_size)
+    originalImage = np.reshape(messageImage, imageSize)
     
-    for i in range(image_size):
-        temp_pixel = deepCopy(original_image[i])
-        original_image[i] = deepCopy(original_image[XS[i]])
-        original_image[XS[i]] = temp_pixel
+    for i in range(imageSize):
+        tempPixel = deepCopy(originalImage[i])
+        originalImage[i] = deepCopy(originalImage[XS[i]])
+        originalImage[XS[i]] = tempPixel
 
-    new_image = np.zeros(image_size)
-    for i in range(image_size):
-        new_image[i] = int(original_image[i]) ^ ((int(GK[i]) + int(RK[i]) + int(BK[i]))//3)
+    for i in range(imageSize):
+        encryptedImage[i] = int(originalImage[i]) ^ ((int(GK[i]) + int(RK[i]) + int(BK[i]))//3)
 
-    return np.reshape(new_image, (message_image.shape))
+    return np.reshape(encryptedImage, (messageImage.shape))
 
-def decryption(encrypted_image, x = 0.1, y = 0.1):
-    image_size = encrypted_image.size
+def decryption(encryptedImage, x = 0.1, y = 0.1):
+    imageSize = encryptedImage.size
 
-    henon_map = create_henon_map(x, y, size = image_size)
+    henonMap = createHenonMap(x, y, size = imageSize)
+    
+    messageImage = np.zeros(imageSize)
 
-    X = henon_map[0]
-    Y = henon_map[1]
+    X = henonMap[0]
+    Y = henonMap[1]
 
     RK = []
     GK = []
@@ -53,23 +56,22 @@ def decryption(encrypted_image, x = 0.1, y = 0.1):
     XS = []
 
     for i in range(len(Y)):
-        XS.append(X[i] % image_size)
-        binary_y = decimal_to_binary(Y[i])
+        XS.append(X[i] % imageSize)
+        binaryY = decimalToBinary(Y[i])
         
-        mid_arr = binary_to_7_byte(binary_y)
+        midArr = binaryTo7byte(binaryY)
 
-        RK.append(mid_arr[2])
-        GK.append(mid_arr[3])
-        BK.append(mid_arr[4])
+        RK.append(midArr[2])
+        GK.append(midArr[3])
+        BK.append(midArr[4])
 
-    message_image = np.reshape(encrypted_image, image_size)
-    new_image = np.zeros(image_size)
-    for i in range(image_size):
-        new_image[i] = int(message_image[i]) ^ int(((RK[i]+ GK[i] + BK[i])//3))
+    EI = np.reshape(encryptedImage, imageSize)
+    for i in range(imageSize):
+        messageImage[i] = int(EI[i]) ^ int(((RK[i]+ GK[i] + BK[i])//3))
     
-    for i in range(image_size-1, -1, -1):
-        temp_pixel = deepCopy(new_image[i])
-        new_image[i] = deepCopy(new_image[XS[i]])
-        new_image[XS[i]] = temp_pixel
+    for i in range(imageSize-1, -1, -1):
+        temp_pixel = deepCopy(messageImage[i])
+        messageImage[i] = deepCopy(messageImage[XS[i]])
+        messageImage[XS[i]] = temp_pixel
 
-    return np.reshape(new_image, (encrypted_image.shape))
+    return np.reshape(messageImage, (encryptedImage.shape))

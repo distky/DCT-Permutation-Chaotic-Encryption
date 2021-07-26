@@ -28,7 +28,7 @@ class InputSteganografiDanEnkripsi(QWidget):
     def resetResult(self):
         self.ui_steganoenkripsi.citraSteganoView.setScene(None)
         self.ui_steganoenkripsi.btnsave.setEnabled(False)
-        self.embeddedImage = None
+        self.steganoImage = None
         self.dcCoefficientMatrix = None
         self.x0 = None
         self.y0 = None
@@ -44,9 +44,9 @@ class InputSteganografiDanEnkripsi(QWidget):
     
     def on_btnEnkripsiDanStegano_click(self):
         try:
-            embeddedImage, dcCoefficientMatrix, x0, y0 = processEncryptionAndStegano(self.ui_steganoenkripsi.citraSampulPath.text(), self.ui_steganoenkripsi.citraPesanPath.text(), self.ui_steganoenkripsi.doubleSpinBoxX0.value(), self.ui_steganoenkripsi.doubleSpinBoxY0.value())
-            addImageToGraphicView(self, convertImageToPixmap(embeddedImage), self.ui_steganoenkripsi.citraSteganoView)
-            self.embeddedImage = embeddedImage
+            steganoImage, dcCoefficientMatrix, x0, y0 = processEncryptionAndStegano(self.ui_steganoenkripsi.citraSampulPath.text(), self.ui_steganoenkripsi.citraPesanPath.text(), self.ui_steganoenkripsi.doubleSpinBoxX0.value(), self.ui_steganoenkripsi.doubleSpinBoxY0.value())
+            addImageToGraphicView(self, convertImageToPixmap(steganoImage), self.ui_steganoenkripsi.citraSteganoView)
+            self.steganoImage = steganoImage
             self.dcCoefficientMatrix = dcCoefficientMatrix
             self.x0 = x0
             self.y0 = y0
@@ -56,7 +56,7 @@ class InputSteganografiDanEnkripsi(QWidget):
 
     def on_btnsave_click(self):
         try:
-            processSaveResult(self.embeddedImage, lambda:saveFileDialog(self, 'TIFF (*.tif;*.tiff)'), lambda:showMessageBox('Berhasil', 'File berhasil disimpan', window=self), x0=self.x0, y0=self.y0, dcMatrix=self.dcCoefficientMatrix)
+            processSaveResult(self.steganoImage, lambda:saveFileDialog(self, 'TIFF (*.tif;*.tiff)'), lambda:showMessageBox('Berhasil', 'File berhasil disimpan', window=self), x0=self.x0, y0=self.y0, dcMatrix=self.dcCoefficientMatrix)
         except Exception as e:
             handleException(e, showMessageBox)
 

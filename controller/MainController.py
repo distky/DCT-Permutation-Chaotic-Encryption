@@ -6,20 +6,20 @@ import re
 def processEncryptionAndStegano(coverImgPath, messageImgPath, x0, y0):
     coverImage, messageImage, *_ = validate(coverImgPath, messageImgPath, x0, y0)
 
-    cipherImage = encryption(messageImage, x0, y0)
+    encryptedImage = encryption(messageImage, x0, y0)
 
-    embeddedImage, dcCoefficientMatrix = steganography(coverImage, cipherImage)
+    steganoImage, dcCoefficientMatrix = steganography(coverImage, encryptedImage)
     
-    return embeddedImage, dcCoefficientMatrix, x0, y0
+    return steganoImage, dcCoefficientMatrix, x0, y0
 
 def processExtractAndDecrypt(steganoImgPath, dcMatrixPath, x0, y0):
     steganoImage, dcMatrix, x0, y0 = validate(steganoImgPath, dcMatrixPath, x0=x0, y0=y0)
 
-    encryptedMessage = rounding(extraction(steganoImage, dcMatrix),0)
+    encryptedImage = rounding(extraction(steganoImage, dcMatrix),0)
 
-    decryptedMessage = rounding(decryption(encryptedMessage, x0, y0), 0).astype('uint8')
+    decyptedImage = rounding(decryption(encryptedImage, x0, y0), 0).astype('uint8')
 
-    return decryptedMessage
+    return decyptedImage
 
 def processMSE(img1Path, img2Path):
     validate(img1Path, img2Path, isCompare=True)

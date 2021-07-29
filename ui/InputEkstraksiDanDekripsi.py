@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'InputEkstraksiDanDekripsi1.ui'
+# Form implementation generated from reading ui file 'InputEkstraksiDanDekripsi.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_InputEkstraksiDanDekripsi(object):
     def setupUi(self, InputEkstraksiDanDekripsi):
         InputEkstraksiDanDekripsi.setObjectName("InputEkstraksiDanDekripsi")
-        InputEkstraksiDanDekripsi.setFixedSize(1044, 726)
+        InputEkstraksiDanDekripsi.resize(1044, 726)
         self.lblNilaiX0 = QtWidgets.QLabel(InputEkstraksiDanDekripsi)
         self.lblNilaiX0.setGeometry(QtCore.QRect(20, 160, 91, 31))
         font = QtGui.QFont()
@@ -91,12 +91,12 @@ class Ui_InputEkstraksiDanDekripsi(object):
         font.setPointSize(14)
         self.lblCitraStegano.setFont(font)
         self.lblCitraStegano.setObjectName("lblCitraStegano")
-        self.btnEkstraksiDanDekripsi = QtWidgets.QPushButton(InputEkstraksiDanDekripsi)
-        self.btnEkstraksiDanDekripsi.setGeometry(QtCore.QRect(170, 250, 221, 31))
+        self.btnEkstraksi = QtWidgets.QPushButton(InputEkstraksiDanDekripsi)
+        self.btnEkstraksi.setGeometry(QtCore.QRect(170, 250, 221, 31))
         font = QtGui.QFont()
         font.setPointSize(11)
-        self.btnEkstraksiDanDekripsi.setFont(font)
-        self.btnEkstraksiDanDekripsi.setObjectName("btnEkstraksiDanDekripsi")
+        self.btnEkstraksi.setFont(font)
+        self.btnEkstraksi.setObjectName("btnEkstraksi")
         self.citraSteganoView = QtWidgets.QGraphicsView(InputEkstraksiDanDekripsi)
         self.citraSteganoView.setGeometry(QtCore.QRect(10, 290, 241, 311))
         self.citraSteganoView.setObjectName("citraSteganoView")
@@ -130,15 +130,15 @@ class Ui_InputEkstraksiDanDekripsi(object):
         self.citraSteganoEkstraksiView = QtWidgets.QGraphicsView(InputEkstraksiDanDekripsi)
         self.citraSteganoEkstraksiView.setGeometry(QtCore.QRect(540, 290, 241, 311))
         self.citraSteganoEkstraksiView.setObjectName("citraSteganoEkstraksiView")
-        self.btnEkstraksiDanDekripsi_2 = QtWidgets.QPushButton(InputEkstraksiDanDekripsi)
-        self.btnEkstraksiDanDekripsi_2.setGeometry(QtCore.QRect(670, 250, 221, 31))
+        self.btnDekripsi = QtWidgets.QPushButton(InputEkstraksiDanDekripsi)
+        self.btnDekripsi.setGeometry(QtCore.QRect(670, 250, 221, 31))
         font = QtGui.QFont()
         font.setPointSize(11)
-        self.btnEkstraksiDanDekripsi_2.setFont(font)
-        self.btnEkstraksiDanDekripsi_2.setObjectName("btnEkstraksiDanDekripsi_2")
-        self.citraHasilView_3 = QtWidgets.QGraphicsView(InputEkstraksiDanDekripsi)
-        self.citraHasilView_3.setGeometry(QtCore.QRect(800, 290, 241, 311))
-        self.citraHasilView_3.setObjectName("citraHasilView_3")
+        self.btnDekripsi.setFont(font)
+        self.btnDekripsi.setObjectName("btnDekripsi")
+        self.citraPesanDekripsiView = QtWidgets.QGraphicsView(InputEkstraksiDanDekripsi)
+        self.citraPesanDekripsiView.setGeometry(QtCore.QRect(800, 290, 241, 311))
+        self.citraPesanDekripsiView.setObjectName("citraPesanDekripsiView")
         self.lblCitraSteganoEkstraksi = QtWidgets.QLabel(InputEkstraksiDanDekripsi)
         self.lblCitraSteganoEkstraksi.setGeometry(QtCore.QRect(560, 600, 211, 31))
         font = QtGui.QFont()
@@ -175,14 +175,14 @@ class Ui_InputEkstraksiDanDekripsi(object):
         self.lblCitraSteganoEkstraksiSize.setText("")
         self.lblCitraSteganoEkstraksiSize.setAlignment(QtCore.Qt.AlignCenter)
         self.lblCitraSteganoEkstraksiSize.setObjectName("lblCitraSteganoEkstraksiSize")
-        self.lblCitraSteganoview_5 = QtWidgets.QLabel(InputEkstraksiDanDekripsi)
-        self.lblCitraSteganoview_5.setGeometry(QtCore.QRect(800, 630, 241, 31))
+        self.lblCitraPesanDekripsiSize = QtWidgets.QLabel(InputEkstraksiDanDekripsi)
+        self.lblCitraPesanDekripsiSize.setGeometry(QtCore.QRect(800, 630, 241, 31))
         font = QtGui.QFont()
         font.setPointSize(12)
-        self.lblCitraSteganoview_5.setFont(font)
-        self.lblCitraSteganoview_5.setText("")
-        self.lblCitraSteganoview_5.setAlignment(QtCore.Qt.AlignCenter)
-        self.lblCitraSteganoview_5.setObjectName("lblCitraSteganoview_5")
+        self.lblCitraPesanDekripsiSize.setFont(font)
+        self.lblCitraPesanDekripsiSize.setText("")
+        self.lblCitraPesanDekripsiSize.setAlignment(QtCore.Qt.AlignCenter)
+        self.lblCitraPesanDekripsiSize.setObjectName("lblCitraPesanDekripsiSize")
 
         self.retranslateUi(InputEkstraksiDanDekripsi)
         QtCore.QMetaObject.connectSlotsByName(InputEkstraksiDanDekripsi)
@@ -198,15 +198,14 @@ class Ui_InputEkstraksiDanDekripsi(object):
         self.btnCitraStegano.setText(_translate("InputEkstraksiDanDekripsi", "Open File"))
         self.btnDcMatrix.setText(_translate("InputEkstraksiDanDekripsi", "Open File"))
         self.lblCitraStegano.setText(_translate("InputEkstraksiDanDekripsi", "Citra Stegano :"))
-        self.btnEkstraksiDanDekripsi.setText(_translate("InputEkstraksiDanDekripsi", "Ekstraksi "))
+        self.btnEkstraksi.setText(_translate("InputEkstraksiDanDekripsi", "Ekstraksi "))
         self.lblCitraSteganoview.setText(_translate("InputEkstraksiDanDekripsi", "Citra Stegano"))
         self.lblCitraPesanEkstraksi.setText(_translate("InputEkstraksiDanDekripsi", "Citra Pesan Ekstraksi"))
         self.btnopenx0y0.setText(_translate("InputEkstraksiDanDekripsi", "Open File X0 dan Y0"))
         self.btnSave.setText(_translate("InputEkstraksiDanDekripsi", "Save Hasil"))
-        self.btnEkstraksiDanDekripsi_2.setText(_translate("InputEkstraksiDanDekripsi", "Dekripsi"))
+        self.btnDekripsi.setText(_translate("InputEkstraksiDanDekripsi", "Dekripsi"))
         self.lblCitraSteganoEkstraksi.setText(_translate("InputEkstraksiDanDekripsi", "Citra Stegano Ekstraksi"))
         self.lblCitraPesanDekripsi.setText(_translate("InputEkstraksiDanDekripsi", "Citra Pesan Dekripsi"))
-
 
 if __name__ == "__main__":
     import sys

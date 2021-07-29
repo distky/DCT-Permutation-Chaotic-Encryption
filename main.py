@@ -115,7 +115,7 @@ class InputEkstraksiDanDekripsi(QWidget):
     
     def on_btnSave_click(self):
         try:
-            processSaveResult(self.decryptedImage, lambda:saveFileDialog(self, 'TIFF (*.tif;*.tiff);;BMP (*.bmp)'), lambda:showMessageBox('Berhasil', 'File berhasil disimpan', window=self))
+            processSaveResult(self.decryptedImage, lambda:saveFileDialog(self, 'TIFF (*.tif;*.tiff)'), lambda:showMessageBox('Berhasil', 'File berhasil disimpan', window=self))
         except Exception as e:
             handleException(e, showMessageBox)
 
@@ -202,7 +202,7 @@ class MainWindow(QMainWindow):
         self.ui_mainwindow.btnExtractDecrypt.clicked.connect(lambda: showWindow(self, self.enkripsiDekripsi))
         self.ui_mainwindow.btnCompare.clicked.connect(lambda: showWindow(self, self.perbandingan))
 
-def openFileDialog(window, lineEdit=None, graphicView=None, isImage=True, dialogName="Dialog", fileOptions='Images (*tif *.tiff *.jpg *.jpeg *.bmp)', resetResult=None):
+def openFileDialog(window, lineEdit=None, graphicView=None, isImage=True, dialogName="Dialog", fileOptions='Images (*tif *.tiff)', resetResult=None):
     options = QFileDialog.Options()
 
     fileOptions = fileOptions if isImage else 'Numpy Array (*.npy)'

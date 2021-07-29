@@ -35,7 +35,24 @@ def template_matching(path1, path2):
     result = cv2.matchTemplate(citra1, citra2, cv2.TM_CCOEFF_NORMED)
     print(result[0][0])
 
+def equalizeHistogram(path1, intensity):
+    image = openImageFromPath(path1)
+    imgSize = image.size
+    colors, counts = np.unique(image.reshape(-1), return_counts = True, axis = 0)
+    cumProb = []
+    for i in range(len(counts)):
+        prob = counts[i] / imgSize
+        if i == 0:
+            cumProb.append(prob)
+        else:
+            cumProb.append(cumProb[i-1] + prob)
+    
+    newImg = [(cumProb[np.where(colors == image[i][j])[0][0]] * intensity) for i in range(image.shape[1]) for j in range(image.shape[0])]
+    saveImageAs(np.reshape(newImg, image.shape), 'equalizedHist' + str(intensity) + '.tiff')
+
+
+
 
 # template_matching('F:/Pictures/Testing/result arctichare 32 x 32.tiff', 'F:/Pictures/Pengujian citra pesan/arctichare 32 x 32.tiff')
-
-saveImageAs(sp_noise(bgr2gray(openImageFromPath('D:/Projects/Python Projects/DCT-Permutation-Chaotic-Encryption/test.tiff')), 0.0001), 'salted_image.tiff')
+equalizeHistogram('D:/Projects/Python Projects/DCT-Permutation-Chaotic-Encryption/test.tif', 255)
+# saveImageAs(sp_noise(bgr2gray(openImageFromPath('D:/Projects/Python Projects/DCT-Permutation-Chaotic-Encryption/test.tiff')), 0.0001), 'salted_image.tiff')

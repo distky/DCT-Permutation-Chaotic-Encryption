@@ -26,17 +26,17 @@ class InputSteganografiDanEnkripsi(QWidget):
         })
         self.ui_steganoenkripsi.btnEnkripsi.clicked.connect(self.on_btnEnkripsi_click)
         self.ui_steganoenkripsi.btnStegano.clicked.connect(self.on_btnStegano_click)
-        self.ui_steganoenkripsi.btnKembali.clicked.connect(lambda: showWindow(self, parent))
+        self.ui_steganoenkripsi.btnKembali.clicked.connect(lambda: {
+            showWindow(self, parent),
+            self.reset()
+        })
         self.ui_steganoenkripsi.btnSave.clicked.connect(self.on_btnSave_click)
-        self.reset()
     
     def resetResult(self):
         self.ui_steganoenkripsi.citraSteganoView.setScene(None)
         self.ui_steganoenkripsi.btnSave.setEnabled(False)
         self.steganoImage = None
         self.dcCoefficientMatrix = None
-        self.x0 = None
-        self.y0 = None
 
     def reset(self):
         self.ui_steganoenkripsi.citraPesanPath.setText(None)
@@ -104,10 +104,12 @@ class InputEkstraksiDanDekripsi(QWidget):
         })
         self.ui_ekstraksidekripsi.btnEkstraksi.clicked.connect(self.on_btnEkstraksi_click)
         self.ui_ekstraksidekripsi.btnDekripsi.clicked.connect(self.on_btnDekripsi_click)
-        self.ui_ekstraksidekripsi.btnKembali.clicked.connect(lambda: showWindow(self, parent))
+        self.ui_ekstraksidekripsi.btnKembali.clicked.connect(lambda: {
+            showWindow(self, parent),
+            self.reset()
+        })
         self.ui_ekstraksidekripsi.btnopenx0y0.clicked.connect(self.on_btnopenx0y0_click)
         self.ui_ekstraksidekripsi.btnSave.clicked.connect(self.on_btnSave_click)
-        self.reset()
     
     def resetResult(self):
         self.decryptedImage = None
@@ -124,6 +126,9 @@ class InputEkstraksiDanDekripsi(QWidget):
         self.ui_ekstraksidekripsi.citraPesanEkstrakView.setScene(None)
         self.ui_ekstraksidekripsi.citraSteganoEkstraksiView.setScene(None)
         self.ui_ekstraksidekripsi.btnDekripsi.setEnabled(False)
+        self.encryptedImage = None
+        self.extractedCover = None
+        self.decryptedImage = None
         self.resetResult()
 
     def on_btnEkstraksi_click(self):
@@ -183,7 +188,10 @@ class Perbandingan(QWidget):
         self.ui_perbandingan.btnHitungMSE.clicked.connect(self.on_btnHitungMSE_click)
         self.ui_perbandingan.btnHitungPSNR.clicked.connect(self.on_btnHitungPSNR_click)
         self.ui_perbandingan.btnHitungNCC.clicked.connect(self.on_btnHitungNCC_click)
-        self.ui_perbandingan.btnKembali.clicked.connect(lambda: showWindow(self, parent))
+        self.ui_perbandingan.btnKembali.clicked.connect(lambda: {
+            showWindow(self, parent),
+            self.reset()
+        })
     
     def resetResult(self):
         self.ui_perbandingan.txtMSE.setText(None)

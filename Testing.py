@@ -54,5 +54,5 @@ def equalizeHistogram(path1, intensity):
 
 
 # template_matching('F:/Pictures/Testing/result arctichare 32 x 32.tiff', 'F:/Pictures/Pengujian citra pesan/arctichare 32 x 32.tiff')
-equalizeHistogram('D:/Projects/Python Projects/DCT-Permutation-Chaotic-Encryption/test.tif', 255)
+# equalizeHistogram('D:/Projects/Python Projects/DCT-Permutation-Chaotic-Encryption/test.tif', 255)
 # saveImageAs(sp_noise(bgr2gray(openImageFromPath('D:/Projects/Python Projects/DCT-Permutation-Chaotic-Encryption/test.tiff')), 0.0001), 'salted_image.tiff')

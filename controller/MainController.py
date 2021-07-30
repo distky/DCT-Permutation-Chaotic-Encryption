@@ -1,42 +1,43 @@
-from function.CommonFunction import ACTION_CANCELLED, MSE, NCC, PSNR, rounding, saveImageAs, saveDcMatrix, validate
+from function.CommonFunction import ACTION_CANCELLED, MSE, NCC, PSNR, rounding, saveImageAs, saveDcMatrix, validate, validateCrypto, validateStegano
 from function.PermutationBasedChaoticEncryption import encryption, decryption
 from function.DctSteganography import steganography, extraction
 import re
 
-def processEncryptionAndStegano(coverImgPath, messageImgPath, x0, y0):
-    coverImage, messageImage, *_ = validate(coverImgPath, messageImgPath, x0, y0)
+def processEncryption(messageImgPath, x0, y0):
+    messageImage, x0, y0 = validateCrypto(messageImgPath, x0, y0)
+    return encryption(messageImage, x0, y0).astype('uint8'), x0, y0
 
-    encryptedImage = encryption(messageImage, x0, y0)
+def processStegano(coverImgPath, encryptedImage):
+    coverImage, encryptedImage = validateStegano(coverImgPath, encryptedImage)
+    return steganography(coverImage, encryptedImage)
 
-    steganoImage, dcCoefficientMatrix = steganography(coverImage, encryptedImage)
-    
-    return steganoImage, dcCoefficientMatrix, x0, y0
+def processExtraction(steganoImgPath, dcMatrixPath):
+    steganoImage, dcMatrix = validateStegano(steganoImgPath, dcMatrixPath)
+    return extraction(steganoImage, dcMatrix)
 
-def processExtractAndDecrypt(steganoImgPath, dcMatrixPath, x0, y0):
-    steganoImage, dcMatrix, x0, y0 = validate(steganoImgPath, dcMatrixPath, x0=x0, y0=y0)
-
-    encryptedImage = rounding(extraction(steganoImage, dcMatrix),0)
-
-    decyptedImage = rounding(decryption(encryptedImage, x0, y0), 0).astype('uint8')
-
-    return decyptedImage
+def processDecryption(encryptedImage, x0, y0):
+    encryptedImage, x0, y0 = validateCrypto(encryptedImage, x0, y0)
+    return decryption(encryptedImage, x0, y0).astype('uint8')
 
 def processMSE(img1Path, img2Path):
-    validate(img1Path, img2Path, isCompare=True)
+    validate(img1Path, img2Path)
     return MSE(img1Path, img2Path)
 
 def processPSNR(img1Path, img2Path):
-    validate(img1Path, img2Path, isCompare=True)
+    validate(img1Path, img2Path)
     return PSNR(img1Path, img2Path)
 
 def processNCC(img1Path, img2Path):
-    validate(img1Path, img2Path, isCompare=True)
+    validate(img1Path, img2Path)
     return NCC(img1Path, img2Path)
 
-def processSaveResult(image, saveFileDialog, showMessageBox, x0 = None, y0 = None, dcMatrix = []):
+def processSaveResult(saveFileDialog, showMessageBox, imgList = [], x0 = None, y0 = None, dcMatrix = []):
     filename = saveFileDialog()
 
-    saveImageAs(image, filename)
+    for img, extra in imgList:
+        splittedPath = filename.split('.')
+        splittedPath[-2] = splittedPath[-2] + extra
+        saveImageAs(img, '.'.join(splittedPath))
 
     if len(dcMatrix) > 0:
         saveDcMatrix(dcMatrix, filename)

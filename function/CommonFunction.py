@@ -96,7 +96,50 @@ def validCriteria(isCompare):
     else:
         return 'Periksa kembali apakah input telah memenuhi kriteria berikut ini:\n1. Pastikan path file pertama dan kedua valid\n2. Pastikan ukuran citra pesan NxN dimana N lebih besar sama dengan 32 dan N lebih kecil sama dengan 64 dan N merupakan kelipatan dari 8\n3. Pastikan ukuran citra sampul merupakan 16 kali dari ukuran citra pesan\n4. Pastikan nilai kunci X0 dan Y0 lebih besar dari 0'
 
-def validate(filePath1, filePath2, x0 = 0, y0 = 0, isCompare = False):
+def validateCrypto(file, x0, y0):
+    if isinstance(file, str) and file:
+        file = bgr2gray(openImageFromPath(file))
+    elif isinstance(file, str) and file == '':
+        raise IOError(VALIDATION_ERROR)
+
+    height, width = file.shape
+
+    if x0 == 0.0:
+        raise IOError(VALIDATION_ERROR)
+    if y0 == 0.0:
+        raise IOError(VALIDATION_ERROR)
+
+    if height != width:
+        raise IOError(VALIDATION_ERROR)
+    elif height < 32 or height > 64:
+        raise IOError(VALIDATION_ERROR)
+    elif height % 8 != 0:
+        raise IOError(VALIDATION_ERROR)
+    
+    return file, x0, y0
+
+def validateStegano(imgPath, message):
+    if imgPath == '':
+        raise IOError(VALIDATION_ERROR)
+    
+    img = bgr2gray(openImageFromPath(imgPath))
+
+    height, width = img.shape
+
+    if isinstance(message, str):
+        message = loadDcMatrix(message)
+    
+    mHeight, mWidth = message.shape
+
+    if mHeight*16 != height or mWidth*16 != width:
+        raise IOError(VALIDATION_ERROR)
+    elif mHeight != mWidth:
+        raise IOError(VALIDATION_ERROR)
+    
+    return img, message
+
+
+def validate(filePath1, filePath2):
     if filePath1 == '' or filePath2 == '':
         raise IOError(VALIDATION_ERROR)
 
@@ -104,33 +147,13 @@ def validate(filePath1, filePath2, x0 = 0, y0 = 0, isCompare = False):
 
     height, width = file1.shape
     
-    filePath2Split = filePath2.split('.')
-
-    if filePath2Split[-1] != 'npy':
-        file2 = bgr2gray(openImageFromPath(filePath2))
-    else:
-        file2 = loadDcMatrix(filePath2)
+    file2 = bgr2gray(openImageFromPath(filePath2))
 
     height2, width2 = file2.shape
 
-    if isCompare:
-        if height != height2:
-            raise IOError(VALIDATION_ERROR)
-        elif width != width2:
-            raise IOError(VALIDATION_ERROR)
-    else:
-        if height2 != width2:
-            raise IOError(VALIDATION_ERROR)
-        elif height2 * 16 != height or width2 * 16 != width:
-            raise IOError(VALIDATION_ERROR)
-        elif height2 % 8 != 0:
-            raise IOError(VALIDATION_ERROR)
-        elif height2 < 32 and height2 > 64:
-            raise IOError(VALIDATION_ERROR)
-        
-        if x0 == 0.0:
-            raise IOError(VALIDATION_ERROR)
-        elif y0 == 0.0:
-            raise IOError(VALIDATION_ERROR)
+    if height != height2:
+        raise IOError(VALIDATION_ERROR)
+    elif width != width2:
+        raise IOError(VALIDATION_ERROR)
     
-    return file1, file2, x0, y0
+    return file1, file2

@@ -1,4 +1,4 @@
-from .CommonFunction import convertSubBlockToImage, convertImageToSubBlock
+from .CommonFunction import convertSubBlockToImage, convertImageToSubBlock, rounding, saveImageAs
 from .DiscreteCosineTransform import createDctSubBlock, createDcCoefficientMatrix, restoreDcCoefficientMatrixThenIdct
 
 def embedEncryptionMessageToDcCoefficientMatrix(encryptedImage, dccMatrix, alpha = 1):
@@ -23,7 +23,7 @@ def steganography(coverImage, encryptedImage):
     return steganoImage, dcCoefficientMatrix
 
 def recoverEncryptionMessageFromDcCoefficientMatrix(dccStego, dccCover, alpha = 1):
-    return (dccStego - dccCover) * alpha
+    return (dccStego - dccCover) * alpha, (dccStego - (dccStego - dccCover))
 
 def extraction(steganoImage, dcMatrix):
     stegoSubBlock = convertImageToSubBlock(steganoImage, 16)
@@ -31,5 +31,11 @@ def extraction(steganoImage, dcMatrix):
     dctStegoSubBlock = createDctSubBlock(stegoSubBlock)
 
     stegoDcMatrix = createDcCoefficientMatrix(dctStegoSubBlock, dcMatrix.shape)
+    
+    encryptedMessage, extractedDct = recoverEncryptionMessageFromDcCoefficientMatrix(stegoDcMatrix, dcMatrix, 255)
 
-    return recoverEncryptionMessageFromDcCoefficientMatrix(stegoDcMatrix, dcMatrix, 255)
+    coverSubBlock = restoreDcCoefficientMatrixThenIdct(extractedDct, dctStegoSubBlock)
+
+    coverImage = convertSubBlockToImage(coverSubBlock, steganoImage.shape, 16)
+
+    return rounding(encryptedMessage,0).astype('uint8'), rounding(coverImage,0).astype('uint8')

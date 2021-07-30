@@ -256,7 +256,7 @@
     <string>Nilai Y0 :</string>
    </property>
   </widget>
-  <widget class="QGraphicsView" name="citrapesanekstrakview">
+  <widget class="QGraphicsView" name="citraEnkripsiView">
    <property name="geometry">
     <rect>
      <x>520</x>
@@ -330,7 +330,7 @@
     <string>Citra Stegano</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="btnsave">
+  <widget class="QPushButton" name="btnSave">
    <property name="geometry">
     <rect>
      <x>740</x>

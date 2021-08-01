@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'InputSteganografiDanEnkripsi1.ui'
+# Form implementation generated from reading ui file 'InputSteganografiDanEnkripsi.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -14,16 +14,16 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_InputSteganografiDanEnkripsi(object):
     def setupUi(self, InputSteganografiDanEnkripsi):
         InputSteganografiDanEnkripsi.setObjectName("InputSteganografiDanEnkripsi")
-        InputSteganografiDanEnkripsi.setFixedSize(1028, 726)
+        InputSteganografiDanEnkripsi.setFixedSize(1046, 726)
         self.citraPesanPath = QtWidgets.QLineEdit(InputSteganografiDanEnkripsi)
-        self.citraPesanPath.setGeometry(QtCore.QRect(170, 80, 671, 31))
+        self.citraPesanPath.setGeometry(QtCore.QRect(170, 80, 711, 31))
         self.citraPesanPath.setEnabled(False)
         self.citraPesanPath.setObjectName("citraPesanPath")
         self.citraPesanView = QtWidgets.QGraphicsView(InputSteganografiDanEnkripsi)
-        self.citraPesanView.setGeometry(QtCore.QRect(260, 290, 251, 311))
+        self.citraPesanView.setGeometry(QtCore.QRect(270, 290, 251, 311))
         self.citraPesanView.setObjectName("citraPesanView")
         self.btnStegano = QtWidgets.QPushButton(InputSteganografiDanEnkripsi)
-        self.btnStegano.setGeometry(QtCore.QRect(180, 250, 221, 31))
+        self.btnStegano.setGeometry(QtCore.QRect(680, 250, 221, 31))
         font = QtGui.QFont()
         font.setPointSize(11)
         self.btnStegano.setFont(font)
@@ -47,13 +47,13 @@ class Ui_InputSteganografiDanEnkripsi(object):
         self.lblNilaiX0.setFont(font)
         self.lblNilaiX0.setObjectName("lblNilaiX0")
         self.btnCitraSampul = QtWidgets.QPushButton(InputSteganografiDanEnkripsi)
-        self.btnCitraSampul.setGeometry(QtCore.QRect(870, 30, 101, 31))
+        self.btnCitraSampul.setGeometry(QtCore.QRect(900, 30, 101, 31))
         font = QtGui.QFont()
         font.setPointSize(11)
         self.btnCitraSampul.setFont(font)
         self.btnCitraSampul.setObjectName("btnCitraSampul")
         self.btnCitraPesan = QtWidgets.QPushButton(InputSteganografiDanEnkripsi)
-        self.btnCitraPesan.setGeometry(QtCore.QRect(870, 80, 101, 31))
+        self.btnCitraPesan.setGeometry(QtCore.QRect(900, 80, 101, 31))
         font = QtGui.QFont()
         font.setPointSize(11)
         self.btnCitraPesan.setFont(font)
@@ -78,7 +78,7 @@ class Ui_InputSteganografiDanEnkripsi(object):
         self.doubleSpinBoxX0.setSingleStep(0.001)
         self.doubleSpinBoxX0.setObjectName("doubleSpinBoxX0")
         self.citraSampulPath = QtWidgets.QLineEdit(InputSteganografiDanEnkripsi)
-        self.citraSampulPath.setGeometry(QtCore.QRect(170, 30, 671, 31))
+        self.citraSampulPath.setGeometry(QtCore.QRect(170, 30, 711, 31))
         self.citraSampulPath.setEnabled(False)
         self.citraSampulPath.setObjectName("citraSampulPath")
         self.lblCitraPesan = QtWidgets.QLabel(InputSteganografiDanEnkripsi)
@@ -100,7 +100,7 @@ class Ui_InputSteganografiDanEnkripsi(object):
         self.lblNilaiY0.setFont(font)
         self.lblNilaiY0.setObjectName("lblNilaiY0")
         self.citraEnkripsiView = QtWidgets.QGraphicsView(InputSteganografiDanEnkripsi)
-        self.citraEnkripsiView.setGeometry(QtCore.QRect(520, 290, 241, 311))
+        self.citraEnkripsiView.setGeometry(QtCore.QRect(540, 290, 241, 311))
         self.citraEnkripsiView.setObjectName("citraEnkripsiView")
         self.citraSampulView = QtWidgets.QGraphicsView(InputSteganografiDanEnkripsi)
         self.citraSampulView.setGeometry(QtCore.QRect(10, 290, 241, 311))
@@ -130,7 +130,7 @@ class Ui_InputSteganografiDanEnkripsi(object):
         self.btnSave.setFont(font)
         self.btnSave.setObjectName("btnSave")
         self.citraSteganoView = QtWidgets.QGraphicsView(InputSteganografiDanEnkripsi)
-        self.citraSteganoView.setGeometry(QtCore.QRect(780, 290, 241, 311))
+        self.citraSteganoView.setGeometry(QtCore.QRect(800, 290, 241, 311))
         self.citraSteganoView.setObjectName("citraSteganoView")
         self.lblCitraPesanEnkrip = QtWidgets.QLabel(InputSteganografiDanEnkripsi)
         self.lblCitraPesanEnkrip.setGeometry(QtCore.QRect(550, 600, 181, 31))
@@ -171,7 +171,7 @@ class Ui_InputSteganografiDanEnkripsi(object):
         self.lblCitraSteganosize.setAlignment(QtCore.Qt.AlignCenter)
         self.lblCitraSteganosize.setObjectName("lblCitraSteganosize")
         self.btnEnkripsi = QtWidgets.QPushButton(InputSteganografiDanEnkripsi)
-        self.btnEnkripsi.setGeometry(QtCore.QRect(630, 250, 221, 31))
+        self.btnEnkripsi.setGeometry(QtCore.QRect(150, 250, 221, 31))
         font = QtGui.QFont()
         font.setPointSize(11)
         self.btnEnkripsi.setFont(font)
@@ -197,7 +197,7 @@ class Ui_InputSteganografiDanEnkripsi(object):
         self.lblCitraStego.setText(_translate("InputSteganografiDanEnkripsi", "Citra Stegano"))
         self.btnSave.setText(_translate("InputSteganografiDanEnkripsi", "Save Hasil"))
         self.lblCitraPesanEnkrip.setText(_translate("InputSteganografiDanEnkripsi", "Citra Pesan Enkripsi"))
-        self.btnEnkripsi.setText(_translate("InputSteganografiDanEnkripsi", " Enkripsi"))
+        self.btnEnkripsi.setText(_translate("InputSteganografiDanEnkripsi", "Enkripsi"))
 
 if __name__ == "__main__":
     import sys

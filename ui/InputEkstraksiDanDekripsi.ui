@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1044</width>
+    <width>1048</width>
     <height>726</height>
    </rect>
   </property>
@@ -280,7 +280,7 @@
   <widget class="QGraphicsView" name="citraPesanEkstrakView">
    <property name="geometry">
     <rect>
-     <x>280</x>
+     <x>270</x>
      <y>290</y>
      <width>241</width>
      <height>311</height>
@@ -328,7 +328,7 @@
     <rect>
      <x>770</x>
      <y>670</y>
-     <width>121</width>
+     <width>131</width>
      <height>31</height>
     </rect>
    </property>
@@ -344,7 +344,7 @@
   <widget class="QGraphicsView" name="citraSteganoEkstraksiView">
    <property name="geometry">
     <rect>
-     <x>540</x>
+     <x>530</x>
      <y>290</y>
      <width>241</width>
      <height>311</height>
@@ -372,9 +372,9 @@
   <widget class="QGraphicsView" name="citraPesanDekripsiView">
    <property name="geometry">
     <rect>
-     <x>800</x>
+     <x>790</x>
      <y>290</y>
-     <width>241</width>
+     <width>251</width>
      <height>311</height>
     </rect>
    </property>

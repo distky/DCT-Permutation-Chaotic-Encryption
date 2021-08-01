@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1028</width>
+    <width>1046</width>
     <height>726</height>
    </rect>
   </property>
@@ -18,7 +18,7 @@
     <rect>
      <x>170</x>
      <y>80</y>
-     <width>671</width>
+     <width>711</width>
      <height>31</height>
     </rect>
    </property>
@@ -26,7 +26,7 @@
   <widget class="QGraphicsView" name="citraPesanView">
    <property name="geometry">
     <rect>
-     <x>260</x>
+     <x>270</x>
      <y>290</y>
      <width>251</width>
      <height>311</height>
@@ -36,7 +36,7 @@
   <widget class="QPushButton" name="btnStegano">
    <property name="geometry">
     <rect>
-     <x>180</x>
+     <x>680</x>
      <y>250</y>
      <width>221</width>
      <height>31</height>
@@ -108,7 +108,7 @@
   <widget class="QPushButton" name="btnCitraSampul">
    <property name="geometry">
     <rect>
-     <x>870</x>
+     <x>900</x>
      <y>30</y>
      <width>101</width>
      <height>31</height>
@@ -126,7 +126,7 @@
   <widget class="QPushButton" name="btnCitraPesan">
    <property name="geometry">
     <rect>
-     <x>870</x>
+     <x>900</x>
      <y>80</y>
      <width>101</width>
      <height>31</height>
@@ -197,7 +197,7 @@
     <rect>
      <x>170</x>
      <y>30</y>
-     <width>671</width>
+     <width>711</width>
      <height>31</height>
     </rect>
    </property>
@@ -259,7 +259,7 @@
   <widget class="QGraphicsView" name="citraEnkripsiView">
    <property name="geometry">
     <rect>
-     <x>520</x>
+     <x>540</x>
      <y>290</y>
      <width>241</width>
      <height>311</height>
@@ -351,7 +351,7 @@
   <widget class="QGraphicsView" name="citraSteganoView">
    <property name="geometry">
     <rect>
-     <x>780</x>
+     <x>800</x>
      <y>290</y>
      <width>241</width>
      <height>311</height>
@@ -463,7 +463,7 @@
   <widget class="QPushButton" name="btnEnkripsi">
    <property name="geometry">
     <rect>
-     <x>630</x>
+     <x>150</x>
      <y>250</y>
      <width>221</width>
      <height>31</height>
@@ -475,7 +475,7 @@
     </font>
    </property>
    <property name="text">
-    <string> Enkripsi</string>
+    <string>Enkripsi</string>
    </property>
   </widget>
  </widget>

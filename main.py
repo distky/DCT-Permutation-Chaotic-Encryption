@@ -307,8 +307,6 @@ def showWindow(window, targetWindow):
 
 def addImageToGraphicView(window, pix, graphicView, labelSize = None):
     item = QGraphicsPixmapItem(pix)
-    print(pix.height())
-    print(pix.width())
     scene = QGraphicsScene(window)
     scene.addItem(item)
     graphicView.setScene(scene)

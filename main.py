@@ -13,16 +13,20 @@ class InputSteganografiDanEnkripsi(QWidget):
         self.ui_steganoenkripsi.setupUi(self)
         self.setWindowIcon(parent.windowIcon())
         centerWindow(self)
-        
+        self.reset()
+
         self.ui_steganoenkripsi.btnCitraSampul.clicked.connect(lambda: {
-            openFileDialog(self, self.ui_steganoenkripsi.citraSampulPath, isImage=True, dialogName='Citra Sampul', graphicView=self.ui_steganoenkripsi.citraSampulView, resetResult=self.resetResult)
+            openFileDialog(self, self.ui_steganoenkripsi.citraSampulPath, isImage=True, dialogName='Citra Sampul', 
+                graphicView=self.ui_steganoenkripsi.citraSampulView, resetResult=self.resetResult, 
+                labelSize=self.ui_steganoenkripsi.lblCitraSampulsize)
         })
         self.ui_steganoenkripsi.btnCitraPesan.clicked.connect(lambda: {
             openFileDialog(self, self.ui_steganoenkripsi.citraPesanPath, isImage=True, dialogName='Citra Pesan', graphicView=self.ui_steganoenkripsi.citraPesanView, resetResult=lambda:{
                 self.ui_steganoenkripsi.citraEnkripsiView.setScene(None),
+                self.ui_steganoenkripsi.lblCitraPesanEnkripsisize.setText(None),
                 self.ui_steganoenkripsi.btnStegano.setEnabled(False),
                 self.resetResult()
-            })
+            }, labelSize=self.ui_steganoenkripsi.lblCitraPesansize)
         })
         self.ui_steganoenkripsi.btnEnkripsi.clicked.connect(self.on_btnEnkripsi_click)
         self.ui_steganoenkripsi.btnStegano.clicked.connect(self.on_btnStegano_click)
@@ -34,6 +38,7 @@ class InputSteganografiDanEnkripsi(QWidget):
     
     def resetResult(self):
         self.ui_steganoenkripsi.citraSteganoView.setScene(None)
+        self.ui_steganoenkripsi.lblCitraSteganosize.setText(None)
         self.ui_steganoenkripsi.btnSave.setEnabled(False)
         self.steganoImage = None
         self.dcCoefficientMatrix = None
@@ -47,12 +52,15 @@ class InputSteganografiDanEnkripsi(QWidget):
         self.ui_steganoenkripsi.citraPesanView.setScene(None)
         self.ui_steganoenkripsi.citraEnkripsiView.setScene(None)
         self.ui_steganoenkripsi.btnStegano.setEnabled(False)
+        self.ui_steganoenkripsi.lblCitraSampulsize.setText(None)
+        self.ui_steganoenkripsi.lblCitraPesansize.setText(None)
+        self.ui_steganoenkripsi.lblCitraPesanEnkripsisize.setText(None)
         self.resetResult()
     
     def on_btnEnkripsi_click(self):
         try:
             encryptedImage, x0, y0 = processEncryption(self.ui_steganoenkripsi.citraPesanPath.text(), self.ui_steganoenkripsi.doubleSpinBoxX0.value(), self.ui_steganoenkripsi.doubleSpinBoxY0.value())
-            addImageToGraphicView(self, convertImageToPixmap(encryptedImage), self.ui_steganoenkripsi.citraEnkripsiView)
+            addImageToGraphicView(self, convertImageToPixmap(encryptedImage), self.ui_steganoenkripsi.citraEnkripsiView, labelSize=self.ui_steganoenkripsi.lblCitraPesanEnkripsisize)
             self.encryptedImage = encryptedImage
             self.x0 = x0
             self.y0 = y0
@@ -63,7 +71,7 @@ class InputSteganografiDanEnkripsi(QWidget):
     def on_btnStegano_click(self):
         try:
             steganoImage, dcCoefficientMatrix = processStegano(self.ui_steganoenkripsi.citraSampulPath.text(), self.encryptedImage)
-            addImageToGraphicView(self, convertImageToPixmap(steganoImage), self.ui_steganoenkripsi.citraSteganoView)
+            addImageToGraphicView(self, convertImageToPixmap(steganoImage), self.ui_steganoenkripsi.citraSteganoView, labelSize=self.ui_steganoenkripsi.lblCitraSteganosize)
             self.steganoImage = steganoImage
             self.dcCoefficientMatrix = dcCoefficientMatrix
             self.ui_steganoenkripsi.btnSave.setEnabled(True)
@@ -86,19 +94,24 @@ class InputEkstraksiDanDekripsi(QWidget):
         self.ui_ekstraksidekripsi.setupUi(self)
         self.setWindowIcon(parent.windowIcon())
         centerWindow(self)
+        self.reset()
     
         self.ui_ekstraksidekripsi.btnCitraStegano.clicked.connect(lambda: {
             openFileDialog(self, self.ui_ekstraksidekripsi.citraSteganoPath, isImage=True, dialogName='Citra Stegano', 
                 fileOptions='TIFF (*.tif;*.tiff)', graphicView=self.ui_ekstraksidekripsi.citraSteganoView, resetResult=lambda:{
                     self.ui_ekstraksidekripsi.citraPesanEkstrakView.setScene(None),
+                    self.ui_ekstraksidekripsi.lblCitraPesanEkstraksiSize.setText(None),
                     self.ui_ekstraksidekripsi.citraSteganoEkstraksiView.setScene(None),
+                    self.ui_ekstraksidekripsi.lblCitraSteganoEkstraksiSize.setText(None),
                     self.resetResult()
-                })
+                }, labelSize=self.ui_ekstraksidekripsi.lblCitraSteganoSize)
         })
         self.ui_ekstraksidekripsi.btnDcMatrix.clicked.connect(lambda: {
             openFileDialog(self, self.ui_ekstraksidekripsi.dcMatrixPath, isImage=False, dialogName='DC Matrix', resetResult=lambda:{
                 self.ui_ekstraksidekripsi.citraPesanEkstrakView.setScene(None),
+                self.ui_ekstraksidekripsi.lblCitraPesanEkstraksiSize.setText(None),
                 self.ui_ekstraksidekripsi.citraSteganoEkstraksiView.setScene(None),
+                self.ui_ekstraksidekripsi.lblCitraSteganoEkstraksiSize.setText(None),
                 self.resetResult()
             })
         })
@@ -114,6 +127,7 @@ class InputEkstraksiDanDekripsi(QWidget):
     def resetResult(self):
         self.decryptedImage = None
         self.ui_ekstraksidekripsi.citraPesanDekripsiView.setScene(None)
+        self.ui_ekstraksidekripsi.lblCitraPesanDekripsiSize.setText(None)
         self.ui_ekstraksidekripsi.btnDekripsi.setEnabled(False)
         self.ui_ekstraksidekripsi.btnSave.setEnabled(False)
 
@@ -126,6 +140,9 @@ class InputEkstraksiDanDekripsi(QWidget):
         self.ui_ekstraksidekripsi.citraPesanEkstrakView.setScene(None)
         self.ui_ekstraksidekripsi.citraSteganoEkstraksiView.setScene(None)
         self.ui_ekstraksidekripsi.btnDekripsi.setEnabled(False)
+        self.ui_ekstraksidekripsi.lblCitraSteganoSize.setText(None)
+        self.ui_ekstraksidekripsi.lblCitraPesanEkstraksiSize.setText(None)
+        self.ui_ekstraksidekripsi.lblCitraSteganoEkstraksiSize.setText(None)
         self.encryptedImage = None
         self.extractedCover = None
         self.decryptedImage = None
@@ -135,8 +152,8 @@ class InputEkstraksiDanDekripsi(QWidget):
         self.ui_ekstraksidekripsi.citraPesanEkstrakView.setScene(None)
         try:
             encryptedImage, extractedCover = processExtraction(self.ui_ekstraksidekripsi.citraSteganoPath.text(), self.ui_ekstraksidekripsi.dcMatrixPath.text())
-            addImageToGraphicView(self, convertImageToPixmap(encryptedImage), self.ui_ekstraksidekripsi.citraPesanEkstrakView)
-            addImageToGraphicView(self, convertImageToPixmap(extractedCover), self.ui_ekstraksidekripsi.citraSteganoEkstraksiView)
+            addImageToGraphicView(self, convertImageToPixmap(encryptedImage), self.ui_ekstraksidekripsi.citraPesanEkstrakView, labelSize=self.ui_ekstraksidekripsi.lblCitraPesanEkstraksiSize)
+            addImageToGraphicView(self, convertImageToPixmap(extractedCover), self.ui_ekstraksidekripsi.citraSteganoEkstraksiView, labelSize=self.ui_ekstraksidekripsi.lblCitraSteganoEkstraksiSize)
             self.encryptedImage = encryptedImage
             self.extractedCover = extractedCover
             self.ui_ekstraksidekripsi.btnDekripsi.setEnabled(True)
@@ -147,7 +164,7 @@ class InputEkstraksiDanDekripsi(QWidget):
         self.ui_ekstraksidekripsi.citraPesanDekripsiView.setScene(None)
         try:
             decryptedImage = processDecryption(self.encryptedImage, self.ui_ekstraksidekripsi.doubleSpinBoxX0.value(), self.ui_ekstraksidekripsi.doubleSpinBoxY0.value())
-            addImageToGraphicView(self, convertImageToPixmap(decryptedImage), self.ui_ekstraksidekripsi.citraPesanDekripsiView)
+            addImageToGraphicView(self, convertImageToPixmap(decryptedImage), self.ui_ekstraksidekripsi.citraPesanDekripsiView, labelSize=self.ui_ekstraksidekripsi.lblCitraPesanDekripsiSize)
             self.decryptedImage = decryptedImage
             self.ui_ekstraksidekripsi.btnSave.setEnabled(True)
         except Exception as e:
@@ -178,6 +195,7 @@ class Perbandingan(QWidget):
         self.ui_perbandingan.setupUi(self)
         self.setWindowIcon(parent.windowIcon())
         centerWindow(self)
+        self.reset()
     
         self.ui_perbandingan.btnCitra1.clicked.connect(lambda: {
             openFileDialog(self, self.ui_perbandingan.citra1Path, graphicView=self.ui_perbandingan.graphicsViewCitra1, isImage=True, dialogName='Citra 1', resetResult=lambda:self.resetResult())
@@ -257,7 +275,7 @@ class MainWindow(QMainWindow):
         self.ui_mainwindow.btnExtractDecrypt.clicked.connect(lambda: showWindow(self, self.enkripsiDekripsi))
         self.ui_mainwindow.btnCompare.clicked.connect(lambda: showWindow(self, self.perbandingan))
 
-def openFileDialog(window, lineEdit=None, graphicView=None, isImage=True, dialogName="Dialog", fileOptions='Images (*tif *.tiff)', resetResult=None):
+def openFileDialog(window, lineEdit=None, graphicView=None, isImage=True, dialogName="Dialog", fileOptions='Images (*tif *.tiff)', resetResult=None, labelSize=None):
     options = QFileDialog.Options()
 
     fileOptions = fileOptions if isImage else 'Numpy Array (*.npy)'
@@ -268,7 +286,7 @@ def openFileDialog(window, lineEdit=None, graphicView=None, isImage=True, dialog
             lineEdit.setText(fileName)
         if graphicView:
             pix = convertImageToPixmap(fileName, isPath = True)
-            addImageToGraphicView(window, pix, graphicView)
+            addImageToGraphicView(window, pix, graphicView, labelSize=labelSize)
         if resetResult:
             resetResult()
     return fileName
@@ -287,12 +305,16 @@ def showWindow(window, targetWindow):
         window.reset()
     targetWindow.show()
 
-def addImageToGraphicView(window, pix, graphicView):
+def addImageToGraphicView(window, pix, graphicView, labelSize = None):
     item = QGraphicsPixmapItem(pix)
+    print(pix.height())
+    print(pix.width())
     scene = QGraphicsScene(window)
     scene.addItem(item)
     graphicView.setScene(scene)
     graphicView.fitInView(scene.sceneRect(),QtCore.Qt.AspectRatioMode.KeepAspectRatio)
+    if labelSize:
+        labelSize.setText(str(pix.width()) + 'x' + str(pix.height()))
 
 def centerWindow(window):
     qtRectangle = window.frameGeometry()

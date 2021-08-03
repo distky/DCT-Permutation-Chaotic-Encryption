@@ -10,7 +10,7 @@ def idct2(a):
 
 @nb.njit()
 def discreteCosineTransform(image):
-    dctArr = np.zeros(image.shape, dtype='float32')
+    dctArr = np.zeros(image.shape, dtype='float64')
     
     I, J = image.shape[0], image.shape[1]
     for p in range(image.shape[0]):
@@ -26,18 +26,20 @@ def discreteCosineTransform(image):
 
 @nb.njit()
 def inverseDiscreteCosineTransform(image):
-    dctArr = np.zeros(image.shape, dtype='float32')
+    dctArr = np.zeros(image.shape, dtype='float64')
 
     I, J = image.shape[0], image.shape[1]
 
-    for p in range(I):
-        for q in range(J):
-            ap = 1/math.sqrt(I) if p == 0 else math.sqrt(2)/math.sqrt(I)
-            aq = 1/math.sqrt(J) if q == 0 else math.sqrt(2)/math.sqrt(J)
+    for i in range(I):
+        for j in range(J):
+            cos = 0
+            for p in range(I):
+                for q in range(J):
+                    ap = 1/math.sqrt(I) if p == 0 else math.sqrt(2)/math.sqrt(I)
+                    aq = 1/math.sqrt(J) if q == 0 else math.sqrt(2)/math.sqrt(J)
+                    cos += ap * aq * image[p][q] * math.cos((math.pi * (2 * i + 1) * p) / (2 * I)) * math.cos((math.pi * (2 * j + 1) * q) / (2 * J))
 
-            cos = np.array([image[p][q] * ap * aq * math.cos((math.pi * (2 * i + 1) * p) / (2 * I)) * math.cos((math.pi * (2 * j + 1) * q) / (2 * J)) for i in range(I) for j in range(J)])
-
-            dctArr[p][q] =  np.sum(cos)
+            dctArr[i][j] = cos
     
     return dctArr
 

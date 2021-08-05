@@ -1,6 +1,10 @@
+import math
 import numpy as np
 import cv2
-from function.CommonFunction import openImageFromPath, saveImageAs, bgr2gray
+from function.CommonFunction import openImageFromPath, rounding, saveImageAs, bgr2gray
+from function.DctSteganography import steganography, extraction
+from function.PermutationBasedChaoticEncryption import encryption, decryption
+from function.DiscreteCosineTransform import discreteCosineTransform, inverseDiscreteCosineTransform, dct2, idct2
 
 def sp_noise(image, prob):
     '''
@@ -10,6 +14,7 @@ def sp_noise(image, prob):
     black = 0
     white = 255            
     probs = np.random.random(image.shape[:2])
+    print(probs)
     image[probs < (prob / 2)] = black
     image[probs > 1 - (prob / 2)] = white
     return image
@@ -50,9 +55,55 @@ def equalizeHistogram(path1, intensity):
     newImg = [(cumProb[np.where(colors == image[i][j])[0][0]] * intensity) for i in range(image.shape[1]) for j in range(image.shape[0])]
     saveImageAs(np.reshape(newImg, image.shape), 'equalizedHist' + str(intensity) + '.tiff')
 
+randomMessage = rounding(np.random.rand(2,2) * 255,0).astype('uint8')
 
+randomCover = rounding(np.random.rand(32,32) * 255, 0).astype('uint8')
 
+# print(randomMessage)
+
+# dct = discreteCosineTransform(randomMessage)
+
+# dct2 = dct2(randomMessage)
+
+# print(dct)
+# print(dct2)
+
+# idct = inverseDiscreteCosineTransform(dct)
+
+# inverseDct = idct2(dct2)
+# idct3 = idct2(dct)
+
+# print(idct[0][0])
+# print(inverseDct[0][0])
+# print(idct3[0][0])
+
+print(math.pi)
+
+print("==Source==")
+print(randomMessage)
+print(randomCover)
+
+encryptedRandomMessage = encryption(randomMessage)
+
+print('==Encrypted==')
+print(encryptedRandomMessage)
+
+stegoImage, dcMatrix = steganography(randomCover, encryptedRandomMessage)
+
+print('==After stego==')
+print(stegoImage)
+print(dcMatrix)
+
+extractedImage, _ = extraction(stegoImage, dcMatrix)
+
+print('==After extract==')
+print(extractedImage)
+
+decryptedImage = decryption(extractedImage)
+
+print('==After decrypt==')
+print(decryptedImage)
 
 # template_matching('F:/Pictures/Testing/result arctichare 32 x 32.tiff', 'F:/Pictures/Pengujian citra pesan/arctichare 32 x 32.tiff')
 # equalizeHistogram('D:/Projects/Python Projects/DCT-Permutation-Chaotic-Encryption/test.tif', 255)
-# saveImageAs(sp_noise(bgr2gray(openImageFromPath('D:/Projects/Python Projects/DCT-Permutation-Chaotic-Encryption/test.tiff')), 0.0001), 'salted_image.tiff')
+# saveImageAs(sp_noise(bgr2gray(openImageFromPath('D:/Projects/Python Projects/DCT-Permutation-Chaotic-Encryption/test.tif')), 0.01), 'salted_image.tiff')

@@ -98,7 +98,7 @@ class InputEkstraksiDanDekripsi(QWidget):
     
         self.ui_ekstraksidekripsi.btnCitraStegano.clicked.connect(lambda: {
             openFileDialog(self, self.ui_ekstraksidekripsi.citraSteganoPath, isImage=True, dialogName='Citra Stegano', 
-                fileOptions='TIFF (*.tif;*.tiff)', graphicView=self.ui_ekstraksidekripsi.citraSteganoView, resetResult=lambda:{
+                    graphicView=self.ui_ekstraksidekripsi.citraSteganoView, resetResult=lambda:{
                     self.ui_ekstraksidekripsi.citraPesanEkstrakView.setScene(None),
                     self.ui_ekstraksidekripsi.lblCitraPesanEkstraksiSize.setText(None),
                     self.ui_ekstraksidekripsi.citraSteganoEkstraksiView.setScene(None),
@@ -275,7 +275,7 @@ class MainWindow(QMainWindow):
         self.ui_mainwindow.btnExtractDecrypt.clicked.connect(lambda: showWindow(self, self.enkripsiDekripsi))
         self.ui_mainwindow.btnCompare.clicked.connect(lambda: showWindow(self, self.perbandingan))
 
-def openFileDialog(window, lineEdit=None, graphicView=None, isImage=True, dialogName="Dialog", fileOptions='Images (*tif *.tiff)', resetResult=None, labelSize=None):
+def openFileDialog(window, lineEdit=None, graphicView=None, isImage=True, dialogName="Dialog", fileOptions='Images (*.tif *.tiff)', resetResult=None, labelSize=None):
     options = QFileDialog.Options()
 
     fileOptions = fileOptions if isImage else 'Numpy Array (*.npy)'

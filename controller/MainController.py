@@ -20,16 +20,16 @@ def processDecryption(encryptedImage, x0, y0):
     return decryption(encryptedImage, x0, y0).astype('uint8')
 
 def processMSE(img1Path, img2Path):
-    validate(img1Path, img2Path)
-    return MSE(img1Path, img2Path)
+    img1, img2 = validate(img1Path, img2Path)
+    return MSE(img1, img2)
 
 def processPSNR(img1Path, img2Path):
-    validate(img1Path, img2Path)
-    return PSNR(img1Path, img2Path)
+    img1, img2 = validate(img1Path, img2Path)
+    return PSNR(img1, img2)
 
 def processNCC(img1Path, img2Path):
-    validate(img1Path, img2Path)
-    return NCC(img1Path, img2Path)
+    img1, img2 = validate(img1Path, img2Path)
+    return NCC(img1, img2)
 
 def processSaveResult(saveFileDialog, showMessageBox, imgList = [], x0 = None, y0 = None, dcMatrix = []):
     filename = saveFileDialog()

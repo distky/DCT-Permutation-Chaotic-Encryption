@@ -54,27 +54,24 @@ def saveDcMatrix(numpyObject, filename):
 def loadDcMatrix(npyFile):
     return np.load(npyFile, allow_pickle=True)
 
-def PSNR(img1Path, img2Path):
-    mse = MSE(img1Path, img2Path)
+def PSNR(img1, img2):
+    mse = MSE(img1, img2)
     if(mse == 0):
         return 100
     max_pixel = 255.0
     psnr = 20 * math.log10(max_pixel / math.sqrt(mse))
     return psnr
 
-def MSE(img1Path, img2Path):
-    return np.mean((bgr2gray(openImageFromPath(img1Path)) - bgr2gray(openImageFromPath(img2Path))) ** 2)
+def MSE(img1, img2):
+    return np.mean((img1 - img2) ** 2)
 
-def NCC(img1Path, img2Path):
-    psnr = PSNR(img1Path, img2Path)
+def NCC(img1, img2):
+    psnr = PSNR(img1, img2)
 
     if(psnr == 100):
         return 1.0
 
-    img1 = bgr2gray(openImageFromPath(img1Path)).astype('float32')
-    img2 = bgr2gray(openImageFromPath(img2Path)).astype('float32')
-
-    return cv2.matchTemplate(img1, img2, cv2.TM_CCOEFF_NORMED)[0][0]
+    return cv2.matchTemplate(img1.astype('float32'), img2.astype('float32'), cv2.TM_CCOEFF_NORMED)[0][0]
 
 def fullStackTrace():
     import traceback, sys

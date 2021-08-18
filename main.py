@@ -265,6 +265,13 @@ class MainWindow(QMainWindow):
         self.ui_mainwindow = MainWindowUI.Ui_MainWindow()
         self.ui_mainwindow.setupUi(self)
         self.setWindowIcon(QIcon('main.ico'))
+        self.setWindowFlags(
+            QtCore.Qt.Window |
+            QtCore.Qt.CustomizeWindowHint |
+            QtCore.Qt.WindowTitleHint |
+            QtCore.Qt.WindowCloseButtonHint |
+            QtCore.Qt.WindowStaysOnTopHint
+        )
         centerWindow(self)
 
         self.steganografiEnkripsi = InputSteganografiDanEnkripsi(self)

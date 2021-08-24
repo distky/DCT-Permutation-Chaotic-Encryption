@@ -83,7 +83,7 @@ def saltAndPepperNoise(image, prob):
 
 def CLAHE(image):
     clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
-    return clahe.apply(image)
+    return clahe.apply(image.astype('uint8'))
 
 def fullStackTrace():
     import traceback, sys

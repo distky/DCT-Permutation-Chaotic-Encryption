@@ -73,6 +73,18 @@ def NCC(img1, img2):
 
     return cv2.matchTemplate(img1.astype('float32'), img2.astype('float32'), cv2.TM_CCOEFF_NORMED)[0][0]
 
+def saltAndPepperNoise(image, prob):
+    black = 0
+    white = 255            
+    probs = np.random.random(image.shape[:2])
+    image[probs < (prob / 2)] = black
+    image[probs > 1 - (prob / 2)] = white
+    return image
+
+def CLAHE(image):
+    clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
+    return clahe.apply(image)
+
 def fullStackTrace():
     import traceback, sys
     exc = sys.exc_info()[0]

@@ -2,8 +2,8 @@ import sys
 from PyQt5 import QtCore
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QDesktopWidget, QFileDialog, QGraphicsPixmapItem, QGraphicsScene, QGridLayout, QLabel, QMainWindow, QMessageBox, QScrollArea, QWidget
-from ui import MainWindow as MainWindowUI, InputEkstraksiDanDekripsi as InputEkstraksiDanDekripsiUI, InputSteganografiDanEnkripsi as InputSteganografiDanEnkripsiUI, Perbandingan as PerbandinganUI
-from controller.MainController import processDecryption, processEncryption, processExtraction, processLoadKey, processMSE, processPSNR, processNCC, processSaveResult, processStegano
+from ui import MainWindow as MainWindowUI, InputEkstraksiDanDekripsi as InputEkstraksiDanDekripsiUI, InputSteganografiDanEnkripsi as InputSteganografiDanEnkripsiUI, Perbandingan as PerbandinganUI, Pengujian as PengujianUI
+from controller.MainController import processCLAHE, processDecryption, processEncryption, processExtraction, processLoadKey, processMSE, processPSNR, processNCC, processSaltAndPepper, processSaveResult, processStegano
 from function.CommonFunction import VALIDATION_ERROR, convertImageToPixmap, ACTION_CANCELLED, fullStackTrace, validCriteria
 
 class InputSteganografiDanEnkripsi(QWidget):
@@ -242,7 +242,65 @@ class Perbandingan(QWidget):
             ncc = processNCC(self.ui_perbandingan.citra1Path.text(), self.ui_perbandingan.citra2Path.text())
             self.ui_perbandingan.txtNCC.setText(str(ncc))
         except Exception as e:
-            handleException(e, showMessageBox, True)            
+            handleException(e, showMessageBox, True)
+
+class Pengujian(QWidget):
+    def __init__(self, parent=None):
+        super(Pengujian, self).__init__()
+        self.ui_pengujian = PengujianUI.Ui_Pengujian()
+        self.ui_pengujian.setupUi(self)
+        self.setWindowIcon(parent.windowIcon())
+        centerWindow(self)
+        self.reset()
+    
+        self.ui_pengujian.btnOpenFile.clicked.connect(lambda: {
+            openFileDialog(self, self.ui_pengujian.openfilePath, graphicView=self.ui_pengujian.CitraAwalView, isImage=True, dialogName='Citra Awal', resetResult=lambda:self.resetResult())
+        })
+        self.ui_pengujian.btnKembali.clicked.connect(lambda: {
+            showWindow(self, parent),
+            self.reset()
+        })
+        self.ui_pengujian.btnsaltandpepper.clicked.connect(self.on_btnsaltandpepper_click)
+        self.ui_pengujian.btncontrast.clicked.connect(self.on_btncontrast_click)
+        self.ui_pengujian.btnSaveHasil.clicked.connect(self.on_btnSaveHasil_click)
+    
+    def resetResult(self):
+        self.ui_pengujian.probability.setValue(0)
+        self.ui_pengujian.CitraAkhirView.setScene(None)
+        self.ui_pengujian.btnsaltandpepper.setEnabled(True)
+        self.ui_pengujian.btncontrast.setEnabled(True)
+        self.ui_pengujian.btnSaveHasil.setEnabled(False)
+    
+    def reset(self):
+        self.ui_pengujian.openfilePath.setText(None)
+        self.ui_pengujian.CitraAwalView.setScene(None)
+        self.resetResult()
+        self.ui_pengujian.btnsaltandpepper.setEnabled(False)
+        self.ui_pengujian.btncontrast.setEnabled(False)
+    
+    def on_btnsaltandpepper_click(self):
+        try:
+            self.citraHasil = processSaltAndPepper(self.ui_pengujian.openfilePath.text(), self.ui_pengujian.probability.value())
+            addImageToGraphicView(self, convertImageToPixmap(self.citraHasil), self.ui_pengujian.CitraAkhirView)
+            self.ui_pengujian.btnSaveHasil.setEnabled(True)
+        except Exception as e:
+            handleException(e, showMessageBox, True)
+    
+    def on_btncontrast_click(self):
+        try:
+            self.citraHasil = processCLAHE(self.ui_pengujian.openfilePath.text())
+            addImageToGraphicView(self, convertImageToPixmap(self.citraHasil), self.ui_pengujian.CitraAkhirView)
+            self.ui_pengujian.btnSaveHasil.setEnabled(True)
+        except Exception as e:
+            handleException(e, showMessageBox, True)
+    
+    def on_btnSaveHasil_click(self):
+        try:
+            processSaveResult(lambda:saveFileDialog(self, 'TIFF (*.tif;*.tiff)'),
+                lambda:showMessageBox('Berhasil', 'File berhasil disimpan', window=self),
+                imgList=[(self.citraHasil, '')])
+        except Exception as e:
+            handleException(e, showMessageBox)
 
 class ScrollMessageBox(QMessageBox):
     def __init__(self, *args, **kwargs):
@@ -277,10 +335,12 @@ class MainWindow(QMainWindow):
         self.steganografiEnkripsi = InputSteganografiDanEnkripsi(self)
         self.enkripsiDekripsi = InputEkstraksiDanDekripsi(self)
         self.perbandingan = Perbandingan(self)
+        self.pengujian = Pengujian(self)
 
         self.ui_mainwindow.btnSteganografiEnkripsi.clicked.connect(lambda: showWindow(self, self.steganografiEnkripsi))
         self.ui_mainwindow.btnExtractDecrypt.clicked.connect(lambda: showWindow(self, self.enkripsiDekripsi))
         self.ui_mainwindow.btnCompare.clicked.connect(lambda: showWindow(self, self.perbandingan))
+        self.ui_mainwindow.btnPengujian.clicked.connect(lambda: showWindow(self, self.pengujian))
 
 def openFileDialog(window, lineEdit=None, graphicView=None, isImage=True, dialogName="Dialog", fileOptions='Images (*.tif *.tiff)', resetResult=None, labelSize=None):
     options = QFileDialog.Options()

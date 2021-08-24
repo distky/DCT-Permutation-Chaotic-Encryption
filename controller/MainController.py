@@ -1,4 +1,4 @@
-from function.CommonFunction import ACTION_CANCELLED, MSE, NCC, PSNR, saveImageAs, saveDcMatrix, validate, validateCrypto, validateStegano
+from function.CommonFunction import ACTION_CANCELLED, CLAHE, MSE, NCC, PSNR, bgr2gray, openImageFromPath, saltAndPepperNoise, saveImageAs, saveDcMatrix, validate, validateCrypto, validateStegano
 from function.PermutationBasedChaoticEncryption import encryption, decryption
 from function.DctSteganography import steganography, extraction
 import re
@@ -30,6 +30,12 @@ def processPSNR(img1Path, img2Path):
 def processNCC(img1Path, img2Path):
     img1, img2 = validate(img1Path, img2Path)
     return NCC(img1, img2)
+
+def processSaltAndPepper(imgPath, prob = 0):
+    return saltAndPepperNoise(bgr2gray(openImageFromPath(imgPath)), prob)
+
+def processCLAHE(imgPath):
+    return CLAHE(bgr2gray(openImageFromPath(imgPath)))
 
 def processSaveResult(saveFileDialog, showMessageBox, imgList = [], x0 = None, y0 = None, dcMatrix = []):
     filename = saveFileDialog()

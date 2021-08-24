@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>640</width>
-    <height>480</height>
+    <height>494</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,7 +18,7 @@
     <property name="geometry">
      <rect>
       <x>230</x>
-      <y>80</y>
+      <y>30</y>
       <width>181</width>
       <height>91</height>
      </rect>
@@ -31,7 +31,7 @@
     <property name="geometry">
      <rect>
       <x>230</x>
-      <y>200</y>
+      <y>140</y>
       <width>181</width>
       <height>91</height>
      </rect>
@@ -44,13 +44,26 @@
     <property name="geometry">
      <rect>
       <x>230</x>
-      <y>320</y>
+      <y>250</y>
       <width>181</width>
       <height>91</height>
      </rect>
     </property>
     <property name="text">
      <string>Perbandingan</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btnPengujian">
+    <property name="geometry">
+     <rect>
+      <x>230</x>
+      <y>360</y>
+      <width>181</width>
+      <height>91</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Pengujian</string>
     </property>
    </widget>
   </widget>

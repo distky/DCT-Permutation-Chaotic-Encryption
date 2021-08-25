@@ -122,8 +122,6 @@ def validateCrypto(file, x0, y0):
         raise IOError(VALIDATION_ERROR)
     elif height < 32 or height > 64:
         raise IOError(VALIDATION_ERROR)
-    elif height % 8 != 0:
-        raise IOError(VALIDATION_ERROR)
     
     return file, x0, y0
 

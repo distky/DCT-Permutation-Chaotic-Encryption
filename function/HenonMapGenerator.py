@@ -17,11 +17,10 @@ def binaryTo7byte(binary):
     result = []
     binary_arr = []
     for i in range(len(bin_arr)):
-        if i % 8 == 0:
+        binary_arr.append(bin_arr[i])
+        if len(binary_arr) == 8:
             result.append(binaryToDecimal(binary_arr))
             binary_arr = []
-        else:
-            binary_arr.append(bin_arr[i])
     return result
 
 def createHenonMap(xo, yo, a = 1.4, b = 0.3, size = 0):

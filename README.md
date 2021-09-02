@@ -1,5 +1,5 @@
 # DCT-Permutation-Chaotic-Encryption
-Steganography and Encryption using DCT and Permutation-Based Henon Chaotic Map
+Steganography and Encryption using DCT and Permutation-Substitution Based Henon Chaotic Map
 
 Untuk menjalankan source code, dianjurkan menggunakan conda agar setting environment mudah dengan cara:
 conda create env -f environment_dctchaotic.yml
